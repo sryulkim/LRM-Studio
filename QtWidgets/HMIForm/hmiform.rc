@@ -1,0 +1,32 @@
+#include "winver.h"
+
+1 TYPELIB "hmiform.rc"
+1 ICON DISCARDABLE "hmiform.ico"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,1,0,0
+ PRODUCTVERSION 0,1,0,0
+ FILEFLAGSMASK 0x3fL
+ FILEOS 0x00040000L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "Inha Univ. EmCL."
+            VALUE "FileDescription", "HMI form active X control for EmCL Studio Version 0.1"
+            VALUE "FileVersion", "0.1.0.0"
+            VALUE "LegalCopyright", "Inha Univ. Embedded Computing Lab."
+            VALUE "InternalName", "hmiform.dll"
+            VALUE "OriginalFilename", "hmiform.dll"
+            VALUE "ProductName", "HMI form active X control for EmCL Studio Version 0.1"
+            VALUE "ProductVersion", "0.1.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END

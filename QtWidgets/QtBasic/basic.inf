@@ -1,0 +1,9 @@
+[version]
+    signature="$CHICAGO$"
+    AdvancedINF=2.0
+ [Add.Code]
+    basicax.dll=basicax.dll
+ [basicax.dll]
+    file-win32-x86=thiscab
+    clsid={3D4EEE3E-ABF2-4000-8B40-AEE3734E9AD9}
+    RegisterServer=yes

@@ -1,0 +1,9 @@
+[version]
+    signature="$CHICAGO$"
+    AdvancedINF=2.0
+ [Add.Code]
+    qwtwrapperax.dll=qwtwrapperax.dll
+ [wrapperax.dll]
+    file-win32-x86=thiscab
+    clsid={978F1D81-6FDA-4F72-BB0F-D4EFA80A2C6D}
+    RegisterServer=yes

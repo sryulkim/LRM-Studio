@@ -1,0 +1,485 @@
+﻿<UserControl x:Class="HMIProject.HMIEditorPropertyToolWindowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             Background="{DynamicResource VsBrush.Window}"
+             Foreground="{DynamicResource VsBrush.WindowText}"
+             mc:Ignorable="d"
+             d:DesignHeight="1050" d:DesignWidth="330"
+             Name="MyToolWindow">
+    <ScrollViewer Visibility="Visible" CanContentScroll="True">
+        <Grid>
+            <StackPanel Orientation="Vertical" >
+                <DockPanel Visibility="Collapsed" Name="PageProperty">
+                    <StackPanel Orientation="Vertical" >
+                        <Separator Height="5" Margin="10"/>
+                        <TextBlock ><Run Text=" Page Property" FontSize="15" /></TextBlock>
+                        <Separator Height="5" Margin="10"/>
+
+                        <DockPanel>
+                            <Label Content="Page Property" FontSize="13"  />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Name" Width="130" />
+                            <TextBox Name ="PagePropertyName" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="PagePropertyName_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Width" Width="130" />
+                            <TextBox Name ="PagePropertyWidth" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" TextChanged="PagePropertyWidth_TextChanged" KeyUp="PagePropertyWidth_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Height" Width="130" />
+                            <TextBox Name ="PagePropertyHeight" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="PagePropertyHeight_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="BackgroundColor" Width="130" />
+                            <TextBox Name ="PagePropertyBackgroundColor" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="PagePropertyBackgroundColor_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="BackgroundImage" Width="130" />
+                            <TextBox Name ="PagePropertyBackgroundImage" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="PagePropertyBackgroundImage_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Enable" Width="130" />
+                            <TextBox Name ="PagePropertyEnable" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="PagePropertyEnable_KeyUp" />
+                        </DockPanel>
+                    </StackPanel>
+                </DockPanel>
+
+
+
+                <DockPanel Name="GUIOProperty" Visibility="Visible">
+                    <StackPanel Orientation="Vertical" >
+                        <Separator Height="5" Margin="10"/>
+                        <TextBlock ><Run Text=" GUIO Property" FontSize="15" /></TextBlock>
+                        <Separator Height="5" Margin="10"/>
+
+                        <DockPanel>
+                            <Label Content="Common Property" FontSize="13"  />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Name" Width="130" />
+                            <TextBox Name ="GUIOPropertyNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyNameTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="G-Variable" Width="130" />
+                            <TextBox Name ="GUIOPropertyGVarTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyGVarTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyTempGVarDockPanel">
+                            <Label Content="Temp G-Variable" Width="130" />
+                            <TextBox Name ="GUIOPropertyTempGVarTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyTempGVarTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Visibility="Collapsed">
+                            <Label Content="Type" Width="130" />
+                            <ComboBox Height="22"  Text="" Width="162" DockPanel.Dock="Right">
+                                <ComboBoxItem>Bool</ComboBoxItem>
+                                <ComboBoxItem>Integer</ComboBoxItem>
+                                <ComboBoxItem>Float</ComboBoxItem>
+                                <ComboBoxItem>String</ComboBoxItem>
+                                <ComboBoxItem>MVB</ComboBoxItem>
+                                <ComboBoxItem>Eternet</ComboBoxItem>
+                                <ComboBoxItem>RS485</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Visibility="Collapsed">
+                            <Label Content="Visibility" Width="130" />
+                            <ComboBox Height="22"  Width="162" DockPanel.Dock="Right">
+                                <ComboBoxItem>True</ComboBoxItem>
+                                <ComboBoxItem>False</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Visibility="Collapsed">
+                            <Label Content="Enable" Width="130" />
+                            <ComboBox Height="22"  Width="162" DockPanel.Dock="Right">
+                                <ComboBoxItem>True</ComboBoxItem>
+                                <ComboBoxItem>False</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Visibility="Collapsed">
+                            <Label Content="Opacity" Width="130" />
+                            <Slider Height="22"  Width="162" DockPanel.Dock="Right"/>
+                        </DockPanel>
+                        <DockPanel Visibility="Collapsed">
+                            <Label Content="Layout Layer" Width="130" />
+                            <TextBox Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" />
+                        </DockPanel>
+                        <!--<DockPanel>
+                            <Label Content="Background Color" Width="130" />
+                            <TextBox Name="GUIOPropertyBackgroundColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyBackgroundColorTextBox_KeyUp" />
+                        </DockPanel>-->
+                        <DockPanel>
+                            <Label Content="Layer" Width="130" />
+                            <TextBox Name="GUIOPropertyLayerTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyLayerTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyAddressDockPanel" Visibility="Collapsed">
+                            <Label Content="Address" Width="130" />
+                            <TextBox Name="GUIOPropertyAddressTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyAddressTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyURLDockPanel" Visibility="Collapsed">
+                            <Label Content="URL" Width="130" />
+                            <TextBox Name="GUIOPropertyURLTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyURLTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Width="5" />
+                            <Button Width="17" Height="17" BorderThickness="0">
+                                <Button.Background>
+                                    <ImageBrush Stretch="Fill" ImageSource="../Resources/plus.PNG"/>
+                                </Button.Background>
+                            </Button>
+                            <Label Content="Location" Width="290" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="X" Width="130" />
+                            <TextBox Name ="GUIOPropertyXTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyXTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Y" Width="130" />
+                            <TextBox Name ="GUIOPropertyYTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyYTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Width="5" />
+                            <Button Width="17" Height="17" BorderThickness="0">
+                                <Button.Background>
+                                    <ImageBrush Stretch="Fill"  ImageSource="../Resources/plus.PNG"/>
+                                </Button.Background>
+                            </Button>
+                            <Label Content="Size" Width="290" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Width" Width="130" />
+                            <TextBox Name ="GUIOPropertyWidthTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyWidthTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Height" Width="130" />
+                            <TextBox Name ="GUIOPropertyHeightTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyHeightTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyTextDockPanel" Visibility="Collapsed">
+                            <Label Content="Text" Width="130" />
+                            <TextBox Name ="GUIOPropertyTextTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyTextTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyButtonColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Button Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyButtonColorTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyClockColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Clock Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyClockColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyClockColorTextBox_KeyUp"   />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyLabelColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Label Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyLabelColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyLabelColorTextBox_KeyUp"   />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyThicknessDockPanel" Visibility="Collapsed">
+                            <Label Content="Thickness" Width="130" />
+                            <TextBox Name ="GUIOPropertyThicknessTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyThicknessTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyBorderColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Border Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyBorderColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyBorderColorTextBox_KeyUp"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyTransparentDockPanel" Visibility="Collapsed">
+                            <Label Content="Transparent" Width="130" />
+                            <TextBox Name ="GUIOPropertyTransparentTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyTransparentTextBox_KeyUp"   />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyMaxDockPanel" Visibility="Collapsed">
+                            <Label Content="Max" Width="130" />
+                            <TextBox Name ="GUIOPropertyMaxTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyMaxTextBox_KeyUp"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyMinDockPanel" Visibility="Collapsed">
+                            <Label Content="Min" Width="130" />
+                            <TextBox Name ="GUIOPropertyMinTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyMinTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyMajorDockPanel" Visibility="Collapsed">
+                            <Label Content="Major" Width="130" />
+                            <TextBox Name ="GUIOPropertyMajorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyMajorTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyMinorDockPanel" Visibility="Collapsed">
+                            <Label Content="Minor" Width="130" />
+                            <TextBox Name ="GUIOPropertyMinorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyMinorTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyNeedleColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Needle Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyNeedleColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyNeedleColorTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyDigitColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Digit Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyDigitColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyDigitColorTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyBodyColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Body Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyBodyColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyBodyColorTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyLEDColorDockPanel" Visibility="Collapsed">
+                            <Label Content="LED Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyLEDColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyLEDColorTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyDialColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Dial Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyDialColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyDialColorTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertySliderColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Slider Color" Width="130" />
+                            <TextBox Name ="GUIOPropertySliderColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertySliderColorTextBox_KeyUp"   />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyHandleColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Handle Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyHandleColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyHandleColorTextBox_KeyUp"   />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyFontColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Font Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyFontColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyFontColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyFontSizeDockPanel" Visibility="Collapsed">
+                            <Label Content="Font Size" Width="130" />
+                            <TextBox Name ="GUIOPropertyFontSizeTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyFontSizeTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyProgressColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Progress Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyProgressColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyProgressColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyPasswordDockPanel" Visibility="Collapsed">
+                            <Label Content="Password" Width="130" />
+                            <TextBox Name ="GUIOPropertyPasswordTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyPasswordTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyPageNameDockPanel" Visibility="Collapsed">
+                            <Label Content="Page Name" Width="130" />
+                            <TextBox Name ="GUIOPropertyPageNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyPageNameTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyNumColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Number Font Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyNumColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyNumColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyNumButtonColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Number Button Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyNumButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyNumButtonColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyResetColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Reset Font Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyResetColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyResetColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyResetButtonColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Reset Button Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyResetButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyResetButtonColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyLoginColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Login Font Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyLoginColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyLoginColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyLoginButtonColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Login Button Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyLoginButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyLoginButtonColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyFuncColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Function Font Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyFuncColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyFuncColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyFuncButtonColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Function Button Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyFuncButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyFuncButtonColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyOkColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Ok Font Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyOkColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyOkColorTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyOkButtonColorDockPanel" Visibility="Collapsed">
+                            <Label Content="Ok Button Color" Width="130" />
+                            <TextBox Name ="GUIOPropertyOkButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyOkButtonColorTextBox_KeyUp"  />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyDigitNumberDockPanel" Visibility="Collapsed">
+                            <Label Content="Digit Number" Width="130" />
+                            <TextBox Name ="GUIOPropertyDigitNumberTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyDigitNumberTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyCountDockPanel" Visibility="Collapsed">
+                            <Label Content="Count" Width="130" />
+                            <TextBox Name ="GUIOPropertyCountTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyCountTextBox_KeyUp"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyAngleDockPanel" Visibility="Collapsed">
+                            <Label Content="Angle" Width="130" />
+                            <TextBox Name ="GUIOPropertyAngleTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyAngleTextBox_KeyUp"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyFontBoldDockPanel" Visibility="Collapsed">
+                            <Label Content="Font Bold" Width="130" />
+                            <ComboBox Name ="GUIOPropertyFontBoldComboBox" Height="22"  Width="162" DockPanel.Dock="Right" SelectionChanged="GUIOPropertyFontBoldComboBox_SelectionChanged">
+                                <ComboBoxItem>True</ComboBoxItem>
+                                <ComboBoxItem>False</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyFontUnderlineDockPanel" Visibility="Collapsed">
+                            <Label Content="Font Underline" Width="130" />
+                            <ComboBox Name ="GUIOPropertyFontUnderlineComboBox" Height="22"  Width="162" DockPanel.Dock="Right" SelectionChanged="GUIOPropertyFontUnderlineComboBox_SelectionChanged">
+                                <ComboBoxItem>True</ComboBoxItem>
+                                <ComboBoxItem>False</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyOrientationDockPanel" Visibility="Collapsed">
+                            <Label Content="Orientation" Width="130" />
+                            <ComboBox Name ="GUIOPropertyOrientationComboBox" Height="22"  Width="162" DockPanel.Dock="Right" SelectionChanged="GUIOPropertyOrientationComboBox_SelectionChanged" >
+                                <ComboBoxItem>Horizontal</ComboBoxItem>
+                                <ComboBoxItem>Vertical</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyDirectionDockPanel" Visibility="Collapsed">
+                            <Label Content="Direction" Width="130" />
+                            <ComboBox Name ="GUIOPropertyDirectionComboBox" Height="22"  Width="162" DockPanel.Dock="Right" SelectionChanged="GUIOPropertyDirectionComboBox_SelectionChanged" >
+                                <ComboBoxItem>Left to right</ComboBoxItem>
+                                <ComboBoxItem>Right to left</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertySpeedDockPanel" Visibility="Collapsed">
+                            <Label Content="Speed" Width="130" />
+                            <TextBox Name ="GUIOPropertySpeedTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertySpeedTextBox_KeyUp"/>
+                        </DockPanel>
+                        
+                        <DockPanel Name="GUIOPropertyImageNameDockPanel" Visibility="Collapsed">
+                            <Label Content="Image Name" Width="130" />
+                            <TextBox Name ="GUIOPropertyImageNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyImageNameTextBox_KeyUp"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyGrayScaleDockPanel" Visibility="Collapsed">
+                            <Label Content="Gray Scale" Width="130" />
+                            <ComboBox Name ="GUIOPropertyGrayScaleComboBox" Height="22"  Width="162" DockPanel.Dock="Right" SelectionChanged="GUIOPropertyGrayScaleComboBox_SelectionChanged">
+                                <ComboBoxItem>True</ComboBoxItem>
+                                <ComboBoxItem>False</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyVertexesDockPanel">
+                            <Label Content="" Width="130" />
+                            <Button Name ="GUIOPropertyVertexButton" Height="22" Content="Edit Moving Point" Width="162" DockPanel.Dock="Right" Click="GUIOPropertyVertexButton_Click" />
+
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyClickEventDockPanel" Visibility="Collapsed">
+                            <Label Content="" Width="130" />
+                            <Button Name ="GUIOPropertyClickEventButton" Height="22" Content="Click Events" Width="162" DockPanel.Dock="Right" Click="GUIOPropertyClickEventButton_Click" />
+                        </DockPanel>
+
+                        <!-- Depreacated UI
+                        <StackPanel Name="ClickEventStackPanel">
+                            <Separator  Height="7" Margin="10"/>
+                            <DockPanel Name="ClickEventLabelPanel">
+                                <Label Content="ClickEvent" Width="80" HorizontalAlignment="Left"/>
+                            </DockPanel>
+                            <DockPanel Name="ClickAboveDockPanel0">
+                                <Button Name="ClickEventAddButton" Margin="5,  0, 0 ,0" Width="17" Height="17" Click="ClickEventAddButton_Click" BorderThickness="0">
+                                    <Button.Background>
+                                        <ImageBrush Stretch="Fill" ImageSource="../Resources/plus.PNG"/>
+                                    </Button.Background>
+                                </Button>
+                                <ComboBox Name ="ClickEventTypeComboBox0" Height="22"  Width="120" HorizontalAlignment="Left" DockPanel.Dock="Left" Margin="25, 0, 0, 0" SelectedIndex="0" SelectionChanged="ClickEventTypeComboBox_SelectionChanged">
+                                    <ComboBoxItem>Event Type</ComboBoxItem>
+                                    <ComboBoxItem>ChangeValue</ComboBoxItem>
+                                    <ComboBoxItem>IncreaseValue</ComboBoxItem>
+                                    <ComboBoxItem>DecreaseValue</ComboBoxItem>
+                                    <ComboBoxItem>ChangeProperty</ComboBoxItem>
+                                    <ComboBoxItem>ChangePage</ComboBoxItem>
+                                </ComboBox>
+                                <ComboBox Name ="ClickEventGNameComboBox0" Height="22"  Width="120" HorizontalAlignment="Left" DockPanel.Dock="Left" Margin="15, 0, 0, 0" SelectedIndex="0" SelectionChanged="ClickEventGNameComboBox_SelectionChanged">
+                                    <ComboBoxItem>G-Name</ComboBoxItem>
+                                </ComboBox>
+                            </DockPanel>
+                            <DockPanel Name="ClickBottomDockPanel0" Margin="0, 5, 0 ,0">
+
+                                <ComboBox Name ="ClickEventPropertyComboBox0" Height="22"  Width="120" DockPanel.Dock="Left" Margin="47, 0, 0, 0" SelectedIndex="0">
+                                    <ComboBoxItem>Property</ComboBoxItem>
+                                </ComboBox>
+                                <TextBox Name ="ClickEventTextBox0" Height="22" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" Margin="15, 0, 0, 0" DockPanel.Dock="Right" KeyUp="ClickEventTextBox_KeyUp"/>
+                            </DockPanel>
+                            <Separator  Height="7" Margin="10"/>
+                        </StackPanel>
+                        -->
+                    </StackPanel>
+                </DockPanel>
+
+
+
+                <DockPanel Name="FigureProperty" Visibility="Collapsed">
+                    <StackPanel Orientation="Vertical" >
+                        <Separator Height="5" Margin="10"/>
+                        <TextBlock ><Run Text=" GUIO Property" FontSize="15" /></TextBlock>
+                        <Separator Height="5" Margin="10"/>
+
+                        <DockPanel>
+                            <Label Content="Figure Property" FontSize="13"  />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Name" Width="130" />
+                            <TextBox Name ="FigurePropertyNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyNameTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Fill Color" Width="130" />
+                            <TextBox Name ="FigurePropertyFillColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyFillColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Line Color" Width="130" />
+                            <TextBox Name ="FigurePropertyLineColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyLineColorTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Line Thickness" Width="130" />
+                            <TextBox Name ="FigurePropertyLineThicknessTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyLineThicknessTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel Visibility="Collapsed">
+                            <Label Content="Visibility" Width="130" />
+                            <ComboBox Height="22"  Width="162" DockPanel.Dock="Right">
+                                <ComboBoxItem>True</ComboBoxItem>
+                                <ComboBoxItem>False</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Visibility="Collapsed">
+                            <Label Content="Enable" Width="130" />
+                            <ComboBox Height="22"  Width="162" DockPanel.Dock="Right">
+                                <ComboBoxItem>True</ComboBoxItem>
+                                <ComboBoxItem>False</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Visibility="Collapsed">
+                            <Label Content="Opacity" Width="130" />
+                            <Slider Height="22"  Width="162" DockPanel.Dock="Right"/>
+                        </DockPanel>
+                        <DockPanel Visibility="Collapsed">
+                            <Label Content="Layout Layer" Width="130" />
+                            <TextBox Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Layer" Width="130" />
+                            <TextBox Name="FigurePropertyLayerTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyLayerTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Width="5" />
+                            <Button Width="17" Height="17">
+                                <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="../Resources/plus.PNG" Width="17" Height="17"></Image>
+                            </Button>
+                            <Label Content="Location" Width="290" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="X" Width="130" />
+                            <TextBox Name ="FigurePropertyXTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyXTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Y" Width="130" />
+                            <TextBox Name ="FigurePropertyYTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyYTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Width="5" />
+                            <Button Width="17" Height="17">
+                                <Image VerticalAlignment="Center" Source="../Resources/plus.PNG" HorizontalAlignment="Center" Width="17" Height="17"></Image>
+                            </Button>
+                            <Label Content="Size" Width="290" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Width" Width="130" />
+                            <TextBox Name ="FigurePropertyWidthTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyWidthTextBox_KeyUp" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Height" Width="130" />
+                            <TextBox Name ="FigurePropertyHeightTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyHeightTextBox_KeyUp" />
+                        </DockPanel>
+
+                        <Separator  Height="7" Margin="10"/>
+
+
+                    </StackPanel>
+                </DockPanel>
+
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

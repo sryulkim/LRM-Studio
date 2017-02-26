@@ -1,0 +1,9 @@
+[version]
+    signature="$CHICAGO$"
+    AdvancedINF=2.0
+ [Add.Code]
+    customax.dll=customax.dll
+ [customax.dll]
+    file-win32-x86=thiscab
+    clsid={B9772F59-FD98-44D4-BC7F-7493241986FC}
+    RegisterServer=yes

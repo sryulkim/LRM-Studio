@@ -1,0 +1,9 @@
+[version]
+    signature="$CHICAGO$"
+    AdvancedINF=2.0
+ [Add.Code]
+    hmiform.dll=hmiform.dll
+ [hmiform.dll]
+    file-win32-x86=thiscab
+    clsid={1C871F30-E518-4012-95E8-A7FD007E6D75}
+    RegisterServer=yes

@@ -1,0 +1,19 @@
+﻿<VSTemplate Version="2.0.0" Type="Project"
+    xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name>HMIProject Application</Name>
+    <Description>A project for creating a HMIProject application</Description>
+     <Icon>HMIProject.ico</Icon>
+     <ProjectType>HMIProject</ProjectType>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="HMIProject.hmiproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">
+          Program.cs
+      </ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="false">
+         AssemblyInfo.cs
+      </ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

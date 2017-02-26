@@ -612,6 +612,8 @@ namespace Microsoft.VisualStudio.Project
                 return Marshal.GetHRForException(e);
             }
 
+
+
             return VSConstants.S_OK;
         }
 

@@ -35,12 +35,14 @@ namespace HMIProject
 
         private void buttonConfirm_Click(object sender, EventArgs e)
         {
-            if (xTextBox.Text != "" && yTextBox.Text != "")
+            if (xTextBox.Text != "" && yTextBox.Text != "" && pointIDTextBox.Text != "" && scaleTextBox.Text != "" && angleTextBox.Text != "")
             {
                 vertex vtx = new vertex();
+                vtx.pointID = pointIDTextBox.Text;
                 vtx.x = xTextBox.Text;
                 vtx.y = yTextBox.Text;
                 vtx.scale = scaleTextBox.Text;
+                vtx.angle = angleTextBox.Text;
                 HMIEditVertexesDialog.rail.vertexes.Add(vtx);
                 confirmFlag = true;
                 var vertexBindingSource = new BindingSource();
@@ -50,7 +52,7 @@ namespace HMIProject
                 this.Close();
             }
             else
-                MessageBox.Show("값을 입력해 주세요.");
+                MessageBox.Show("빈칸 없이 모든 값을 입력해 주세요.");
         }
 
         private void buttonCancle_Click(object sender, EventArgs e)

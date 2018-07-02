@@ -73,317 +73,251 @@ debug-uninstall: FORCE
 	@set MAKEFLAGS=$(MAKEFLAGS)
 	$(MAKE) -f $(MAKEFILE).Debug uninstall
 
-Makefile: HMIForm.pro C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\win32-msvc2015\qmake.conf C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\spec_pre.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\angle.conf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\msvc-base.conf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\msvc-desktop.conf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\qconfig.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dcore.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dcore_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dinput.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dinput_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dlogic.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dlogic_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquick.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquick_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquickinput.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquickinput_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquickrender.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquickrender_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3drender.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3drender_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axbase.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axbase_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axcontainer.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axcontainer_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axserver.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axserver_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bluetooth.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bluetooth_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bootstrap_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_clucene_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_concurrent.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_concurrent_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_core.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_core_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_dbus.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_dbus_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designer.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designer_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designercomponents_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_gui.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_gui_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_help.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_help_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_labscontrols_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_labstemplates_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_location.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_location_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimedia.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimedia_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimediawidgets.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimediawidgets_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_network.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_network_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_nfc.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_nfc_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_opengl.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_opengl_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_openglextensions.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_openglextensions_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_platformsupport_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_positioning.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_positioning_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_printsupport.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_printsupport_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qml.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qml_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmldevtools_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmltest.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmltest_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quick.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quick_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickparticles_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickwidgets.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickwidgets_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_script.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_script_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_scripttools.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_scripttools_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sensors.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sensors_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialbus.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialbus_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialport.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialport_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sql.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sql_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_svg.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_svg_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_testlib.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_testlib_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uiplugin.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uitools.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uitools_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webchannel.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webchannel_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webengine.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webengine_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webenginecore.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webenginecore_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webenginecoreheaders_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webenginewidgets.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webenginewidgets_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_websockets.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_websockets_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webview.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webview_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_widgets.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_widgets_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_winextras.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_winextras_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xml.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xml_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xmlpatterns.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xmlpatterns_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_zlib_private.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt_functions.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt_config.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\qt_config.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\win32-msvc2015\qmake.conf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\spec_post.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exclusive_builds.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\default_pre.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\default_pre.prf \
+Makefile: HMIForm.pro ..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\win32-msvc2015\qmake.conf ..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\spec_pre.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\angle.conf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\msvc-base.conf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\msvc-desktop.conf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\qconfig.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axbase.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axbase_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axcontainer.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axcontainer_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axserver.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axserver_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bluetooth.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bluetooth_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bootstrap_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_clucene_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_concurrent.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_concurrent_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_core.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_core_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_dbus.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_dbus_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designer.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designer_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designercomponents_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_gui.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_gui_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_help.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_help_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimedia.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimedia_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimediawidgets.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimediawidgets_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_network.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_network_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_nfc.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_nfc_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_opengl.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_opengl_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_openglextensions.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_openglextensions_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_platformsupport_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_positioning.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_positioning_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_printsupport.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_printsupport_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qml.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qml_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmldevtools_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmltest.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmltest_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quick.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quick_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickparticles_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickwidgets.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickwidgets_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sensors.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sensors_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialport.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialport_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sql.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sql_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_svg.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_svg_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_testlib.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_testlib_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uiplugin.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uitools.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uitools_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webchannel.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webchannel_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_websockets.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_websockets_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_widgets.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_widgets_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_winextras.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_winextras_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xml.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xml_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xmlpatterns.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xmlpatterns_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_zlib_private.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt_functions.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt_config.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\qt_config.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\win32-msvc2015\qmake.conf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\spec_post.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exclusive_builds.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\default_pre.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\default_pre.prf \
 		..\shared.pri \
-		C:\Qt\QWT-6.1.3\qwtconfig.pri \
-		C:\Qt\QWT-6.1.3\qwtbuild.pri \
-		C:\Qt\QWT-6.1.3\qwtfunctions.pri \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\resolve_config.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exclusive_builds_post.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\default_post.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\warn_off.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\resources.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\moc.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\opengl.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\uic.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\idcidl.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\rtti.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\precompile_header.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\windows.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\testcase_targets.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exceptions.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\yacc.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\lex.prf \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\silent.prf \
+		..\..\..\Qt\QWT-6.1.3\qwtconfig.pri \
+		..\..\..\Qt\QWT-6.1.3\qwtbuild.pri \
+		..\..\..\Qt\QWT-6.1.3\qwtfunctions.pri \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\resolve_config.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exclusive_builds_post.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\default_post.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\warn_off.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\resources.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\moc.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\opengl.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\uic.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\idcidl.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\rtti.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\precompile_header.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\windows.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\testcase_targets.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exceptions.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\yacc.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\lex.prf \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\silent.prf \
 		HMIForm.pro \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5AxServer.prl \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5AxBase.prl \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5PrintSupport.prl \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5OpenGL.prl \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Svg.prl \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Widgets.prl \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Gui.prl \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Concurrent.prl \
-		C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Core.prl
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5AxServer.prl \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5AxBase.prl \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5PrintSupport.prl \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5OpenGL.prl \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Svg.prl \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Widgets.prl \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Gui.prl \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Concurrent.prl \
+		..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Core.prl
 	$(QMAKE) -o Makefile HMIForm.pro
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\spec_pre.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\angle.conf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\msvc-base.conf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\msvc-desktop.conf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\qconfig.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dcore.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dcore_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dinput.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dinput_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dlogic.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dlogic_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquick.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquick_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquickinput.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquickinput_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquickrender.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3dquickrender_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3drender.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_3drender_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axbase.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axbase_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axcontainer.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axcontainer_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axserver.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axserver_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bluetooth.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bluetooth_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bootstrap_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_clucene_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_concurrent.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_concurrent_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_core.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_core_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_dbus.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_dbus_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designer.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designer_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designercomponents_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_gui.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_gui_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_help.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_help_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_labscontrols_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_labstemplates_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_location.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_location_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimedia.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimedia_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimediawidgets.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimediawidgets_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_network.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_network_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_nfc.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_nfc_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_opengl.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_opengl_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_openglextensions.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_openglextensions_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_platformsupport_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_positioning.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_positioning_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_printsupport.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_printsupport_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qml.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qml_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmldevtools_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmltest.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmltest_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quick.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quick_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickparticles_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickwidgets.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickwidgets_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_script.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_script_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_scripttools.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_scripttools_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sensors.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sensors_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialbus.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialbus_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialport.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialport_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sql.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sql_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_svg.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_svg_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_testlib.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_testlib_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uiplugin.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uitools.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uitools_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webchannel.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webchannel_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webengine.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webengine_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webenginecore.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webenginecore_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webenginecoreheaders_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webenginewidgets.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webenginewidgets_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_websockets.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_websockets_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webview.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webview_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_widgets.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_widgets_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_winextras.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_winextras_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xml.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xml_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xmlpatterns.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xmlpatterns_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_zlib_private.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt_functions.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt_config.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\qt_config.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\win32-msvc2015\qmake.conf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\spec_post.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exclusive_builds.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\default_pre.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\default_pre.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\spec_pre.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\angle.conf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\msvc-base.conf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\common\msvc-desktop.conf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\qconfig.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axbase.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axbase_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axcontainer.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axcontainer_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axserver.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_axserver_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bluetooth.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bluetooth_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_bootstrap_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_clucene_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_concurrent.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_concurrent_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_core.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_core_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_dbus.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_dbus_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designer.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designer_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_designercomponents_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_gui.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_gui_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_help.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_help_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimedia.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimedia_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimediawidgets.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_multimediawidgets_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_network.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_network_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_nfc.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_nfc_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_opengl.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_opengl_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_openglextensions.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_openglextensions_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_platformsupport_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_positioning.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_positioning_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_printsupport.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_printsupport_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qml.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qml_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmldevtools_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmltest.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qmltest_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quick.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quick_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickparticles_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickwidgets.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_quickwidgets_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sensors.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sensors_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialport.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_serialport_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sql.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_sql_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_svg.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_svg_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_testlib.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_testlib_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uiplugin.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uitools.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_uitools_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webchannel.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_webchannel_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_websockets.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_websockets_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_widgets.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_widgets_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_winextras.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_winextras_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xml.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xml_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xmlpatterns.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_xmlpatterns_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\modules\qt_lib_zlib_private.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt_functions.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt_config.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\qt_config.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\win32-msvc2015\qmake.conf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\spec_post.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exclusive_builds.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\default_pre.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\default_pre.prf:
 ..\shared.pri:
-C:\Qt\QWT-6.1.3\qwtconfig.pri:
-C:\Qt\QWT-6.1.3\qwtbuild.pri:
-C:\Qt\QWT-6.1.3\qwtfunctions.pri:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\resolve_config.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exclusive_builds_post.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\default_post.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\warn_off.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\resources.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\moc.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\opengl.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\uic.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\idcidl.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\rtti.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\precompile_header.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\windows.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\testcase_targets.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exceptions.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\yacc.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\lex.prf:
-C:\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\silent.prf:
+..\..\..\Qt\QWT-6.1.3\qwtconfig.pri:
+..\..\..\Qt\QWT-6.1.3\qwtbuild.pri:
+..\..\..\Qt\QWT-6.1.3\qwtfunctions.pri:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\resolve_config.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exclusive_builds_post.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\default_post.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\warn_off.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\qt.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\resources.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\moc.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\opengl.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\uic.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\idcidl.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\rtti.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\precompile_header.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\win32\windows.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\testcase_targets.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\exceptions.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\yacc.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\lex.prf:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\mkspecs\features\silent.prf:
 HMIForm.pro:
-C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5AxServer.prl:
-C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5AxBase.prl:
-C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5PrintSupport.prl:
-C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5OpenGL.prl:
-C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Svg.prl:
-C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Widgets.prl:
-C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Gui.prl:
-C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Concurrent.prl:
-C:\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Core.prl:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5AxServer.prl:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5AxBase.prl:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5PrintSupport.prl:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5OpenGL.prl:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Svg.prl:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Widgets.prl:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Gui.prl:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Concurrent.prl:
+..\..\..\Qt\Qt5.6.0\5.6\msvc2015\lib\Qt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile HMIForm.pro
 

@@ -32,6 +32,12 @@ public:
         fillColor.setAlpha(0xff);//(rgba>>24)&0xff);
         repaint();
     }
+    void setfillTransparent()
+    {
+        fillColor.setRgb(0xffffff);
+        fillColor.setAlpha(0);//(rgba>>24)&0xff);
+        repaint();
+    }
     void setlinewidth(int i)
     {
         lineWidth=i;

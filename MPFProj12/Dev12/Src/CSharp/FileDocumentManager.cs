@@ -197,6 +197,7 @@ namespace Microsoft.VisualStudio.Project
 
         private int Open(bool newFile, bool openWith, uint editorFlags, ref Guid editorType, string physicalView, ref Guid logicalView, IntPtr docDataExisting, out IVsWindowFrame windowFrame, WindowFrameShowAction windowFrameAction)
         {
+            bool pathChanged = false;
             windowFrame = null;
             if(this.Node == null || this.Node.ProjectMgr == null || this.Node.ProjectMgr.IsClosed)
             {
@@ -210,6 +211,13 @@ namespace Microsoft.VisualStudio.Project
             int returnValue = VSConstants.S_OK;
             string caption = this.GetOwnerCaption();
             string fullPath = this.GetFullPathForDocument();
+            HMIProject.HMIProjectNode.currentProjectDirectory = System.IO.Path.GetDirectoryName(fullPath);
+
+            if (fullPath != HMIProject.StaticMethods.preOpenPath)
+            {
+                HMIProject.StaticMethods.preOpenPath = fullPath;
+                pathChanged = true;
+            }
 
             // Make sure that the file is on disk before we open the editor and display message if not found
             if(!((FileNode)this.Node).IsFileOnDisk(true))
@@ -226,6 +234,7 @@ namespace Microsoft.VisualStudio.Project
             IVsUIShellOpenDocument uiShellOpenDocument = this.Node.ProjectMgr.Site.GetService(typeof(SVsUIShellOpenDocument)) as IVsUIShellOpenDocument;
             IOleServiceProvider serviceProvider = this.Node.ProjectMgr.Site.GetService(typeof(IOleServiceProvider)) as IOleServiceProvider;
 
+            if(pathChanged)
             try
             {
                 this.Node.ProjectMgr.OnOpenItem(fullPath);

@@ -1,0 +1,9 @@
+[version]
+    signature="$CHICAGO$"
+    AdvancedINF=2.0
+ [Add.Code]
+    qwtbasicax.dll=qwtbasicax.dll
+ [qwtbasicax.dll]
+    file-win32-x86=thiscab
+    clsid={E58246BB-4725-45E8-BD0D-2FFDDF9E35D0}
+    RegisterServer=yes

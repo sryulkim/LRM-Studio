@@ -50,22 +50,24 @@ namespace HMIProject
             hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.NUMBERPAD));
             hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.LOGINPAD));
             hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.LABEL));
+            hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.SCROLLLABEL));
             hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.DIGITALCLOCK));
             hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.PUSHBUTTON));
             hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.RADIOBUTTON));
             hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.LED));
             hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.PANEL));
-            hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.SETRESETBUTTON));
-            hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.INCDECBUTTON));
+            //hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.SETRESETBUTTON));
+            //hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.INCDECBUTTON));
             hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.IMAGE));
             hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.RAIL));
-            hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.WEBVIEW));
-            hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.SCROLLLABEL));
+            hostPanel.CanHorizontallyScroll = true;
+            hostPanel.CanVerticallyScroll = true;
+            //hostPanel.Children.Add(makeToolBoxGUIOItem(HMIConstants.guioNumber.WEBVIEW));
         }
-        
 
         private System.Windows.Forms.Integration.WindowsFormsHost makeToolBoxGUIOItem(HMIConstants.guioNumber guioNumber)
         {
+            //windowsFormHost는 WPF element또는 page 내부에 Windows Form contorl을 호스팅하기위해 사용한다. 
             System.Windows.Forms.Integration.WindowsFormsHost host = new System.Windows.Forms.Integration.WindowsFormsHost();
             host.HorizontalAlignment = HorizontalAlignment.Left;
             host.Height = 34;
@@ -78,18 +80,57 @@ namespace HMIProject
             guioItem.MouseDown += guio_MouseDown;
             guioItem.Image = (Bitmap)rm.GetObject(HMIConstants.getGUIOName(guioNumber));
             guioItem.Name = HMIConstants.getGUIOName(guioNumber);
-            guioItem.AutoSize = true;
+            guioItem.AutoSize = false;
             guioItem.Refresh();
             host.Name = HMIConstants.getGUIOName(guioNumber);
             host.Child = guioItem;
+            
             return host;
         }
+
+
 
         private void guio_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             senderItem = HMIConstants.getGUIONumber(((System.Windows.Forms.Label)sender).Name);
             System.Windows.Forms.Label guio = (System.Windows.Forms.Label)sender;
             guio.DoDragDrop(guio, System.Windows.Forms.DragDropEffects.Move);
+        }
+
+        private void MyToolWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.HeightChanged)
+            {
+                int i = 1;
+                foreach (System.Windows.Forms.Integration.WindowsFormsHost host in hostPanel.Children) {
+                    if (e.NewSize.Height < host.Child.Width * hostPanel.Children.Count)
+                    {
+                        if ((int)e.NewSize.Height / host.Height < i++)
+                        {
+                            host.Visibility = Visibility.Hidden;
+                        }
+                    }
+                    else
+                        host.Visibility = Visibility.Visible;
+                }
+            }
+            if (e.WidthChanged)
+            {
+                foreach(System.Windows.Forms.Integration.WindowsFormsHost host in hostPanel.Children)
+                {
+                    if (e.NewSize.Width < 234)
+                    {
+                        host.Width = (int)e.NewSize.Width;
+                        host.Child.Width = (int)e.NewSize.Width;
+                    }
+                    else
+                    {
+                        host.Width = 234;
+                        host.Child.Width = 234;
+                    }
+
+                }
+            }
         }
     }
 }

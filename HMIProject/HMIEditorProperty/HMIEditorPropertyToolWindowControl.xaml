@@ -22,27 +22,32 @@
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Name" Width="130" />
-                            <TextBox Name ="PagePropertyName" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="PagePropertyName_KeyUp" />
+                            <TextBox Name ="PagePropertyName" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="PagePropertyName_LostFocus"  />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Number" Width="130" />
+                            <TextBox Name ="PagePropertyNumber" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="PagePropertyNumber_LostFocus"  />
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Width" Width="130" />
-                            <TextBox Name ="PagePropertyWidth" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" TextChanged="PagePropertyWidth_TextChanged" KeyUp="PagePropertyWidth_KeyUp" />
+                            <TextBox Name ="PagePropertyWidth" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" TextChanged="PagePropertyWidth_TextChanged" LostFocus="PagePropertyWidth_LostFocus"  />
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Height" Width="130" />
-                            <TextBox Name ="PagePropertyHeight" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="PagePropertyHeight_KeyUp" />
+                            <TextBox Name ="PagePropertyHeight" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="PagePropertyHeight_LostFocus"  />
                         </DockPanel>
                         <DockPanel>
                             <Label Content="BackgroundColor" Width="130" />
-                            <TextBox Name ="PagePropertyBackgroundColor" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="PagePropertyBackgroundColor_KeyUp" />
+                            <Button x:Name ="PagePropertyBackgroundColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="PagePropertyBackgroundColor_Click" />
+                            <TextBox x:Name ="PagePropertyBackgroundColor" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="PagePropertyBackgroundColor_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Content="BackgroundImage" Width="130" />
-                            <TextBox Name ="PagePropertyBackgroundImage" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="PagePropertyBackgroundImage_KeyUp"  />
+                            <TextBox Name ="PagePropertyBackgroundImage" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="PagePropertyBackgroundImage_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Enable" Width="130" />
-                            <TextBox Name ="PagePropertyEnable" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="PagePropertyEnable_KeyUp" />
+                            <TextBox Name ="PagePropertyEnable" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="PagePropertyEnable_LostFocus" />
                         </DockPanel>
                     </StackPanel>
                 </DockPanel>
@@ -52,23 +57,30 @@
                 <DockPanel Name="GUIOProperty" Visibility="Visible">
                     <StackPanel Orientation="Vertical" >
                         <Separator Height="5" Margin="10"/>
-                        <TextBlock ><Run Text=" GUIO Property" FontSize="15" /></TextBlock>
+                        <TextBlock Foreground="#FF2358C9" ><Run Text=" GUIO Property" FontSize="15" /></TextBlock>
                         <Separator Height="5" Margin="10"/>
 
                         <DockPanel>
-                            <Label Content="Common Property" FontSize="13"  />
+                            <Label Content="Common Property" FontSize="13" Foreground="#FF2358C9"  />
                         </DockPanel>
                         <DockPanel>
-                            <Label Content="Name" Width="130" />
-                            <TextBox Name ="GUIOPropertyNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyNameTextBox_KeyUp" />
+                            <Label Content="Name" Width="130" Foreground="#FF2358C9" />
+                            <TextBox Name ="GUIOPropertyNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyNameTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
-                            <Label Content="G-Variable" Width="130" />
-                            <TextBox Name ="GUIOPropertyGVarTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyGVarTextBox_KeyUp" />
+                            <Label Content="G-Variable" Width="130" Foreground="#FF2358C9" />
+                            <TextBox Name ="GUIOPropertyGVarTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyGVarTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyTempGVarDockPanel">
-                            <Label Content="Temp G-Variable" Width="130" />
-                            <TextBox Name ="GUIOPropertyTempGVarTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyTempGVarTextBox_KeyUp"  />
+                            <Label Content="Temp G-Variable" Width="130" Foreground="#FF2358C9" />
+                            <TextBox Name ="GUIOPropertyTempGVarTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyTempGVarTextBox_LostFocus" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyVisibleDockPanel">
+                            <Label Content="Visible" Width="130" Foreground="#FF2358C9" />
+                            <ComboBox Name ="GUIOPropertyVisibleComboBox" Height="22"  Width="162" DockPanel.Dock="Right" SelectionChanged="GUIOPropertyVisibleComboBox_SelectionChanged">
+                                <ComboBoxItem>True</ComboBoxItem>
+                                <ComboBoxItem>False</ComboBoxItem>
+                            </ComboBox>
                         </DockPanel>
                         <DockPanel Visibility="Collapsed">
                             <Label Content="Type" Width="130" />
@@ -106,36 +118,40 @@
                         </DockPanel>
                         <!--<DockPanel>
                             <Label Content="Background Color" Width="130" />
-                            <TextBox Name="GUIOPropertyBackgroundColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyBackgroundColorTextBox_KeyUp" />
+                            <TextBox Name="GUIOPropertyBackgroundColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyBackgroundColorTextBox_LostFocus" />
                         </DockPanel>-->
                         <DockPanel>
-                            <Label Content="Layer" Width="130" />
-                            <TextBox Name="GUIOPropertyLayerTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyLayerTextBox_KeyUp" />
+                            <Label Content="Layer" Width="130" Foreground="#FF2358C9" />
+                            <TextBox Name="GUIOPropertyLayerTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyLayerTextBox_LostFocus" />
                         </DockPanel>
-                        <DockPanel Name="GUIOPropertyAddressDockPanel" Visibility="Collapsed">
-                            <Label Content="Address" Width="130" />
-                            <TextBox Name="GUIOPropertyAddressTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyAddressTextBox_KeyUp"  />
+                        <DockPanel Name="GUIOPropertyIPAddressDockPanel" Visibility="Collapsed">
+                            <Label Content="IP Address" Width="130" />
+                            <TextBox Name="GUIOPropertyIPAddressTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyIPAddressTextBox_LostFocus" />
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyPortDockPanel" Visibility="Collapsed">
+                            <Label Content="Port" Width="130" />
+                            <TextBox Name="GUIOPropertyPortTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyPortTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyURLDockPanel" Visibility="Collapsed">
                             <Label Content="URL" Width="130" />
-                            <TextBox Name="GUIOPropertyURLTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyURLTextBox_KeyUp"  />
+                            <TextBox Name="GUIOPropertyURLTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyURLTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Width="5" />
-                            <Button Width="17" Height="17" BorderThickness="0">
+                            <Button Width="17" Height="17" BorderThickness="0" Foreground="DarkGreen">
                                 <Button.Background>
                                     <ImageBrush Stretch="Fill" ImageSource="../Resources/plus.PNG"/>
                                 </Button.Background>
                             </Button>
-                            <Label Content="Location" Width="290" />
+                            <Label Content="Location" Width="290" Foreground="#FF2358C9" />
                         </DockPanel>
                         <DockPanel>
-                            <Label Content="X" Width="130" />
-                            <TextBox Name ="GUIOPropertyXTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyXTextBox_KeyUp" />
+                            <Label Content="X" Width="130" Foreground="#FF2358C9" />
+                            <TextBox Name ="GUIOPropertyXTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyXTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
-                            <Label Content="Y" Width="130" />
-                            <TextBox Name ="GUIOPropertyYTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyYTextBox_KeyUp" />
+                            <Label Content="Y" Width="130" Foreground="#FF2358C9" />
+                            <TextBox Name ="GUIOPropertyYTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyYTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Width="5" />
@@ -144,159 +160,198 @@
                                     <ImageBrush Stretch="Fill"  ImageSource="../Resources/plus.PNG"/>
                                 </Button.Background>
                             </Button>
-                            <Label Content="Size" Width="290" />
+                            <Label Content="Size" Width="290" Foreground="#FF2358C9" />
                         </DockPanel>
                         <DockPanel>
-                            <Label Content="Width" Width="130" />
-                            <TextBox Name ="GUIOPropertyWidthTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyWidthTextBox_KeyUp" />
+                            <Label Content="Width" Width="130" Foreground="#FF2358C9" />
+                            <TextBox Name ="GUIOPropertyWidthTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyWidthTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
-                            <Label Content="Height" Width="130" />
-                            <TextBox Name ="GUIOPropertyHeightTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyHeightTextBox_KeyUp" />
+                            <Label Content="Height" Width="130" Foreground="#FF2358C9" />
+                            <TextBox Name ="GUIOPropertyHeightTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyHeightTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyTextDockPanel" Visibility="Collapsed">
                             <Label Content="Text" Width="130" />
-                            <TextBox Name ="GUIOPropertyTextTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyTextTextBox_KeyUp"  />
+                            <TextBox Name ="GUIOPropertyTextTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyTextTextBox_LostFocus"/>
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyButtonColorDockPanel" Visibility="Collapsed">
                             <Label Content="Button Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyButtonColorTextBox_KeyUp"  />
+                            <Button x:Name ="GUIOPropertyButtonColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyButtonColor_Click" />
+                            <TextBox Name ="GUIOPropertyButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyButtonColorTextBox_LostFocus"/>
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyClockColorDockPanel" Visibility="Collapsed">
                             <Label Content="Clock Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyClockColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyClockColorTextBox_KeyUp"   />
+                            <Button x:Name ="GUIOPropertyClockColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyClockColor_Click" />
+                            <TextBox Name ="GUIOPropertyClockColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyClockColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyLabelColorDockPanel" Visibility="Collapsed">
                             <Label Content="Label Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyLabelColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyLabelColorTextBox_KeyUp"   />
+                            <Button x:Name ="GUIOPropertyLabelColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyLabelColor_Click" />
+                            <TextBox Name ="GUIOPropertyLabelColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyLabelColorTextBox_LostFocus"   />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyThicknessDockPanel" Visibility="Collapsed">
                             <Label Content="Thickness" Width="130" />
-                            <TextBox Name ="GUIOPropertyThicknessTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyThicknessTextBox_KeyUp" />
+                            <TextBox Name ="GUIOPropertyThicknessTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyThicknessTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyBorderColorDockPanel" Visibility="Collapsed">
                             <Label Content="Border Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyBorderColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyBorderColorTextBox_KeyUp"/>
+                            <Button x:Name ="GUIOPropertyBorderColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyBorderColor_Click" />
+                            <TextBox Name ="GUIOPropertyBorderColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyBorderColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyTransparentDockPanel" Visibility="Collapsed">
                             <Label Content="Transparent" Width="130" />
-                            <TextBox Name ="GUIOPropertyTransparentTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyTransparentTextBox_KeyUp"   />
+                            <TextBox Name ="GUIOPropertyTransparentTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyTransparentTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyMaxDockPanel" Visibility="Collapsed">
                             <Label Content="Max" Width="130" />
-                            <TextBox Name ="GUIOPropertyMaxTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyMaxTextBox_KeyUp"/>
+                            <TextBox Name ="GUIOPropertyMaxTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyMaxTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyMinDockPanel" Visibility="Collapsed">
                             <Label Content="Min" Width="130" />
-                            <TextBox Name ="GUIOPropertyMinTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyMinTextBox_KeyUp" />
+                            <TextBox Name ="GUIOPropertyMinTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyMinTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyMajorDockPanel" Visibility="Collapsed">
                             <Label Content="Major" Width="130" />
-                            <TextBox Name ="GUIOPropertyMajorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyMajorTextBox_KeyUp"  />
+                            <TextBox Name ="GUIOPropertyMajorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyMajorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyMinorDockPanel" Visibility="Collapsed">
                             <Label Content="Minor" Width="130" />
-                            <TextBox Name ="GUIOPropertyMinorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyMinorTextBox_KeyUp"  />
+                            <TextBox Name ="GUIOPropertyMinorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyMinorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyNeedleColorDockPanel" Visibility="Collapsed">
                             <Label Content="Needle Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyNeedleColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyNeedleColorTextBox_KeyUp"  />
+                            <Button x:Name ="GUIOPropertyNeedleColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyNeedleColor_Click" />
+                            <TextBox Name ="GUIOPropertyNeedleColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyNeedleColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyDigitColorDockPanel" Visibility="Collapsed">
                             <Label Content="Digit Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyDigitColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyDigitColorTextBox_KeyUp"  />
+                            <Button x:Name ="GUIOPropertyDigitColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyDigitColor_Click" />
+                            <TextBox Name ="GUIOPropertyDigitColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyDigitColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyBodyColorDockPanel" Visibility="Collapsed">
                             <Label Content="Body Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyBodyColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyBodyColorTextBox_KeyUp"  />
+                            <Button x:Name ="GUIOPropertyBodyColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyBodyColor_Click" />
+                            <TextBox Name ="GUIOPropertyBodyColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyBodyColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyLEDColorDockPanel" Visibility="Collapsed">
                             <Label Content="LED Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyLEDColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyLEDColorTextBox_KeyUp"  />
+                            <Button x:Name ="GUIOPropertyLEDColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyLEDColor_Click" />
+                            <TextBox Name ="GUIOPropertyLEDColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyLEDColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyDialColorDockPanel" Visibility="Collapsed">
                             <Label Content="Dial Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyDialColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyDialColorTextBox_KeyUp"  />
+                            <Button x:Name ="GUIOPropertyDialColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyDialColor_Click" />
+                            <TextBox Name ="GUIOPropertyDialColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyDialColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertySliderColorDockPanel" Visibility="Collapsed">
                             <Label Content="Slider Color" Width="130" />
-                            <TextBox Name ="GUIOPropertySliderColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertySliderColorTextBox_KeyUp"   />
+                            <Button x:Name ="GUIOPropertySliderColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertySliderColor_Click" />
+                            <TextBox Name ="GUIOPropertySliderColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertySliderColorTextBox_LostFocus"  />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyHandleColorDockPanel" Visibility="Collapsed">
                             <Label Content="Handle Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyHandleColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyHandleColorTextBox_KeyUp"   />
+                            <Button x:Name ="GUIOPropertyHandleColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyHandleColor_Click" />
+                            <TextBox Name ="GUIOPropertyHandleColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyHandleColorTextBox_LostFocus"   />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyFontColorDockPanel" Visibility="Collapsed">
                             <Label Content="Font Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyFontColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyFontColorTextBox_KeyUp" />
+                            <Button x:Name ="GUIOPropertyFontColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyFontColor_Click" />
+                            <TextBox Name ="GUIOPropertyFontColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyFontColorTextBox_LostFocus"  />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyFontSizeDockPanel" Visibility="Collapsed">
                             <Label Content="Font Size" Width="130" />
-                            <TextBox Name ="GUIOPropertyFontSizeTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyFontSizeTextBox_KeyUp" />
+                            <TextBox Name ="GUIOPropertyFontSizeTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyFontSizeTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyProgressColorDockPanel" Visibility="Collapsed">
                             <Label Content="Progress Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyProgressColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyProgressColorTextBox_KeyUp" />
+                            <Button x:Name ="GUIOPropertyProgressColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyProgressColor_Click" />
+                            <TextBox Name ="GUIOPropertyProgressColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyProgressColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyPasswordDockPanel" Visibility="Collapsed">
                             <Label Content="Password" Width="130" />
-                            <TextBox Name ="GUIOPropertyPasswordTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyPasswordTextBox_KeyUp" />
+                            <TextBox Name ="GUIOPropertyPasswordTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyPasswordTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyPageNameDockPanel" Visibility="Collapsed">
                             <Label Content="Page Name" Width="130" />
-                            <TextBox Name ="GUIOPropertyPageNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyPageNameTextBox_KeyUp"  />
+                            <TextBox Name ="GUIOPropertyPageNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyPageNameTextBox_LostFocus"  />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyNumColorDockPanel" Visibility="Collapsed">
                             <Label Content="Number Font Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyNumColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyNumColorTextBox_KeyUp" />
+                            <Button x:Name ="GUIOPropertyNumColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyNumColor_Click" />
+                            <TextBox Name ="GUIOPropertyNumColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyNumColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyNumButtonColorDockPanel" Visibility="Collapsed">
                             <Label Content="Number Button Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyNumButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyNumButtonColorTextBox_KeyUp" />
+                            <Button x:Name ="GUIOPropertyNumButtonColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyNumButtonColor_Click" />
+                            <TextBox Name ="GUIOPropertyNumButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyNumButtonColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyResetColorDockPanel" Visibility="Collapsed">
                             <Label Content="Reset Font Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyResetColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyResetColorTextBox_KeyUp" />
+                            <Button x:Name ="GUIOPropertyResetColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyResetColor_Click" />
+                            <TextBox Name ="GUIOPropertyResetColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyResetColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyResetButtonColorDockPanel" Visibility="Collapsed">
                             <Label Content="Reset Button Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyResetButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyResetButtonColorTextBox_KeyUp" />
+                            <Button x:Name ="GUIOPropertyResetButtonColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyResetButtonColor_Click" LostFocus="GUIOPropertyBodyColorTextBox_LostFocus"/>
+                            <TextBox Name ="GUIOPropertyResetButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyResetButtonColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyLoginColorDockPanel" Visibility="Collapsed">
                             <Label Content="Login Font Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyLoginColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyLoginColorTextBox_KeyUp" />
+                            <Button x:Name ="GUIOPropertyLoginColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyLoginColor_Click" />
+                            <TextBox Name ="GUIOPropertyLoginColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyLoginColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyLoginButtonColorDockPanel" Visibility="Collapsed">
                             <Label Content="Login Button Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyLoginButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyLoginButtonColorTextBox_KeyUp" />
+                            <Button x:Name ="GUIOPropertyLoginButtonColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyLoginButtonColor_Click" />
+                            <TextBox Name ="GUIOPropertyLoginButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyLoginButtonColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyFuncColorDockPanel" Visibility="Collapsed">
                             <Label Content="Function Font Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyFuncColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyFuncColorTextBox_KeyUp" />
+                            <Button x:Name ="GUIOPropertyFuncColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyFuncColor_Click" />
+                            <TextBox Name ="GUIOPropertyFuncColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyFuncColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyFuncButtonColorDockPanel" Visibility="Collapsed">
                             <Label Content="Function Button Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyFuncButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyFuncButtonColorTextBox_KeyUp" />
+                            <Button x:Name ="GUIOPropertyFuncButtonColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyFuncButtonColor_Click" />
+                            <TextBox Name ="GUIOPropertyFuncButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyFuncButtonColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyOkColorDockPanel" Visibility="Collapsed">
                             <Label Content="Ok Font Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyOkColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyOkColorTextBox_KeyUp"  />
+                            <Button x:Name ="GUIOPropertyOkColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyOkColor_Click" />
+                            <TextBox Name ="GUIOPropertyOkColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyOkColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyOkButtonColorDockPanel" Visibility="Collapsed">
                             <Label Content="Ok Button Color" Width="130" />
-                            <TextBox Name ="GUIOPropertyOkButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyOkButtonColorTextBox_KeyUp"  />
+                            <Button x:Name ="GUIOPropertyOkButtonColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="GUIOPropertyOkButtonColor_Click" />
+                            <TextBox Name ="GUIOPropertyOkButtonColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="100" DockPanel.Dock="Right" LostFocus="GUIOPropertyOkButtonColorTextBox_LostFocus"  />
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyDigitNumberDockPanel" Visibility="Collapsed">
                             <Label Content="Digit Number" Width="130" />
-                            <TextBox Name ="GUIOPropertyDigitNumberTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyDigitNumberTextBox_KeyUp" />
+                            <TextBox Name ="GUIOPropertyDigitNumberTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyDigitNumberTextBox_LostFocus" />
                         </DockPanel>
-                        <DockPanel Name="GUIOPropertyCountDockPanel" Visibility="Collapsed">
+                        <DockPanel Name="GUIOPropertyGroupIDDockPanel" Visibility="Collapsed">
                             <Label Content="Count" Width="130" />
-                            <TextBox Name ="GUIOPropertyCountTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyCountTextBox_KeyUp"/>
+                            <TextBox Name ="GUIOPropertyGroupIDTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyGroupIDTextBox_LostFocus"/>
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyAngleDockPanel" Visibility="Collapsed">
                             <Label Content="Angle" Width="130" />
-                            <TextBox Name ="GUIOPropertyAngleTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyAngleTextBox_KeyUp"/>
+                            <TextBox Name ="GUIOPropertyAngleTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyAngleTextBox_LostFocus"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyAlignmentDockPanel" Visibility="Collapsed">
+                            <Label Content="Alginment" Width="130" />
+                            <ComboBox Name ="GUIOPropertyAlignmentComboBox" Height="22"  Width="162" DockPanel.Dock="Right" SelectionChanged="GUIOPropertyAlignmentComboBox_SelectionChanged" >
+                                <ComboBoxItem>Left</ComboBoxItem>
+                                <ComboBoxItem>Center</ComboBoxItem>
+                                <ComboBoxItem>Right</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyScrollFlagDockPanel" Visibility="Collapsed">
+                            <Label Content="ScrollFlag" Width="130" />
+                            <ComboBox Name ="GUIOPropertyScrollFlagComboBox" Height="22"  Width="162" DockPanel.Dock="Right" SelectionChanged="GUIOPropertyScrollFlagComboBox_SelectionChanged" >
+                                <ComboBoxItem>Auto</ComboBoxItem>
+                                <ComboBoxItem>Always Scroll On</ComboBoxItem>
+                                <ComboBoxItem>Always Scroll Off</ComboBoxItem>
+                            </ComboBox>
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyFontBoldDockPanel" Visibility="Collapsed">
                             <Label Content="Font Bold" Width="130" />
@@ -328,12 +383,44 @@
                         </DockPanel>
                         <DockPanel Name="GUIOPropertySpeedDockPanel" Visibility="Collapsed">
                             <Label Content="Speed" Width="130" />
-                            <TextBox Name ="GUIOPropertySpeedTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertySpeedTextBox_KeyUp"/>
+                            <TextBox Name ="GUIOPropertySpeedTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertySpeedTextBox_LostFocus"/>
                         </DockPanel>
-                        
+
                         <DockPanel Name="GUIOPropertyImageNameDockPanel" Visibility="Collapsed">
                             <Label Content="Image Name" Width="130" />
-                            <TextBox Name ="GUIOPropertyImageNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="GUIOPropertyImageNameTextBox_KeyUp"/>
+                            <TextBox Name ="GUIOPropertyImageNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyImageNameTextBox_LostFocus"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyImageStartFrameDockPanel" Visibility="Collapsed">
+                            <Label Content="Start Frame(GIF Only)" Width="130" />
+                            <TextBox Name ="GUIOPropertyImageStartFrameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyImageStartFrameTextBox_LostFocus"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyImageEndFrameDockPanel" Visibility="Collapsed">
+                            <Label Content="End Frame(GIF Only)" Width="130" />
+                            <TextBox Name ="GUIOPropertyImageEndFrameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyImageEndFrameTextBox_LostFocus"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyImageStateDockPanel" Visibility="Collapsed">
+                            <Label Content="State(GIF Only)" Width="130" />
+                            <TextBox Name ="GUIOPropertyImageStateTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyImageStateTextBox_LostFocus" ToolTip="0:stop, 1:pause, 2:start"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyStartPointIDDockPanel" Visibility="Collapsed">
+                            <Label Content="Start Point ID" Width="130" />
+                            <TextBox Name ="GUIOPropertyStartPointIDTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyStartPointIDTextBox_LostFocus"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyEndPointIDDockPanel" Visibility="Collapsed">
+                            <Label Content="End Point ID" Width="130" />
+                            <TextBox Name ="GUIOPropertyEndPointIDTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyEndPointIDTextBox_LostFocus"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyDurationDockPanel" Visibility="Collapsed">
+                            <Label Content="Duration" Width="130" />
+                            <TextBox Name ="GUIOPropertyDurationTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyDurationTextBox_LostFocus" AutomationProperties.HelpText="ms 단위, 0 이상의 정수"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyVisibleDurationDockPanel" Visibility="Collapsed">
+                            <Label Content="Visible Duration" Width="130" />
+                            <TextBox Name ="GUIOPropertyVisibleDurationTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyVisibleDurationTextBox_LostFocus" AutomationProperties.HelpText="ms 단위, 0 이상의 정수"/>
+                        </DockPanel>
+                        <DockPanel Name="GUIOPropertyInvisibleDurationDockPanel" Visibility="Collapsed">
+                            <Label Content="Invisible Duration" Width="130" />
+                            <TextBox Name ="GUIOPropertyInvisibleDurationTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="GUIOPropertyInvisibleDurationTextBox_LostFocus" AutomationProperties.HelpText="ms 단위, 0 이상의 정수"/>
                         </DockPanel>
                         <DockPanel Name="GUIOPropertyGrayScaleDockPanel" Visibility="Collapsed">
                             <Label Content="Gray Scale" Width="130" />
@@ -342,11 +429,23 @@
                                 <ComboBoxItem>False</ComboBoxItem>
                             </ComboBox>
                         </DockPanel>
+                        <DockPanel Name="GUIOPropertyFlickeringDockPanel" Visibility="Collapsed">
+                            <Label Content="Flickering" Width="130" />
+                            <ComboBox Name ="GUIOPropertyFlickeringComboBox" Height="22"  Width="162" DockPanel.Dock="Right" SelectionChanged="GUIOPropertyFlickeringComboBox_SelectionChanged" >
+                                <ComboBoxItem>True</ComboBoxItem>
+                                <ComboBoxItem>False</ComboBoxItem>
+                            </ComboBox>
+                        </DockPanel>
                         <DockPanel Name="GUIOPropertyVertexesDockPanel">
                             <Label Content="" Width="130" />
                             <Button Name ="GUIOPropertyVertexButton" Height="22" Content="Edit Moving Point" Width="162" DockPanel.Dock="Right" Click="GUIOPropertyVertexButton_Click" />
-
                         </DockPanel>
+
+                        <DockPanel Name="GUIOPropertyFlickeringImagesDockPanel">
+                            <Label Content="" Width="130" />
+                            <Button Name ="GUIOPropertyFlickeringImageButton" Height="22" Content="Edit Flickerling Images" Width="162" DockPanel.Dock="Right" Click="GUIOPropertyFlickeringImageButton_Click" />
+                        </DockPanel>
+
                         <DockPanel Name="GUIOPropertyClickEventDockPanel" Visibility="Collapsed">
                             <Label Content="" Width="130" />
                             <Button Name ="GUIOPropertyClickEventButton" Height="22" Content="Click Events" Width="162" DockPanel.Dock="Right" Click="GUIOPropertyClickEventButton_Click" />
@@ -381,7 +480,7 @@
                                 <ComboBox Name ="ClickEventPropertyComboBox0" Height="22"  Width="120" DockPanel.Dock="Left" Margin="47, 0, 0, 0" SelectedIndex="0">
                                     <ComboBoxItem>Property</ComboBoxItem>
                                 </ComboBox>
-                                <TextBox Name ="ClickEventTextBox0" Height="22" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" Margin="15, 0, 0, 0" DockPanel.Dock="Right" KeyUp="ClickEventTextBox_KeyUp"/>
+                                <TextBox Name ="ClickEventTextBox0" Height="22" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" Margin="15, 0, 0, 0" DockPanel.Dock="Right" LostFocus="ClickEventTextBox_LostFocus"/>
                             </DockPanel>
                             <Separator  Height="7" Margin="10"/>
                         </StackPanel>
@@ -402,19 +501,21 @@
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Name" Width="130" />
-                            <TextBox Name ="FigurePropertyNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyNameTextBox_KeyUp" />
+                            <TextBox Name ="FigurePropertyNameTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="FigurePropertyNameTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Fill Color" Width="130" />
-                            <TextBox Name ="FigurePropertyFillColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyFillColorTextBox_KeyUp" />
+                            <Button x:Name ="FigurePropertyFillColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="FigurePropertyFillColor_Click" />
+                            <TextBox Name ="FigurePropertyFillColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="FigurePropertyFillColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Line Color" Width="130" />
-                            <TextBox Name ="FigurePropertyLineColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyLineColorTextBox_KeyUp" />
+                            <Button x:Name ="FigurePropertyLineColorButton" Height="22" Content="Color" Width="60" DockPanel.Dock="Right" Click="FigurePropertyLineColor_Click" />
+                            <TextBox Name ="FigurePropertyLineColorTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="FigurePropertyLineColorTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Line Thickness" Width="130" />
-                            <TextBox Name ="FigurePropertyLineThicknessTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyLineThicknessTextBox_KeyUp" />
+                            <TextBox Name ="FigurePropertyLineThicknessTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="FigurePropertyLineThicknessTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel Visibility="Collapsed">
                             <Label Content="Visibility" Width="130" />
@@ -440,7 +541,7 @@
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Layer" Width="130" />
-                            <TextBox Name="FigurePropertyLayerTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyLayerTextBox_KeyUp" />
+                            <TextBox Name="FigurePropertyLayerTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="FigurePropertyLayerTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Width="5" />
@@ -451,11 +552,11 @@
                         </DockPanel>
                         <DockPanel>
                             <Label Content="X" Width="130" />
-                            <TextBox Name ="FigurePropertyXTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyXTextBox_KeyUp" />
+                            <TextBox Name ="FigurePropertyXTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="FigurePropertyXTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Y" Width="130" />
-                            <TextBox Name ="FigurePropertyYTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyYTextBox_KeyUp" />
+                            <TextBox Name ="FigurePropertyYTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="FigurePropertyYTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Width="5" />
@@ -466,11 +567,11 @@
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Width" Width="130" />
-                            <TextBox Name ="FigurePropertyWidthTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyWidthTextBox_KeyUp" />
+                            <TextBox Name ="FigurePropertyWidthTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="FigurePropertyWidthTextBox_LostFocus" />
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Height" Width="130" />
-                            <TextBox Name ="FigurePropertyHeightTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" KeyUp="FigurePropertyHeightTextBox_KeyUp" />
+                            <TextBox Name ="FigurePropertyHeightTextBox" Height="22" TextWrapping="Wrap" Text="" Width="162" DockPanel.Dock="Right" LostFocus="FigurePropertyHeightTextBox_LostFocus" />
                         </DockPanel>
 
                         <Separator  Height="7" Margin="10"/>

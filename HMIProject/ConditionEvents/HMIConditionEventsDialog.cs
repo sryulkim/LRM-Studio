@@ -46,5 +46,13 @@ namespace HMIProject
         {
             this.Close();
         }
+
+        private void HMIConditionEventsDialog_SizeChanged(object sender, EventArgs e)
+        {
+            conditionEventsDataGridView.Size = new Size(this.Size.Width - 40, this.Size.Height - 104);
+            addButton.Location = new Point(this.conditionEventsDataGridView.Width - 281, this.conditionEventsDataGridView.Height + 30);
+            deleteButton.Location = new Point(this.conditionEventsDataGridView.Width - 171, this.conditionEventsDataGridView.Height + 30);
+            closeButton.Location = new Point(this.conditionEventsDataGridView.Width - 61, this.conditionEventsDataGridView.Height + 30);
+        }
     }
 }

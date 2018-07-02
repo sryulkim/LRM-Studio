@@ -1856,7 +1856,7 @@ namespace Microsoft.VisualStudio.Project
         public virtual void Load(string fileName, string location, string name, uint flags, ref Guid iidProject, out int canceled)
         {
             Trace.WriteLine("smahn170112 filename: " + fileName + "\tlocation: " + location + "\tname: " + name);
-            HMIProject.HMIProjectNode.currentProjectDirectory = Path.GetDirectoryName(fileName);
+            //HMIProject.HMIProjectNode.currentProjectDirectory = Path.GetDirectoryName(fileName);
             
             Trace.WriteLine("smahn170112 currentProjectDirectory: " + HMIProject.HMIProjectNode.currentProjectDirectory);
             try

@@ -1,5 +1,186 @@
 #include "hmiform.h"
 
+void HMIForm::radioButtonClicked()
+{
+    int a = 10;
+    GRadioButton* radioButton = (GRadioButton*)(QObject::sender());
+    int id = radioButton->getButtonID();
+
+    QListIterator<GUIO*> iterator(*guioList);
+    while(iterator.hasNext()){
+        GUIO* guio = iterator.next();
+        if(guio->getType() == "RadioButton")
+        {
+            GRadioButton* compRadioButton = (GRadioButton*)guio->getGuio();
+            if(id == compRadioButton->getButtonID()){
+                compRadioButton->setAutoExclusive(false);
+                compRadioButton->setChecked(false);
+            }
+        }
+    }
+    radioButton->setChecked(true);
+}
+
+bool HMIForm::getEditRadioButtonTransparent() const
+{
+    return EditRadioButtonTransparent;
+}
+
+void HMIForm::setEditRadioButtonTransparent(bool value)
+{
+    EditRadioButtonTransparent = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "RadioButton"){
+            GRadioButton* selectedButton = (GRadioButton*)(selectedGUIO->getGuio());
+            selectedButton->setTransparent(value);
+        }
+    }
+}
+
+bool HMIForm::getEditRadioButtonFontUnderline() const
+{
+    return EditRadioButtonFontUnderline;
+}
+
+void HMIForm::setEditRadioButtonFontUnderline(bool value)
+{
+    EditRadioButtonFontUnderline = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "RadioButton"){
+            GRadioButton* selectedButton = (GRadioButton*)(selectedGUIO->getGuio());
+            selectedButton->setUnderline(value);
+        }
+    }
+}
+
+bool HMIForm::getEditRadioButtonFontBold() const
+{
+    return EditRadioButtonFontBold;
+}
+
+void HMIForm::setEditRadioButtonFontBold(bool value)
+{
+    EditRadioButtonFontBold = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "RadioButton"){
+            GRadioButton* selectedButton = (GRadioButton*)(selectedGUIO->getGuio());
+            selectedButton->setBold(value);
+        }
+    }
+}
+
+int HMIForm::getEditRadioButtonFontSize() const
+{
+    return EditRadioButtonFontSize;
+}
+
+void HMIForm::setEditRadioButtonFontSize(int value)
+{
+    EditRadioButtonFontSize = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "RadioButton"){
+            GRadioButton* selectedButton = (GRadioButton*)(selectedGUIO->getGuio());
+            selectedButton->setFontSize(value);
+        }
+    }
+}
+
+int HMIForm::getEditRadioButtonFontColor() const
+{
+    return EditRadioButtonFontColor;
+}
+
+void HMIForm::setEditRadioButtonFontColor(int value)
+{
+    EditRadioButtonFontColor = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "RadioButton"){
+            GRadioButton* selectedButton = (GRadioButton*)(selectedGUIO->getGuio());
+            selectedButton->setFontColor(value);
+        }
+    }
+}
+
+int HMIForm::getEditRadioButtonBorderColor() const
+{
+    return EditRadioButtonBorderColor;
+}
+
+void HMIForm::setEditRadioButtonBorderColor(int value)
+{
+    EditRadioButtonBorderColor = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "RadioButton"){
+            GRadioButton* selectedButton = (GRadioButton*)(selectedGUIO->getGuio());
+            selectedButton->setBorderColor(value);
+        }
+    }
+}
+
+int HMIForm::getEditRadioButtonThickness() const
+{
+    return EditRadioButtonThickness;
+}
+
+void HMIForm::setEditRadioButtonThickness(int value)
+{
+    EditRadioButtonThickness = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "RadioButton"){
+            GRadioButton* selectedButton = (GRadioButton*)(selectedGUIO->getGuio());
+            selectedButton->setThickness(value);
+        }
+    }
+}
+
+int HMIForm::getEditRadioButtonColor() const
+{
+    return EditRadioButtonColor;
+}
+
+void HMIForm::setEditRadioButtonColor(int value)
+{
+    EditRadioButtonColor = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "RadioButton"){
+            GRadioButton* selectedButton = (GRadioButton*)(selectedGUIO->getGuio());
+            selectedButton->setButtonColor(value);
+        }
+    }
+}
+
+QString HMIForm::getEditRadioButtonText() const
+{
+    return EditRadioButtonText;
+}
+
+void HMIForm::setEditRadioButtonText(const QString &value)
+{
+    EditRadioButtonText = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "RadioButton"){
+            GRadioButton* selectedButton = (GRadioButton*)(selectedGUIO->getGuio());
+            selectedButton->setText(value);
+        }
+    }
+}
+
+int HMIForm::getEditRadioButtonID() const
+{
+    return EditRadioButtonID;
+}
+
+void HMIForm::setEditRadioButtonID(int value)
+{
+    EditRadioButtonID = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "RadioButton"){
+            GRadioButton* selectedButton = (GRadioButton*)(selectedGUIO->getGuio());
+            selectedButton->setButtonID(value);
+        }
+    }
+}
+
 GUIO *HMIForm::getSelectedGUIO() const
 {
     return selectedGUIO;
@@ -19,11 +200,14 @@ void HMIForm::setSelectedGUIOName(const QString &value)
     while(iterator.hasNext()){
         GUIO *guio = iterator.next();
         if(guio->getName() == value){
+            QWidget* currentGUIO = guio->getGuio();
+            selectRectangle->setGeometry(currentGUIO->x(), currentGUIO->y(), currentGUIO->width(), currentGUIO->height());
             this->setSelectedGUIO(guio);
             selectedGUIOName = value;
             return;
         }
     }
+    selectRectangle->setGeometry(0, 0, 0, 0);
     this->setSelectedGUIO(NULL);
     selectedGUIOName =  "NULL";
 }
@@ -101,6 +285,11 @@ void HMIForm::setMakeGUIOCommand(bool value)
         makeGUIO(new GIPCamera(0));
     else if(GUIOType == "WebView")
         makeGUIO(new GWebView(0));
+    else if(GUIOType == "RadioButton"){
+        GRadioButton* newRadioButton = new GRadioButton(0);
+        connect(newRadioButton, SIGNAL(clicked(bool)), this, SLOT(radioButtonClicked()));
+        makeGUIO(newRadioButton);
+    }
 }
 
 bool HMIForm::getRemoveGUIOCommand() const
@@ -162,6 +351,7 @@ void HMIForm::removeBackground()
             QWidget* widget = guio->getGuio();
             widget->setParent(0);
         }
+        selectRectangle->setParent(0);
         delete background;
         background = NULL;
     }
@@ -189,7 +379,7 @@ void HMIForm::makeBackground()
             QWidget* widget = guio->getGuio();
             widget->setParent(background);
         }
-
+        selectRectangle->setParent(background);
         layout->addWidget(background);
     }
 }
@@ -249,6 +439,7 @@ void HMIForm::setEditGUIOPropertyX(int value)
     if(selectedGUIO != NULL){
         QWidget* guio = (selectedGUIO->getGuio());
         guio->setGeometry(value, guio->y(), guio->width(), guio->height());
+        selectRectangle->setGeometry(value, guio->y(), guio->width(), guio->height());
     }
 }
 
@@ -262,6 +453,7 @@ void HMIForm::setEditGUIOPropertyY(int value)
     if(selectedGUIO != NULL){
         QWidget* guio = (selectedGUIO->getGuio());
         guio->setGeometry(guio->x(), value, guio->width(), guio->height());
+        selectRectangle->setGeometry(guio->x(), value, guio->width(), guio->height());
     }
 }
 
@@ -276,22 +468,26 @@ void HMIForm::setEditGUIOPropertyWidth(int value)
         if(selectedGUIO->getType() == "Image")
         {
             GImage* guio = (GImage*)(selectedGUIO->getGuio());
-            guio->setGeometry(guio->x(), guio->y(), value, guio->height());
+            guio->setGeometry(guio->x(), guio->y(), value, guio->getOriginRect()->height());
+            selectRectangle->setGeometry(guio->x(), guio->y(), value, guio->getOriginRect()->height());
         }
         else if(selectedGUIO->getType() == "Rail")
         {
             GRail* guio = (GRail*)(selectedGUIO->getGuio());
             guio->setGeometry(guio->x(), guio->y(), value, guio->height());
+            selectRectangle->setGeometry(guio->x(), guio->y(), value, guio->height());
         }
         else if(selectedGUIO->getType() == "Circle" || selectedGUIO->getType() == "Rectangle")
         {
             GDrawing* guio = (GDrawing*)(selectedGUIO->getGuio());
             guio->setGeometry(guio->x(), guio->y(), value, guio->height());
+            selectRectangle->setGeometry(guio->x(), guio->y(), value, guio->height());
         }
         else
         {
             QWidget* guio = (selectedGUIO->getGuio());
             guio->setGeometry(guio->x(), guio->y(), value, guio->height());
+            selectRectangle->setGeometry(guio->x(), guio->y(), value, guio->height());
         }
     }
 }
@@ -307,22 +503,26 @@ void HMIForm::setEditGUIOPropertyHeight(int value)
             if(selectedGUIO->getType() == "Image")
             {
                 GImage* guio = (GImage*)(selectedGUIO->getGuio());
-                guio->setGeometry(guio->x(), guio->y(), guio->width(), value);
+                guio->setGeometry(guio->x(), guio->y(), guio->getOriginRect()->width(), value);
+                selectRectangle->setGeometry(guio->x(), guio->y(), guio->getOriginRect()->width(), value);
             }
             else if(selectedGUIO->getType() == "Rail")
             {
                 GRail* guio = (GRail*)(selectedGUIO->getGuio());
                 guio->setGeometry(guio->x(), guio->y(), guio->width(), value);
+                selectRectangle->setGeometry(guio->x(), guio->y(), guio->width(), value);
             }
             else if(selectedGUIO->getType() == "Circle" || selectedGUIO->getType() == "Rectangle")
             {
                 GDrawing* guio = (GDrawing*)(selectedGUIO->getGuio());
                 guio->setGeometry(guio->x(), guio->y(), guio->width(), value);
+                selectRectangle->setGeometry(guio->x(), guio->y(), guio->width(), value);
             }
             else
             {
                 QWidget* guio = (selectedGUIO->getGuio());
                 guio->setGeometry(guio->x(), guio->y(), guio->width(), value);
+                selectRectangle->setGeometry(guio->x(), guio->y(), guio->width(), value);
             }
     }
 }
@@ -1108,6 +1308,22 @@ void HMIForm::setEditLabelFontUnderline(bool value)
     }
 }
 
+
+int HMIForm::getEditLabelAlignment() const
+{
+    return EditLabelAlignment;
+}
+void HMIForm::setEditLabelAlignment(int value)
+{
+    EditLabelAlignment = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "Label"){
+            GLabel* selectedLabel = (GLabel*)(selectedGUIO->getGuio());
+            selectedLabel->setHorizontalAlignment(value);
+        }
+    }
+}
+
 int HMIForm::getEditLabelThickness() const
 {
     return EditLabelThickness;
@@ -1164,6 +1380,21 @@ void HMIForm::setEditLabelTransparent(bool value)
         if(selectedGUIO->getType() == "Label"){
             GLabel* selectedLabel = (GLabel*)(selectedGUIO->getGuio());
             selectedLabel->setTransparent(value);
+        }
+    }
+}
+
+int HMIForm::getEditLabelVisible() const
+{
+    return EditLabelVisible;
+}
+void HMIForm::setEditLabelVisible(int value)
+{
+    EditLabelVisible = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "Label"){
+            GLabel* selectedLabel = (GLabel*)(selectedGUIO->getGuio());
+            selectedLabel->setVisible(value);
         }
     }
 }
@@ -1423,6 +1654,37 @@ void HMIForm::setEditScrollLabelText(const QString &value)
     }
 }
 
+int HMIForm::getEditScrollLabelVisible() const
+{
+    return EditScrollLabelVisible;
+}
+void HMIForm::setEditScrollLabelVisible(int value)
+{
+    EditScrollLabelVisible = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "ScrollLabel"){
+            GScrollLabel* selectedLabel = (GScrollLabel*)(selectedGUIO->getGuio());
+            selectedLabel->setVisible(value);
+        }
+    }
+}
+
+
+int HMIForm::getEditScrollLabelScrollFlag() const
+{
+    return EditScrollLabelScrollFlag;
+}
+void HMIForm::setEditScrollLabelScrollFlag(int value)
+{
+    EditScrollLabelScrollFlag = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "ScrollLabel"){
+            GScrollLabel* selectedLabel = (GScrollLabel*)(selectedGUIO->getGuio());
+            selectedLabel->setScrollFlag(value);
+        }
+    }
+}
+
 int HMIForm::getEditLedColor() const
 {
     return EditLedColor;
@@ -1569,6 +1831,36 @@ void HMIForm::setEditImageGrayScale(bool value)
         if(selectedGUIO->getType() == "Image"){
             GImage* selectedImage = (GImage*)(selectedGUIO->getGuio());
             selectedImage->setGrayscale(value);
+        }
+    }
+}
+
+int HMIForm::getEditImageVisible() const
+{
+    return EditImageVisible;
+}
+void HMIForm::setEditImageVisible(int value)
+{
+    EditImageVisible = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "Image"){
+            GImage* selectedImage = (GImage*)(selectedGUIO->getGuio());
+            selectedImage->setVisible(value);
+        }
+    }
+}
+
+int HMIForm::getEditImageAngle() const
+{
+    return EditImageAngle;
+}
+void HMIForm::setEditImageAngle(int value)
+{
+    EditImageAngle = value;
+    if(selectedGUIO != NULL){
+        if(selectedGUIO->getType() == "Image"){
+            GImage* selectedImage = (GImage*)(selectedGUIO->getGuio());
+            selectedImage->setAngle(value);
         }
     }
 }

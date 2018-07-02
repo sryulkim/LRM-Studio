@@ -48,5 +48,10 @@ namespace HMIProject
         {
             this.Close();
         }
+
+        private void HMIClickEventsDialog_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            
+        }
     }
 }

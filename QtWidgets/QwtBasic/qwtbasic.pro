@@ -19,7 +19,6 @@ RC_FILE  = qwtbasicax.rc
 DEF_FILE = qwtbasicax.def
 
 # install
-INSTALLS += target
 
 qwtAddLibrary($${QWT_ROOT}/lib, qwt)
 

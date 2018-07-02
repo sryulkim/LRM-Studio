@@ -30,12 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             this.clickEventDataGridView = new System.Windows.Forms.DataGridView();
+            this.clickEventBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.addButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
-            this.clickEventBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.typeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gUIOTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.propertyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,7 +49,6 @@
             this.clickEventDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.clickEventDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.typeDataGridViewTextBoxColumn,
-            this.numberDataGridViewTextBoxColumn,
             this.gNameDataGridViewTextBoxColumn,
             this.gUIOTypeDataGridViewTextBoxColumn,
             this.propertyDataGridViewTextBoxColumn,
@@ -59,12 +57,16 @@
             this.clickEventDataGridView.Location = new System.Drawing.Point(12, 23);
             this.clickEventDataGridView.Name = "clickEventDataGridView";
             this.clickEventDataGridView.RowTemplate.Height = 23;
-            this.clickEventDataGridView.Size = new System.Drawing.Size(643, 347);
+            this.clickEventDataGridView.Size = new System.Drawing.Size(545, 347);
             this.clickEventDataGridView.TabIndex = 0;
+            // 
+            // clickEventBindingSource
+            // 
+            this.clickEventBindingSource.DataSource = typeof(HMIProject.clickEvent);
             // 
             // addButton
             // 
-            this.addButton.Location = new System.Drawing.Point(382, 377);
+            this.addButton.Location = new System.Drawing.Point(276, 376);
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(75, 23);
             this.addButton.TabIndex = 1;
@@ -74,7 +76,7 @@
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(482, 376);
+            this.deleteButton.Location = new System.Drawing.Point(376, 375);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 2;
@@ -84,7 +86,7 @@
             // 
             // closeButton
             // 
-            this.closeButton.Location = new System.Drawing.Point(580, 377);
+            this.closeButton.Location = new System.Drawing.Point(474, 376);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(75, 23);
             this.closeButton.TabIndex = 3;
@@ -92,21 +94,11 @@
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
-            // clickEventBindingSource
-            // 
-            this.clickEventBindingSource.DataSource = typeof(HMIProject.clickEvent);
-            // 
             // typeDataGridViewTextBoxColumn
             // 
             this.typeDataGridViewTextBoxColumn.DataPropertyName = "type";
             this.typeDataGridViewTextBoxColumn.HeaderText = "이벤트 타입";
             this.typeDataGridViewTextBoxColumn.Name = "typeDataGridViewTextBoxColumn";
-            // 
-            // numberDataGridViewTextBoxColumn
-            // 
-            this.numberDataGridViewTextBoxColumn.DataPropertyName = "number";
-            this.numberDataGridViewTextBoxColumn.HeaderText = "number";
-            this.numberDataGridViewTextBoxColumn.Name = "numberDataGridViewTextBoxColumn";
             // 
             // gNameDataGridViewTextBoxColumn
             // 
@@ -136,13 +128,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(667, 417);
+            this.ClientSize = new System.Drawing.Size(575, 417);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.addButton);
             this.Controls.Add(this.clickEventDataGridView);
             this.Name = "HMIClickEventsDialog";
             this.Text = "Click Events";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.HMIClickEventsDialog_FormClosed);
             this.Load += new System.EventHandler(this.HMIClickEventsDialog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.clickEventDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clickEventBindingSource)).EndInit();
@@ -156,12 +149,11 @@
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button closeButton;
+        private System.Windows.Forms.BindingSource clickEventBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn typeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn gNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn gUIOTypeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn propertyDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource clickEventBindingSource;
     }
 }

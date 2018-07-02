@@ -14,6 +14,7 @@ public:
         reader = new QImageReader();
         imgFolder = "";
         objectScale = 1;
+        angle = 0;
     }
     QImage convertToGrayScale(const QImage &srcImage){
         // Convert to 32bit pixel format
@@ -37,7 +38,6 @@ public:
     void setGeometry(int x, int y, int w, int h)
     {
         setOriginRect(QRect(x, y, w, h));
-        QLabel::setGeometry(x, y, w, h);
         draw();
     }
 
@@ -60,10 +60,27 @@ public:
         else
             objectScale = 1;
     }
+    QRect* getOriginRect()
+    {
+        return &originRect;
+    }
     void setOriginRect(QRect r)
     {
         originRect = r;
-        QLabel::setGeometry(r);
+    }
+    void setAngle(int angle)
+    {
+        this->angle = angle;
+        draw();
+    }
+    void setVisible(bool visible)
+    {
+        this->visible = visible;
+        if(visible){
+            QLabel::setVisible(true);
+        }
+        else
+            QLabel::setVisible(false);
     }
     void draw()
     {
@@ -77,22 +94,25 @@ public:
         setGeometry(x_s,y_s,w_s,h_s);
         */
         if(!imgName.isEmpty()){
+
             reader->setFileName(imgFolder+imgName);
             reader->read(img);
             grayimg = convertToGrayScale(*img);
-            grayimg = grayimg.scaled(this->width(),this->height());
-            *img = img->scaled(this->width(),this->height());
-
+            grayimg = grayimg.scaled(originRect.width(),originRect.height()).transformed(QMatrix().rotate(angle));
+            
             if(bGrayscale)
                 this->setPixmap(QPixmap::fromImage(grayimg));
             else
-                this->setPixmap(QPixmap::fromImage(*img));
+                this->setPixmap(QPixmap::fromImage(img->scaled(originRect.width(),originRect.height()).transformed(QMatrix().rotate(angle))));
+		    QLabel::setGeometry(this->x(), this->y(), this->pixmap()->size().width(), this->pixmap()->size().height());
         }
     }
 
 protected:
     bool bGrayscale;
+    bool visible;
     double objectScale;
+    int angle;
     QImage grayimg;
     QImage *img;
     QImageReader *reader ;

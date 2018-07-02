@@ -236,6 +236,17 @@ namespace HMIProject
                     comboBoxProperty.Items.Add("fontBold");
                     comboBoxProperty.Items.Add("fontUnderline");
                     break;
+                case "RadioButton":
+                    comboBoxProperty.Items.Add("text");
+                    comboBoxProperty.Items.Add("buttonColor");
+                    comboBoxProperty.Items.Add("thickness");
+                    comboBoxProperty.Items.Add("borderColor");
+                    comboBoxProperty.Items.Add("fontSize");
+                    comboBoxProperty.Items.Add("fontColor");
+                    comboBoxProperty.Items.Add("fontBold");
+                    comboBoxProperty.Items.Add("fontUnderline");
+                    comboBoxProperty.Items.Add("groupID");
+                    break;
                 case "Dial":
                     comboBoxProperty.Items.Add("max");
                     comboBoxProperty.Items.Add("min");
@@ -310,11 +321,20 @@ namespace HMIProject
                 case "Rail":
                     comboBoxProperty.Items.Add("grayScale");
                     comboBoxProperty.Items.Add("imageName");
+                    comboBoxProperty.Items.Add("startPointID");
+                    comboBoxProperty.Items.Add("endPointID");
+                    comboBoxProperty.Items.Add("duration");
+                    comboBoxProperty.Items.Add("start");
                     break;
                 case "Image":
                     comboBoxProperty.Items.Add("grayScale");
                     comboBoxProperty.Items.Add("imageName");
                     comboBoxProperty.Items.Add("scale");
+                    comboBoxProperty.Items.Add("flickering");
+                    comboBoxProperty.Items.Add("visible");
+                    comboBoxProperty.Items.Add("startFrame");
+                    comboBoxProperty.Items.Add("endFrame");
+                    comboBoxProperty.Items.Add("state");
                     break;
 
                 default:

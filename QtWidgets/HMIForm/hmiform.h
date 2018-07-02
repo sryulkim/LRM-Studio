@@ -24,6 +24,7 @@
 #include "gdrawing.h"
 #include "gipcamera.h"
 #include "gwebview.h"
+#include "gradiobutton.h"
 
 class HMIForm : public QWidget
 {
@@ -113,10 +114,12 @@ class HMIForm : public QWidget
     Q_PROPERTY(int EditLabelFontSize READ getEditLabelFontSize WRITE setEditLabelFontSize)
     Q_PROPERTY(bool EditLabelFontBold READ getEditLabelFontBold WRITE setEditLabelFontBold)
     Q_PROPERTY(bool EditLabelFontUnderline READ getEditLabelFontUnderline WRITE setEditLabelFontUnderline)
+    Q_PROPERTY(int EditLabelAlignment READ getEditLabelAlignment WRITE setEditLabelAlignment)
     Q_PROPERTY(int EditLabelThickness READ getEditLabelThickness WRITE setEditLabelThickness)
     Q_PROPERTY(int EditLabelAngle READ getEditLabelAngle WRITE setEditLabelAngle)
     Q_PROPERTY(QString EditLabelText READ getEditLabelText WRITE setEditLabelText)
     Q_PROPERTY(bool EditLabelTransparent READ getEditLabelTransparent WRITE setEditLabelTransparent)
+    Q_PROPERTY(int EditLabelVisible READ getEditLabelVisible WRITE setEditLabelVisible)
 
     Q_PROPERTY(int EditScrollLabelColor READ getEditScrollLabelColor WRITE setEditScrollLabelColor)
     Q_PROPERTY(int EditScrollLabelBorderColor READ getEditScrollLabelBorderColor WRITE setEditScrollLabelBorderColor)
@@ -129,6 +132,8 @@ class HMIForm : public QWidget
     Q_PROPERTY(bool EditScrollLabelTransparent READ getEditScrollLabelTransparent WRITE setEditScrollLabelTransparent)
     Q_PROPERTY(int EditScrollLabelDirection READ getEditScrollLabelDirection WRITE setEditScrollLabelDirection)
     Q_PROPERTY(int EditScrollLabelSpeed READ getEditScrollLabelSpeed WRITE setEditScrollLabelSpeed)
+    Q_PROPERTY(int EditScrollLabelVisible READ getEditScrollLabelVisible WRITE setEditScrollLabelVisible)
+    Q_PROPERTY(int EditScrollLabelScrollFlag READ getEditScrollLabelScrollFlag WRITE setEditScrollLabelScrollFlag)
 
     Q_PROPERTY(int EditDigitalClockColor READ getEditDigitalClockColor WRITE setEditDigitalClockColor)
     Q_PROPERTY(int EditDigitalClockBorderColor READ getEditDigitalClockBorderColor WRITE setEditDigitalClockBorderColor)
@@ -149,6 +154,8 @@ class HMIForm : public QWidget
 
     Q_PROPERTY(QString EditImageName READ getEditImageName WRITE setEditImageName)
     Q_PROPERTY(bool EditImageGrayScale READ getEditImageGrayScale WRITE setEditImageGrayScale)
+    Q_PROPERTY(int EditImageAngle READ getEditImageAngle WRITE setEditImageAngle)
+    Q_PROPERTY(int EditImageVisible READ getEditImageVisible WRITE setEditImageVisible)
 
     Q_PROPERTY(QString EditRailImageName READ getEditRailImageName WRITE setEditRailImageName)
     Q_PROPERTY(bool EditRailGrayScale READ getEditRailGrayScale WRITE setEditRailGrayScale)
@@ -160,6 +167,17 @@ class HMIForm : public QWidget
     Q_PROPERTY(int EditRectangleFillColor READ getEditRectangleFillColor WRITE setEditRectangleFillColor)
     Q_PROPERTY(int EditRectangleLineColor READ getEditRectangleLineColor WRITE setEditRectangleLineColor)
     Q_PROPERTY(int EditRectangleLineThickness READ getEditRectangleLineThickness WRITE setEditRectangleLineThickness)
+    
+    Q_PROPERTY(int EditRadioButtonID READ getEditRadioButtonID WRITE setEditRadioButtonID)
+    Q_PROPERTY(QString EditRadioButtonText READ getEditRadioButtonText WRITE setEditRadioButtonText)
+    Q_PROPERTY(int EditRadioButtonColor READ getEditRadioButtonColor WRITE setEditRadioButtonColor)
+    Q_PROPERTY(int EditRadioButtonThickness READ getEditRadioButtonThickness WRITE setEditRadioButtonThickness)
+    Q_PROPERTY(int EditRadioButtonBorderColor READ getEditRadioButtonBorderColor WRITE setEditRadioButtonBorderColor)
+    Q_PROPERTY(int EditRadioButtonFontColor READ getEditRadioButtonFontColor WRITE setEditRadioButtonFontColor)
+    Q_PROPERTY(int EditRadioButtonFontSize READ getEditRadioButtonFontSize WRITE setEditRadioButtonFontSize)
+    Q_PROPERTY(bool EditRadioButtonFontBold READ getEditRadioButtonFontBold WRITE setEditRadioButtonFontBold)
+    Q_PROPERTY(bool EditRadioButtonFontUnderline READ getEditRadioButtonFontUnderline WRITE setEditRadioButtonFontUnderline)
+    Q_PROPERTY(bool EditRadioButtonTransparent READ getEditRadioButtonTransparent WRITE setEditRadioButtonTransparent)
 public:
     HMIForm(QWidget *parent = 0):QWidget(parent)
     {
@@ -169,7 +187,11 @@ public:
         EditPageBackgroundColor = 0xFFFFFF;
         EditPageBackgroundImageName = "";
         background = NULL;
+        selectRectangle = new GDrawing(0, GDrawing::Rect);
+        selectRectangle->setfillTransparent();
+        selectRectangle->setlineColor(0xff0000);
         guioList = new QList<GUIO*>();
+
     }
 
     // Instance for selected GUIO
@@ -325,6 +347,8 @@ public:
     void setEditLabelFontBold(bool value);
     bool getEditLabelFontUnderline() const;
     void setEditLabelFontUnderline(bool value);
+    int getEditLabelAlignment() const;
+    void setEditLabelAlignment(int value);
     int getEditLabelThickness() const;
     void setEditLabelThickness(int value);
     int getEditLabelAngle() const;
@@ -333,6 +357,8 @@ public:
     void setEditLabelText(const QString &value);
     bool getEditLabelTransparent() const;
     void setEditLabelTransparent(bool value);
+    int getEditLabelVisible() const;
+    void setEditLabelVisible(int value);
 
     int getEditDigitalClockColor() const;
     void setEditDigitalClockColor(int value);
@@ -369,6 +395,10 @@ public:
     void setEditScrollLabelSpeed(int value);
     QString getEditScrollLabelText() const;
     void setEditScrollLabelText(const QString &value);
+    int getEditScrollLabelVisible() const;
+    void setEditScrollLabelVisible(int value);
+    int getEditScrollLabelScrollFlag() const;
+    void setEditScrollLabelScrollFlag(int value);
 
     int getEditLedColor() const;
     void setEditLedColor(int value);
@@ -392,6 +422,10 @@ public:
     void setEditImageName(const QString &value);
     bool getEditImageGrayScale() const;
     void setEditImageGrayScale(bool value);
+    int getEditImageAngle() const;
+    void setEditImageAngle(int value);
+    int getEditImageVisible() const;
+    void setEditImageVisible(int value);
 
     QString getEditRailImageName() const;
     void setEditRailImageName(const QString &value);
@@ -412,11 +446,44 @@ public:
     int getEditRectangleLineThickness() const;
     void setEditRectangleLineThickness(int value);
 
+    int getEditRadioButtonID() const;
+    void setEditRadioButtonID(int value);
+
+    QString getEditRadioButtonText() const;
+    void setEditRadioButtonText(const QString &value);
+
+    int getEditRadioButtonColor() const;
+    void setEditRadioButtonColor(int value);
+    
+    int getEditRadioButtonThickness() const;
+    void setEditRadioButtonThickness(int value);
+    
+    int getEditRadioButtonBorderColor() const;
+    void setEditRadioButtonBorderColor(int value);
+    
+    int getEditRadioButtonFontColor() const;
+    void setEditRadioButtonFontColor(int value);
+    
+    int getEditRadioButtonFontSize() const;
+    void setEditRadioButtonFontSize(int value);
+    
+    bool getEditRadioButtonFontBold() const;
+    void setEditRadioButtonFontBold(bool value);
+    
+    bool getEditRadioButtonFontUnderline() const;
+    void setEditRadioButtonFontUnderline(bool value);
+    
+    bool getEditRadioButtonTransparent() const;
+    void setEditRadioButtonTransparent(bool value);
+
+public Q_SLOTS:
+    void radioButtonClicked();
+
 private:
     QVBoxLayout* layout;
     QWidget* background;
     QList<GUIO*>* guioList;
-
+    GDrawing* selectRectangle;
     GUIO* selectedGUIO;
     QString selectedGUIOName;
 
@@ -497,8 +564,10 @@ private:
     int EditLabelFontSize;
     bool EditLabelFontBold;
     bool EditLabelFontUnderline;
+    int EditLabelAlignment;
     int EditLabelThickness;
     int EditLabelAngle;
+    int EditLabelVisible;
     QString EditLabelText;
     bool EditLabelTransparent;
 
@@ -520,6 +589,8 @@ private:
     int EditScrollLabelDirection;
     int EditScrollLabelSpeed;
     QString EditScrollLabelText;
+    int EditScrollLabelVisible;
+    int EditScrollLabelScrollFlag;
 
     int EditLedColor;
 
@@ -533,6 +604,8 @@ private:
 
     QString EditImageName;
     bool EditImageGrayScale;
+    int EditImageAngle;
+    int EditImageVisible;
 
     QString EditRailImageName;
     bool EditRailGrayScale;
@@ -544,6 +617,17 @@ private:
     int EditRectangleFillColor;
     int EditRectangleLineColor;
     int EditRectangleLineThickness;
+
+    int EditRadioButtonID;
+    QString EditRadioButtonText;
+    int EditRadioButtonColor;
+    int EditRadioButtonThickness;
+    int EditRadioButtonBorderColor;
+    int EditRadioButtonFontColor;
+    int EditRadioButtonFontSize;
+    bool EditRadioButtonFontBold;
+    bool EditRadioButtonFontUnderline;
+    bool EditRadioButtonTransparent;
 
     void removeBackground();
     void makeBackground();

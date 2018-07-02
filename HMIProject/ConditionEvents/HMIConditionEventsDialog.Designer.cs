@@ -30,13 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.conditionEventsDataGridView = new System.Windows.Forms.DataGridView();
-            this.conditionEventBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.statementDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.typeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gUIOTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.propertyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.conditionEventBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.addButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
@@ -61,10 +61,6 @@
             this.conditionEventsDataGridView.RowTemplate.Height = 23;
             this.conditionEventsDataGridView.Size = new System.Drawing.Size(643, 352);
             this.conditionEventsDataGridView.TabIndex = 0;
-            // 
-            // conditionEventBindingSource
-            // 
-            this.conditionEventBindingSource.DataSource = typeof(HMIProject.ConditionEvent);
             // 
             // statementDataGridViewTextBoxColumn
             // 
@@ -101,6 +97,10 @@
             this.valueDataGridViewTextBoxColumn.DataPropertyName = "value";
             this.valueDataGridViewTextBoxColumn.HeaderText = "값";
             this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
+            // 
+            // conditionEventBindingSource
+            // 
+            this.conditionEventBindingSource.DataSource = typeof(HMIProject.ConditionEvent);
             // 
             // addButton
             // 
@@ -144,6 +144,7 @@
             this.Name = "HMIConditionEventsDialog";
             this.Text = "Condition Events";
             this.Load += new System.EventHandler(this.HMIConditionEventsDialog_Load);
+            this.SizeChanged += new System.EventHandler(this.HMIConditionEventsDialog_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.conditionEventsDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.conditionEventBindingSource)).EndInit();
             this.ResumeLayout(false);

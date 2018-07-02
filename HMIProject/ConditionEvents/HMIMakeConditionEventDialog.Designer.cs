@@ -265,6 +265,7 @@
             this.groupBoxChangeProperty.Size = new System.Drawing.Size(563, 87);
             this.groupBoxChangeProperty.TabIndex = 8;
             this.groupBoxChangeProperty.TabStop = false;
+            this.groupBoxChangeProperty.Text = "r";
             // 
             // label9
             // 

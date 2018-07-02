@@ -80,6 +80,16 @@ namespace Microsoft.VisualStudio.Project
         internal const string Debug = "Debug";
         internal const string Release = "Release";
         internal const string AnyCPU = "AnyCPU";
+        String[] CMD02CMD81Vars = { "SpecialMsgDisplayValid", "DoorIsolationValid","SpecialMsgDisplay", "DoorIsolation", "ReverseValid",
+        "Reverse", "LayoutTypeValid", "LayoutType", "DisplayPageNumberValid", "DisplayPageNumber", "TrainRunningStatusValid", "TrainRunningStatus",
+        "LanguageValid", "Turkish", "Month", "Day", "Hour", "Minute", "Second", "MulticastIPAddress", "MulticastIPValid"};
+        String[] CMD01Vars = { "CMD01Year", "CMD01Month", "CMD01Day", "CMD01Hour", "CMD01Minute", "CMD01Second" };
+        String[] CMD80Vars = { "DepartureCode", "DepartureStationNumber", "Departure", "DestinationCode", "DestinationStationNumber", "Destination",
+        "BeforeStationCode", "BeforeStationNumber", "BeforeStation", "ThisStationCode", "ThisStationNumber", "ThisStation", "NextStationCode", "NextStationNumber", "NextStation",
+        "AfterNextStationCode", "AfterNextStationNumber", "AfterNextStation", "AfterAfterNextStationCode", "AfterAfterNextStationNumber", "AfterAfterNextStation",
+        "PAAnnounceMessageCode", "PAAnnounceMessage", "DoorOpenningDirectionCode", "DoorOpenningDirection"};
+
+
         #endregion
 
         #region fields
@@ -476,33 +486,32 @@ namespace Microsoft.VisualStudio.Project
         private int CompareLayer(HMIProject.GUIO a, HMIProject.GUIO b)
         {
             if (Int32.Parse(a.layer) > Int32.Parse(b.layer))
-                return -1;
+                return 1;
             else if (Int32.Parse(a.layer) >= Int32.Parse(b.layer))
                 return 0;
             else
-                return 1;
+                return -1;
         }
 
-        public void BuildHMIProject(string OutputPath)
+        private int ComparePage(HMIProject.Page a, HMIProject.Page b)
+        {
+            if (Int32.Parse(a.number) > Int32.Parse(b.number))
+                return 1;
+            else if (Int32.Parse(a.number) == Int32.Parse(b.number))
+                return 0;
+            else
+                return -1;
+        }
+        public void BuildHMIProject(string OutputPath, IVsOutputWindowPane OutputPane)
         {
             // Build 시작점
+            bool checkFlag = true;
+            OutputPane.OutputString("HMI Project Build 시작\n");
             XmlSerializer serializer = new XmlSerializer(typeof(HMIProject.Project));
             TextWriter writer = new StreamWriter(OutputPath + @"\output.xml");
 
             HMIProject.Project project = new HMIProject.Project("trainSpeed");
 
-            List<HMIProject.HMIEditorPane> paneList = HMIProject.StaticMethods.hmIEditorPaneList;
-            List<HMIProject.Page> pageList = new List<HMIProject.Page>();
-            foreach (HMIProject.HMIEditorPane pane in paneList)
-            {
-                pane.thisPage.guioGroup.Clear();
-                pageList.Add(pane.thisPage);
-                pane.GUIOList.Sort(CompareLayer);
-                foreach (HMIProject.GUIO pageguio in pane.GUIOList)
-                {
-                    pane.thisPage.guioGroup.Add(pageguio);
-                }
-            }
 
             project.gVariableGroup = new List<HMIProject.GVariable>();
             foreach (HMIProject.GVariable gvar in HMIProject.GViewDlg.SList)
@@ -518,10 +527,155 @@ namespace Microsoft.VisualStudio.Project
                 project.gVariableGroup.Add(gvar);
             }
 
-            project.conditionEvents = HMIProject.StaticMethods.condtionEventList;
+
+            List<HMIProject.HMIEditorPane> paneList = HMIProject.StaticMethods.hmIEditorPaneList;
+            List<HMIProject.Page> pageList = new List<HMIProject.Page>();
+            OutputPane.OutputString("G-Variable of GUIO error check\n");
+            foreach (HMIProject.HMIEditorPane pane in paneList)
+            {
+                pane.thisPage.guioGroup.Clear();
+                pageList.Add(pane.thisPage);
+                pane.GUIOList.Sort(CompareLayer);
+                foreach (HMIProject.GUIO pageguio in pane.GUIOList)
+                {
+                    bool correctGVar = false;
+                    if (pageguio.gVariable != null && pageguio.gVariable.Length != 0)
+                        foreach (HMIProject.GVariable gvar in project.gVariableGroup)
+                        {
+                                if (gvar.dataType == "CMD82")
+                                {
+                                    for (int n = 1; n <= 20; n++)
+                                    {
+                                        if (pageguio.gVariable == "Station" + n + "Code"
+                                            || pageguio.gVariable == "Station" + n + "Number"
+                                            || pageguio.gVariable == "Station" + n)
+                                        {
+                                            correctGVar = true;
+                                            break;
+                                        }
+                                    }
+                                    if (correctGVar)
+                                        break;
+                                }
+                                if (gvar.dataType == "CMD80")
+                                {
+                                    foreach (String evar in CMD80Vars)
+                                    {
+                                        if (pageguio.gVariable == evar)
+                                        {
+                                            correctGVar = true;
+                                            break;
+                                        }
+                                    }
+                                    if (correctGVar)
+                                        break;
+                                }
+                                if (gvar.dataType == "CMD01")
+                                {
+                                    foreach (String evar in CMD01Vars)
+                                    {
+                                        if (pageguio.gVariable == evar)
+                                        {
+                                            correctGVar = true;
+                                            break;
+                                        }
+                                    }
+                                    if (correctGVar)
+                                        break;
+                                }
+                                if (gvar.dataType == "CMD02CMD81")
+                                {
+                                    foreach (String evar in CMD02CMD81Vars)
+                                    {
+                                        if (pageguio.gVariable == evar)
+                                        {
+                                            correctGVar = true;
+                                            break;
+                                        }
+                                    }
+                                    if (correctGVar)
+                                        break;
+                                }
+                                if (pageguio.gVariable == gvar.name)
+                                {
+                                    correctGVar = true;
+                                    break;
+                                }
+                        }
+                    else
+                        correctGVar = true;
+                    if (!correctGVar)
+                    {
+                        checkFlag = false;
+                        OutputPane.OutputString("Error: GUIO '" + pageguio.name + 
+                            "'의 G-Variable " + pageguio.gVariable + "이 잘못되었습니다. 없는 GUIO이거나 이름이 잘못되었습니다.\n");
+                    }
+
+                    pane.thisPage.guioGroup.Add(pageguio);
+                }
+            }
+            pageList.Sort(ComparePage);
+
+
+            List<HMIProject.ConditionEvent> ceList = new List<HMIProject.ConditionEvent>();
+            /*
+            OutputPane.OutputString("Condition Event error check\n");
+            foreach (HMIProject.ConditionEvent ce in HMIProject.StaticMethods.condtionEventList)
+            {
+                HMIProject.ConditionEvent tempCE = ce;
+                try
+                {
+                   tempCE = ce.conditionEventTransmissionFormat();
+                }
+                catch(Exception e)
+                {
+                    OutputPane.OutputString("Error: Condition event '" + ce.statement + "'의 관계식이 잘못되었습니다.\n");
+                    continue;
+                }
+                string conditionEventStatement = tempCE.statement;
+                string[] splitStatement = conditionEventStatement.Split('#');
+                int operand = 0, operation = 0;
+                for(int i = 0; i < splitStatement.Length; i++)
+                {
+                    char[] charStatement = splitStatement[i].ToCharArray();
+                    if (charStatement.Length > 0 && ce.isAlphabet(charStatement[0]))
+                    {
+                        operand++;
+                        bool correctGVar = false;
+                        foreach (HMIProject.GVariable gvar in project.gVariableGroup)
+                        {
+                            if (splitStatement[i] == gvar.name)
+                            {
+                                correctGVar = true;
+                                break;
+                            }
+                        }
+                        if (!correctGVar)
+                        {
+                            OutputPane.OutputString("Error: Condition event '" + ce.statement + "'의 G-Variable이 잘못되었습니다. 없는 GUIO이거나 이름이 잘못되었습니다.\n");
+                            break;
+                        }
+                    }
+                    else if(charStatement.Length > 0 && ce.isOperation(charStatement[0]))
+                    {
+                        if (charStatement[0] != '!')
+                            operation++;
+                    }
+                }
+                if(operand <= operation)
+                    OutputPane.OutputString("Error: Condition event '" + ce.statement + "'의 관계식이 잘못되었습니다.\n");
+                ceList.Add(tempCE);
+            }*/
+
+            project.conditionEvents = ceList;
+
 
             project.pageGroup = pageList;
 
+            if (!checkFlag)
+                OutputPane.OutputString("오류 사항을 수정해주세요\n");
+            else
+                OutputPane.OutputString("검증이 완료되었습니다. 다운로드를 진행해주세요.\n");
             // Serializes the purchase order, and closes the TextWriter.
             serializer.Serialize(writer, project);
             writer.Close();
@@ -568,7 +722,19 @@ namespace Microsoft.VisualStudio.Project
                 }
                 // Debug Output Directory
                 Trace.WriteLine("info.bstrCurDir:" + info.bstrCurDir);
-                BuildHMIProject(info.bstrCurDir);
+
+
+
+                IVsOutputWindow opWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
+                Guid customGuid = new Guid("9780461D-3C26-45F3-BC4D-7CBBFFCC8B37");
+                string customTitle = "HMI Project Build";
+                opWindow.CreatePane(ref customGuid, customTitle, 1, 1);
+                IVsOutputWindowPane opPane;
+                opWindow.GetPane(ref customGuid, out opPane);
+                opPane.Clear();
+                opPane.Activate();
+
+                BuildHMIProject(info.bstrCurDir, opPane);
                 
 
 
@@ -611,8 +777,6 @@ namespace Microsoft.VisualStudio.Project
 
                 return Marshal.GetHRForException(e);
             }
-
-
 
             return VSConstants.S_OK;
         }

@@ -90,11 +90,23 @@
     <Compile Include="GImage\GRail_old.Designer.cs">
       <DependentUpon>GRail_old.cs</DependentUpon>
     </Compile>
+    <Compile Include="GImage\HMIEditFlickeringImagesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GImage\HMIEditFlickeringImagesDialog.Designer.cs">
+      <DependentUpon>HMIEditFlickeringImagesDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="GImage\HMIEditVertexesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GImage\HMIEditVertexesDialog.Designer.cs">
       <DependentUpon>HMIEditVertexesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GImage\HMIMakeFlickeringImageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GImage\HMIMakeFlickeringImageDialog.Designer.cs">
+      <DependentUpon>HMIMakeFlickeringImageDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="GImage\HMIMakeVertexDialog.cs">
       <SubType>Form</SubType>
@@ -105,11 +117,11 @@
     <Compile Include="GUIO\GLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GVriable\GMaker.cs">
+    <Compile Include="GVriable\AlarmSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GVriable\GMaker.designer.cs">
-      <DependentUpon>GMaker.cs</DependentUpon>
+    <Compile Include="GVriable\AlarmSetting.designer.cs">
+      <DependentUpon>AlarmSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="GVriable\GViewCommand.cs" />
     <Compile Include="GVriable\GViewCommandPackage.cs" />
@@ -119,11 +131,11 @@
     <Compile Include="GVriable\GViewDlg.designer.cs">
       <DependentUpon>GViewDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="GVriable\TypeSetting.cs">
+    <Compile Include="GVriable\GroupSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GVriable\TypeSetting.designer.cs">
-      <DependentUpon>TypeSetting.cs</DependentUpon>
+    <Compile Include="GVriable\GroupSetting.designer.cs">
+      <DependentUpon>GroupSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="HMIConstants.cs" />
     <Compile Include="HMIDownloadCommand\HMIDownloadCommand.cs" />
@@ -192,6 +204,7 @@
     <Compile Include="StaticMethods.cs" />
     <Compile Include="XMLMaker\ConditionEvent.cs" />
     <Compile Include="XMLMaker\GUIO.cs" />
+    <Compile Include="XMLMaker\GVariable.cs" />
     <Compile Include="XMLMaker\Page.cs" />
     <Compile Include="XMLMaker\Project.cs" />
     <EmbeddedResource Include="ClickEvents\HMIClickEventsDialog.resx">
@@ -206,20 +219,26 @@
     <EmbeddedResource Include="ConditionEvents\HMIMakeConditionEventDialog.resx">
       <DependentUpon>HMIMakeConditionEventDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GImage\HMIEditFlickeringImagesDialog.resx">
+      <DependentUpon>HMIEditFlickeringImagesDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GImage\HMIEditVertexesDialog.resx">
       <DependentUpon>HMIEditVertexesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GImage\HMIMakeFlickeringImageDialog.resx">
+      <DependentUpon>HMIMakeFlickeringImageDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GImage\HMIMakeVertexDialog.resx">
       <DependentUpon>HMIMakeVertexDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GVriable\GMaker.resx">
-      <DependentUpon>GMaker.cs</DependentUpon>
+    <EmbeddedResource Include="GVriable\AlarmSetting.resx">
+      <DependentUpon>AlarmSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GVriable\GViewDlg.resx">
       <DependentUpon>GViewDlg.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GVriable\TypeSetting.resx">
-      <DependentUpon>TypeSetting.cs</DependentUpon>
+    <EmbeddedResource Include="GVriable\GroupSetting.resx">
+      <DependentUpon>GroupSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HMIDownloadCommand\HMIDownloadForm.resx">
       <DependentUpon>HMIDownloadForm.cs</DependentUpon>
@@ -246,6 +265,7 @@
     <None Include="Properties\DataSources\callback.datasource" />
     <None Include="Properties\DataSources\clickEvent.datasource" />
     <None Include="Properties\DataSources\ConditionEvent.datasource" />
+    <None Include="Properties\DataSources\flickeringImage.datasource" />
     <None Include="Properties\DataSources\GVariable.datasource" />
     <None Include="Properties\DataSources\vertex.datasource" />
     <None Include="source.extension.vsixmanifest">
@@ -477,6 +497,14 @@
       <WrapperTool>aximp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+    <COMReference Include="AxwrapperaxLib">
+      <Guid>{3B756301-0075-4E40-8BE8-5A81DE2426B7}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="hmiformLib">
       <Guid>{6DFC8339-4D32-417C-905B-6406D944EC5D}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -495,9 +523,18 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+    <COMReference Include="wrapperaxLib">
+      <Guid>{3B756301-0075-4E40-8BE8-5A81DE2426B7}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <PropertyGroup>
-    <ProjectBasePath>D:\One Drive\OneDrive\Visual Studio 2015\Projects\EmCL Studio\MPFProj12\Dev12\Src\CSharp\</ProjectBasePath>
+    <ProjectBasePath>C:\LRM Studio\MPFProj12\Dev12\Src\CSharp\</ProjectBasePath>
     <RegisterWithCodebase>true</RegisterWithCodebase>
   </PropertyGroup>
   <Import Project="$(ProjectBasePath)\ProjectBase.Files" />

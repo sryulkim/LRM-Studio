@@ -12,6 +12,7 @@ namespace HMIProject
     {
         public static List<ConditionEvent> condtionEventList = new List<ConditionEvent>();
         public static List<HMIEditorPane> hmIEditorPaneList = new List<HMIEditorPane>();
+        public static string preOpenPath = "";
 
         public static BitmapImage ToBitmapImage(this Bitmap bitmap)
         {

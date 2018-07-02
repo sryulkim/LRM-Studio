@@ -18,100 +18,130 @@ namespace HMIProject
 {
     public class ConditionEvent
     {
-        private string infixToPostfix(string expression)
+        private static bool Predecessor(string firstOperator, string secondOperator)
         {
-            string postfix = "";
-            string temp = "";
+            //string opString = "(+-*/%";
+            string[] opString = { "(", "||", "&&", "|", "^", "&", "==", "!=", "<", ">", "<=", ">=", "<<", ">>", "+", "-", "*", "/", "%" };
+            int[] precedence = { 0, 1, 2, 3, 4, 5, 6, 6, 7, 7, 7, 7, 8, 8, 12, 12, 13, 13, 13 };// "(" has less prececence
 
-            string savedString = "";
-            bool preNumFlag = false;
-            bool preOpFlag = false;
-
-            Stack<string> operandStack = new Stack<string>();
+            int firstPoint = 0, secondPoint = 0;
 
 
-            char[] infix = expression.ToCharArray();
-
-            foreach (char ch in infix)
+            int index = 0;
+            foreach (string op in opString)
             {
-                if (isNumber(ch))
-                {
-                    if (preOpFlag)
-                    {
-                        preOpFlag = false;
-                        operandStack.Push(savedString + "#");
-                        savedString = "";
-                    }
+                if (op == firstOperator)
+                    firstPoint = index;
+                if (op == secondOperator)
+                    secondPoint = index;
+                index++;
+            }
 
-                    if (preNumFlag)
-                    {
-                        savedString += ch;
-                    }
-                    else
-                    {
-                        preNumFlag = true;
-                        savedString = "" + ch;
-                    }
+            return (precedence[firstPoint] >= precedence[secondPoint]) ? true : false;
+        }
+
+        private static string ConvertToPostFix(string inFix)
+        {
+            StringBuilder postFix = new StringBuilder();
+            char[] inFixCharArray = inFix.ToCharArray();
+            string arrival;
+            Stack<string> oprerator = new Stack<string>();//Creates a new Stack
+            bool isNextOfNum = false;
+            bool isNextOperation = false;
+            int index = 0;
+            foreach (char c in inFix.ToCharArray())//Iterates characters in inFix
+            {
+                if (c == ' ')
+                {
+                    index++;
+                    continue;
+                }
+
+                if (Char.IsNumber(c) || Char.IsLetter(c))
+                {
+                    postFix.Append(c);
+                    isNextOfNum = true;
                 }
                 else
                 {
-                    if (preNumFlag)
+                    string operation = c.ToString();
+                    if (isNextOfNum)
                     {
-                        preNumFlag = false;
-                        temp += savedString + "#";
-                        if (operandStack.Count > 0)
-                            temp += operandStack.Pop();
-                        savedString = "";
+                        isNextOfNum = false;
+                        postFix.Append("#");
                     }
 
-                    if (isOperation(ch))
+                    if (c == '(')
+                        oprerator.Push(operation);
+                    else if (c == ')')//Removes all previous elements from Stack and puts them in 
+                                      //front of PostFix.  
                     {
-                        if (preOpFlag)
+                        arrival = oprerator.Pop();
+                        while (arrival != "(")
                         {
-                            savedString += ch;
-                        }
-                        else
-                        {
-                            preOpFlag = true;
-                            savedString = "" + ch;
+                            postFix.Append(arrival);
+                            arrival = oprerator.Pop();
+                            postFix.Append("#");
                         }
                     }
                     else
                     {
-                        preOpFlag = false;
-                        temp += savedString + "#";
-                        savedString = "";
+
+                        if (!isNextOperation && (c == '<' || c == '>' || c == '=' || c == '!' || c == '&' || c == '|') && index < inFix.Length)
+                        {
+                            char tc = inFixCharArray[index + 1];
+                            if (!(Char.IsNumber(tc) || Char.IsLetter(tc) || tc == ' '))
+                            {
+                                isNextOperation = true;
+                                index++;
+                                continue;
+                            }
+                        }
+
+                        if (isNextOperation)
+                        {
+                            isNextOperation = false;
+                            operation = inFixCharArray[index - 1].ToString() + c.ToString();
+                        }
+
+                        if (oprerator.Count != 0 && Predecessor(oprerator.Peek(), operation))//If find an operator
+                        {
+                            arrival = oprerator.Pop();
+                            while (Predecessor(arrival, operation))
+                            {
+                                postFix.Append(arrival);
+                                postFix.Append("#");
+
+                                if (oprerator.Count == 0)
+                                    break;
+
+                                arrival = oprerator.Pop();
+                            }
+                            oprerator.Push(operation);
+                        }
+                        else
+                            oprerator.Push(operation);//If Stack is empty or the operator has precedence 
                     }
                 }
-
-
+                index++;
             }
-            temp += savedString + "#";
-            temp += operandStack.Pop();
-
-            return temp;
-        }
-
-        bool isNumber(char ch)
-        {
-            if (ch == '0' || ch == '1' || ch == '2' || ch == '3' || ch == '4' || ch == '5' || ch == '6' || ch == '7' || ch == '8' || ch == '9'
-                || (ch > 64 && ch < 91) || (ch > 96 && ch < 123))
-                return true;
-            return false;
-        }
-
-
-        bool isOperation(char ch)
-        {
-            if (ch == '>' || ch == '=' || ch == '<' || ch == '&' || ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%' || ch == '|' || ch == '^')
-                return true;
-            return false;
+            if (isNextOfNum)
+            {
+                postFix.Append("#");
+            }
+            while (oprerator.Count > 0)
+            {
+                arrival = oprerator.Pop();
+                postFix.Append(arrival);
+                postFix.Append("#");
+            }
+            return postFix.ToString();
         }
 
         public ConditionEvent conditionEventTransmissionFormat()
         {
             ConditionEvent ce = new ConditionEvent();
-            ce.statement = infixToPostfix(this.statement);
+            ce.statement = ConvertToPostFix(this.statement);
             ce.type = this.type;
             ce.gName = this.gName;
             ce.GUIOType = this.GUIOType;

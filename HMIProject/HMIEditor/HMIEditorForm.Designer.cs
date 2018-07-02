@@ -32,11 +32,14 @@
             // 
             // HMIEditorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Name = "HMIEditorForm";
             this.Text = "HMIEditorForm";
+            this.Load += new System.EventHandler(this.HMIEditorForm_Load);
+            this.SizeChanged += new System.EventHandler(this.HMIEditorForm_SizeChanged);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HMIEditorForm_KeyPress);
             this.ResumeLayout(false);
 
         }

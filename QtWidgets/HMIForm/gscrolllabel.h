@@ -84,6 +84,10 @@ class GScrollLabel : public QLabel
                     break;
             }
         }
+        void setScrollFlag(int f)
+        {
+            scrollFlag = f;
+        }
         void setFontSize(int s)
         {
             labelfont->setPixelSize(s);
@@ -179,6 +183,7 @@ class GScrollLabel : public QLabel
         int direction;
         int fontPointSize;
         int textLength;
+        int scrollFlag;
         double thickness;
         void updateProperty()
         {
@@ -190,7 +195,12 @@ class GScrollLabel : public QLabel
     private Q_SLOTS: //Private Member Slots
         void refreshLabel()
         {
-            repaint();
+            if(scrollFlag == 0 && sizeHint().width() > this->size().width())
+            {
+                repaint();
+            }
+            else if(scrollFlag == 1)
+                repaint();
         }
 };
 #endif /*_WIDGETMARQUEELABEL_H_*/

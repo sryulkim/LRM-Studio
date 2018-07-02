@@ -301,6 +301,7 @@ namespace HMIProject
                     comboBoxProperty.Items.Add("fontColor");
                     comboBoxProperty.Items.Add("fontBold");
                     comboBoxProperty.Items.Add("fontUnderline");
+                    comboBoxProperty.Items.Add("visible");
                     break;
                 case "DigitalClock":
                     comboBoxProperty.Items.Add("clockColor");
@@ -313,11 +314,20 @@ namespace HMIProject
                 case "Rail":
                     comboBoxProperty.Items.Add("grayScale");
                     comboBoxProperty.Items.Add("imageName");
+                    comboBoxProperty.Items.Add("startPointID");
+                    comboBoxProperty.Items.Add("endPointID");
+                    comboBoxProperty.Items.Add("duration");
+                    comboBoxProperty.Items.Add("start");
                     break;
                 case "Image":
                     comboBoxProperty.Items.Add("grayScale");
                     comboBoxProperty.Items.Add("imageName");
                     comboBoxProperty.Items.Add("scale");
+                    comboBoxProperty.Items.Add("flickering");
+                    comboBoxProperty.Items.Add("visible");
+                    comboBoxProperty.Items.Add("startFrame");
+                    comboBoxProperty.Items.Add("endFrame");
+                    comboBoxProperty.Items.Add("state");
                     break;
 
                 default:

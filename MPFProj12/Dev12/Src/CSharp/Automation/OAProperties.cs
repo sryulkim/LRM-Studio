@@ -195,6 +195,9 @@ namespace Microsoft.VisualStudio.Project.Automation
                     {
                         return (EnvDTE.Property)this.properties[indexAsString];
                     }
+
+                    if (indexAsString.Equals("URL"))
+                        return (EnvDTE.Property)this.properties["FileName"];
                 }
                 else if (index is int)
                 {
@@ -214,7 +217,7 @@ namespace Microsoft.VisualStudio.Project.Automation
                     }
                 }
 
-                // Edited by SMAHN
+            // Edited by SMAHN
                 throw new ArgumentException(SR.GetString(SR.InvalidParameter, CultureInfo.CurrentUICulture), "index");
         }
         /// <summary>

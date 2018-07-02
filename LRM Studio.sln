@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LRM Studio", "EmCL Studio\LRM Studio\LRM Studio.vcxproj", "{D2F5E643-B8F2-4C8A-9487-2832E17BA1E4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7423D123-9674-4134-AF9C-A6E6F81EEC16} = {7423D123-9674-4134-AF9C-A6E6F81EEC16}
+		{E7401367-8ED8-4041-836D-F710936ADAC5} = {E7401367-8ED8-4041-836D-F710936ADAC5}
+		{BD2764BC-637F-4536-A25F-F58E22ED3734} = {BD2764BC-637F-4536-A25F-F58E22ED3734}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LRM StudioUI", "EmCL Studio\LRM StudioUI\LRM StudioUI.vcxproj", "{BD2764BC-637F-4536-A25F-F58E22ED3734}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellExtensionsVSIX", "EmCL Studio\ShellExtensionsVSIX\ShellExtensionsVSIX.csproj", "{7423D123-9674-4134-AF9C-A6E6F81EEC16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMIProject", "HMIProject\HMIProject.csproj", "{E7401367-8ED8-4041-836D-F710936ADAC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2F5E643-B8F2-4C8A-9487-2832E17BA1E4}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{D2F5E643-B8F2-4C8A-9487-2832E17BA1E4}.Debug|x86.ActiveCfg = Debug|Win32
+		{D2F5E643-B8F2-4C8A-9487-2832E17BA1E4}.Debug|x86.Build.0 = Debug|Win32
+		{D2F5E643-B8F2-4C8A-9487-2832E17BA1E4}.Release|Any CPU.ActiveCfg = Release|Win32
+		{D2F5E643-B8F2-4C8A-9487-2832E17BA1E4}.Release|x86.ActiveCfg = Release|Win32
+		{D2F5E643-B8F2-4C8A-9487-2832E17BA1E4}.Release|x86.Build.0 = Release|Win32
+		{BD2764BC-637F-4536-A25F-F58E22ED3734}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{BD2764BC-637F-4536-A25F-F58E22ED3734}.Debug|x86.ActiveCfg = Debug|Win32
+		{BD2764BC-637F-4536-A25F-F58E22ED3734}.Debug|x86.Build.0 = Debug|Win32
+		{BD2764BC-637F-4536-A25F-F58E22ED3734}.Release|Any CPU.ActiveCfg = Release|Win32
+		{BD2764BC-637F-4536-A25F-F58E22ED3734}.Release|x86.ActiveCfg = Release|Win32
+		{BD2764BC-637F-4536-A25F-F58E22ED3734}.Release|x86.Build.0 = Release|Win32
+		{7423D123-9674-4134-AF9C-A6E6F81EEC16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7423D123-9674-4134-AF9C-A6E6F81EEC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7423D123-9674-4134-AF9C-A6E6F81EEC16}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7423D123-9674-4134-AF9C-A6E6F81EEC16}.Debug|x86.Build.0 = Debug|Any CPU
+		{7423D123-9674-4134-AF9C-A6E6F81EEC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7423D123-9674-4134-AF9C-A6E6F81EEC16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7423D123-9674-4134-AF9C-A6E6F81EEC16}.Release|x86.ActiveCfg = Release|Any CPU
+		{7423D123-9674-4134-AF9C-A6E6F81EEC16}.Release|x86.Build.0 = Release|Any CPU
+		{E7401367-8ED8-4041-836D-F710936ADAC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7401367-8ED8-4041-836D-F710936ADAC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7401367-8ED8-4041-836D-F710936ADAC5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E7401367-8ED8-4041-836D-F710936ADAC5}.Debug|x86.Build.0 = Debug|Any CPU
+		{E7401367-8ED8-4041-836D-F710936ADAC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7401367-8ED8-4041-836D-F710936ADAC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7401367-8ED8-4041-836D-F710936ADAC5}.Release|x86.ActiveCfg = Release|Any CPU
+		{E7401367-8ED8-4041-836D-F710936ADAC5}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

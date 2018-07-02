@@ -27,24 +27,24 @@ namespace HMIProject
         static public List<GVariable> NEList { set; get; } = new List<GVariable>();//Network Ethernet gVariable List
         static public List<GVariable> NMList { set; get; } = new List<GVariable>();//Network MVB gVariable List
         static public GVariables gVariables = new GVariables();
-        
+        static public List<Group> Groups = new List<Group>();
 
         public GViewDlg()
         {
             InitializeComponent();
             
         }
-
+   
 
         private void ConfigDlg_Load(object sender, EventArgs e)
         {
             try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(HMIProject.GVariables));
+                //XmlSerializer serializer = new XmlSerializer(typeof(HMIProject.GVariables));
 
-                TextReader reader = new StreamReader(HMIProject.HMIProjectNode.currentProjectDirectory + @"\GVariable.xml");
+                //TextReader reader = new StreamReader(HMIProject.HMIProjectNode.currentProjectDirectory + @"\GVariable.xml");
 
-                gVariables = (HMIProject.GVariables)serializer.Deserialize(reader);
+                //gVariables = (HMIProject.GVariables)serializer.Deserialize(reader);
                 HMIProject.GViewDlg.SList.Clear();
                 HMIProject.GViewDlg.MList.Clear();
                 HMIProject.GViewDlg.DIList.Clear();
@@ -52,10 +52,21 @@ namespace HMIProject
                 HMIProject.GViewDlg.NEList.Clear();
                 HMIProject.GViewDlg.NRList.Clear();
                 HMIProject.GViewDlg.NMList.Clear();
+
+                bool isLogEnableMade = false;
                 foreach (HMIProject.GVariable gVariable in gVariables.gVariableGroup)
                 {
                     switch (gVariable.type)
                     {
+                        /*case "Event Log Enable":
+                            if (gVariable.initialValue == "1")
+                            {
+                                logEnableCheckBox.Checked = true;
+                            }
+                            else
+                                logEnableCheckBox.Checked = false;
+                            isLogEnableMade = true;
+                            break;*/
                         case "System":
                             HMIProject.GViewDlg.SList.Add(gVariable);
                             break;
@@ -80,13 +91,12 @@ namespace HMIProject
                     }
                 }
 
-                reader.Close();
+                /*if (!isLogEnableMade)
+                    gVariables.gVariableGroup.Add(new GVariable("LogEnableFlag", "INT", "0", "Event Log Enable", "", "","", ""));*/
 
-                XmlSerializer serializer2 = new XmlSerializer(typeof(List<HMIProject.ConditionEvent>));
+                //reader.Close();
 
-                TextReader reader2 = new StreamReader(HMIProject.HMIProjectNode.currentProjectDirectory + @"\ConditionEvents.xml");
-                HMIProject.StaticMethods.condtionEventList = (List<HMIProject.ConditionEvent>)serializer2.Deserialize(reader2);
-                reader2.Close();
+               
             }
             catch (Exception ex)
             {
@@ -140,7 +150,7 @@ namespace HMIProject
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            GMaker dlg = new GMaker();
+            Alarm dlg = new Alarm();
 
             dlg.ShowDialog();
             if (dlg.Confirmed == true)
@@ -177,6 +187,39 @@ namespace HMIProject
            
             
         }
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DataGridView DGV;
+            switch (tabControl.SelectedIndex) {
+                case 0: DGV = dvMPoint; break;
+                case 1: DGV = dvSPoint; break;
+                case 2: DGV = dvNEPoint; break;
+                case 3: DGV = dvMPoint; break;
+                case 4: DGV = dvNRPoint; break;
+                case 5: DGV = dvDIPoint; break;
+                case 6: DGV = dvAIPoint; break;
+
+                default: DGV = dvMPoint; break;
+            }
+            try
+            {
+                for (int i = 0; i < DGV.Rows.Count - 1; i++)
+                {
+                    int j = 0;
+                    if (DGV.Rows[i].Selected == true)
+                    {
+                        GViewDlg.gVariables.gVariableGroup.Remove(GViewDlg.gVariables.gVariableGroup.Find(x => x.name.Contains(DGV.Rows[i].Cells[0].Value.ToString())));
+                        DGV.Rows.Remove(DGV.Rows[i]);
+                        j = 1;
+                    }
+                }
+            }catch(Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("삭제할 행을 선택하십시오");
+            }
+
+
+        }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
@@ -204,118 +247,40 @@ namespace HMIProject
             writer.Close();
             base.OnClosed(e);
         }
-    }
 
-    [XmlRootAttribute("GVariables", Namespace = "http://www.cpandl.com",IsNullable = false)]
-    public class GVariables
-    {
-        public List<GVariable> gVariableGroup;
-        public GVariables()
+        /*private void logEnableCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            this.gVariableGroup = new List<GVariable>();
-        }
-    }
+            foreach (HMIProject.GVariable gVariable in GViewDlg.gVariables.gVariableGroup)
+            {
+                if(gVariable.type == "Event Log Enable")
+                {
+                    if (logEnableCheckBox.Checked)
+                        gVariable.initialValue = "1";
+                    else
+                        gVariable.initialValue = "0";
 
-    public class GVariable
-    {
-        //Common Part
-        [DisplayName("변수명")]
-        public string name { get; set; }
-        [DisplayName("타입")]
-        public string type { get; set; }
-        [DisplayName("데이터타입")]
-        public string dataType { get; set; }
-        [DisplayName("초기값")]
-        public string initialValue { get; set; }
-        [DisplayName("주소")]
-        public string ipAddress { get; set; }
-        [DisplayName("포트 번호")]
-        public string port { get; set; }
-        [DisplayName("알람")]
-        public Alarm alarm { get; set; }
-        ////Network Ethernet
-        //public string neAddress { get; set; }
-        //public string nePort { get; set; }
-        ////Network MVB
-        //public string nmPort { get; set; }
-        //public string nmFCode { get; set; }
-        //public string nmSrcSnk { get; set; }
-        //public string nmBitPosition { get; set; }
-        //public string nmBitLength { get; set; }
-        ////Network RS-485
-        //public string nrAddress { get; set; } //RS-485 Address
-        //public string nrBit { get; set; }
-        //public string nrBitLength { get; set; }
-        ////Digital Input
-        //public string diAddress { get; set; } // Digital Input Address
-        //public string diBit { get; set; } // Digital Input Bit positon 
-        ////Analog Input
-        //public string aiAddress { get; set; } // Analog Input Address
-        //public string aiBit { get; set; } // Analog Input Bit positon 
+                    break;
+                }
+            }
+        }*/
 
-
-        public GVariable()
-        { }
-
-        public GVariable(string name, string dataType, string initialValue, string type, 
-                string ipAddress, string port
-                //string nmPort, string nmFCode, string nmSrcSnk, string nmBitPosition, string nmBitLength,
-                //string nrAddress, string nrBit,
-                //string diAddress, string diBit, 
-                //string aiAddress, string aiBit
-                )
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.name = name;
-            this.type = type;
-            this.dataType = dataType;
-            this.initialValue = initialValue;
-            this.ipAddress = ipAddress;
-            this.port = port;
 
-            //this.neAddress = neAddress;
-            //this.nePort = nePort;
-          
-            //this.nmPort = nmPort;
-            //this.nmFCode = nmFCode;
-            //this.nmSrcSnk = nmSrcSnk;
-            //this.nmBitPosition = nmBitPosition;
-            //this.nmBitLength = nmBitLength;
-
-            //this.nrAddress = nrAddress;
-            //this.nrBit = nrBit;
-            //this.nrBitLength = nrBitLength;
-
-            //this.diAddress = diAddress;
-            //this.diBit = diBit;
-
-            //this.aiAddress = aiAddress;
-            //this.aiBit = aiBit;
-            
         }
 
-    }
-    public partial class Alarm
-    {
-        public High high;
-        public Low low;
-        public string message;
-    }
+        private void dvNEPoint_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
-    public partial class High
-    {
-        public string enable;
-        public string value;
-        public string priority;
-        public string page;
+        }
 
-    }
-    public partial class Low
-    {
-        public string enable;
-        public string value;
-        public string priority;
-        public string page;
-    }
+        private void Ethernet_Click(object sender, EventArgs e)
+        {
 
+        }
+    }
 
 }
+
+    
+

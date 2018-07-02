@@ -29,7 +29,7 @@ public:
         limitlength=100;
         angle = 0;
         objScale = 1.0;
-        font  = new QFont();
+        font  = new QFont("Arial", 8);
         palette = new QPalette();
         setTextWrapper("Label");
     }
@@ -165,13 +165,13 @@ public:
     {
         switch(i){
         case 0:
-            setAlignment(Qt::AlignLeft);
+            setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
             break;
         case 1:
             setAlignment(Qt::AlignCenter);
             break;
         case 2:
-            setAlignment(Qt::AlignRight);
+            setAlignment(Qt::AlignRight|Qt::AlignVCenter);
             break;
         }
     }
@@ -219,6 +219,15 @@ public:
     {
         objScale = s;
     }
+    void setVisible(bool visible)
+    {
+        this->visible = visible;
+        if(visible){
+            QLabel::setVisible(true);
+        }
+        else
+            QLabel::setVisible(false);
+    }
 private:
     QFont *font;
     QPalette *palette;
@@ -229,6 +238,7 @@ private:
     QColor labelQColor,borderQColor,fontQColor;
     int label_color, border_color, font_color;
     int font_size;
+    bool visible;
     bool font_bold;
     bool font_underline;
     int angle;
@@ -242,7 +252,7 @@ private:
         }
         setFont(*font);
         setPalette(*palette);
-        setStyleSheet(QString("qproperty-alignment: AlignCenter;border: %1px solid rgba(%2,%3,%4,%5);").arg(thickness).arg(borderQColor.red()).arg(borderQColor.green()).arg(borderQColor.blue()).arg(borderQColor.alpha())
+        setStyleSheet(QString("border: %1px solid rgba(%2,%3,%4,%5);").arg(thickness).arg(borderQColor.red()).arg(borderQColor.green()).arg(borderQColor.blue()).arg(borderQColor.alpha())
                                 +QString("background-color: rgba(%1,%2,%3,%4);").arg(labelQColor.red()).arg(labelQColor.green()).arg(labelQColor.blue()).arg(labelQColor.alpha())
                                 +QString("color: rgb(%1,%2,%3);").arg(fontQColor.red()).arg(fontQColor.green()).arg(fontQColor.blue()));
         update();

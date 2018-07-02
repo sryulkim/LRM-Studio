@@ -14,7 +14,7 @@ INCLUDEPATH += $${QWT_ROOT}/src
 DEPENDPATH  += $${QWT_ROOT}/src
 
 SOURCES  = main.cpp edge.cpp guio.cpp hmiform.cpp vertex.cpp widgetwithbackground.cpp
-HEADERS += edge.h gdial.h gdigitalclock.h gdrawing.h gimage.h gincdecbutton.h gipcamera.h glabel.h gled.h
+HEADERS += edge.h gdial.h gdigitalclock.h gdrawing.h gimage.h gincdecbutton.h gipcamera.h glabel.h gled.h gradiobutton.h
 HEADERS += gloginpad.h gnumpad.h gpanel.h gprogressbar.h gpushbutton.h grail.h gscrolllabel.h gsetresetbutton.h
 HEADERS += gsliderbar.h guio.h gwebview.h hmiform.h ui_gloginpad.h ui_numpad.h vertex.h widgetwithbackground.h
 RC_FILE  = hmiform.rc

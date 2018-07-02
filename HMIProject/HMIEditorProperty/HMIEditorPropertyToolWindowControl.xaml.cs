@@ -78,54 +78,68 @@ namespace HMIProject
         private void GUIOPropertyState2StyleTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
         }
-
-        private void PagePropertyName_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void PagePropertyName_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            try
             {
                 selectedHMIForm.EditPageName = PagePropertyName.Text;
                 selectedPage.name = PagePropertyName.Text;
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show("올바른 Page 이름을 입력하세요");
+
+            }
+
         }
 
-        private void PagePropertyWidth_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void PagePropertyNumber_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
+                try
+                {
+                    int num = Int32.Parse(PagePropertyNumber.Text);
+                    selectedPage.number = PagePropertyNumber.Text;
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Page 번호는 정수값만 가질 수 있습니다.");
+                }
+        }
+
+        private void PagePropertyWidth_LostFocus(object sender, RoutedEventArgs e)
+        {
                 try
                 {
                     int width = Int32.Parse(PagePropertyWidth.Text);
                     selectedPage.size.width = PagePropertyWidth.Text;
+                    selectedTransparentPanel.Size = new System.Drawing.Size(width, selectedTransparentPanel.Height);
+                    selectedForm.HorizontalScroll.Maximum = width;
                     selectedHMIForm.Width = width;
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show("화면의 너비는 정수값만 가질 수 있습니다.");
                 }
-            }
         }
 
-        private void PagePropertyHeight_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void PagePropertyHeight_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int height = Int32.Parse(PagePropertyHeight.Text);
                     selectedPage.size.height = PagePropertyHeight.Text;
+                    selectedTransparentPanel.Size = new System.Drawing.Size(selectedTransparentPanel.Width, height);
+                    selectedForm.VerticalScroll.Maximum = height;
                     selectedHMIForm.Height = height;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("화면의 높이는 정수값만 가질 수 있습니다.");
                 }
-            }
         }
 
-        private void PagePropertyBackgroundColor_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void PagePropertyBackgroundColor_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = System.Int32.Parse(PagePropertyBackgroundColor.Text, System.Globalization.NumberStyles.HexNumber);
@@ -136,37 +150,81 @@ namespace HMIProject
                 {
                     MessageBox.Show("배경 색상 값은 16진수 숫자값만 가능합니다.");
                 }
-            }
         }
 
-        private void PagePropertyEnable_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void PagePropertyEnable_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
-
-            }
         }
 
-        private void GUIOPropertyNameTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyNameTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            // if (e.Key == System.Windows.Input.Key.Enter)
+            // {
+            //    foreach (GUIO guio in selectedPane.GUIOList)
+            //   {
+            //      if (guio.name == GUIOPropertyNameTextBox.Text)
+            //     {
+            //        MessageBox.Show("중복되는 이름을 가진 GUIO가 존재합니다.");
+            //       return;
+            //  }
+            // }
+            try
             {
                 selectedHMIForm.selectedGUIOName = selectedGUIO.name;
                 selectedHMIForm.EditGUIOPropertyName = GUIOPropertyNameTextBox.Text;
                 selectedGUIO.name = GUIOPropertyNameTextBox.Text;
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("올바른 이름을 입력하세요");
+            }
+         
+            //}
         }
+        //private void GUIOPropertyNameTextBox_LostFocus(object sender, RoutedEventArgs e)
+        //{
+         //   int count = 0;
+          //  string temp1 = selectedHMIForm.selectedGUIOName;
 
-        private void GUIOPropertyGVarTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+            
+            //selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+            //selectedHMIForm.EditGUIOPropertyName = GUIOPropertyNameTextBox.Text;
+            //selectedGUIO.name = GUIOPropertyNameTextBox.Text;
+           // selectedHMIForm.selectedGUIOName = GUIOPropertyNameTextBox.Text;
+            //selectedGUIO.name = GUIOPropertyNameTextBox.Text;
+
+          //  foreach (GUIO guio in selectedPane.GUIOList)
+           // {
+            //    if (guio.name == GUIOPropertyNameTextBox.Text)
+             //   {
+              //      count++;                
+               // }
+      //      }
+       //     if (count > 1)
+        //    {
+         //       MessageBox.Show("중복되는 GUIO 이름이 있습니다.");
+          //      selectedHMIForm.selectedGUIOName = temp1;
+           //     selectedGUIO.name = temp1;
+            //    GUIOPropertyNameTextBox.Text = temp1;
+                //selectedHMIForm.selectedGUIOName = temp1;
+                //selectedHMIForm.EditGUIOPropertyName = temp1;
+                //selectedGUIO.name = temp1;
+           // }
+       // }
+        private void GUIOPropertyGVarTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            try
             {
                 selectedGUIO.gVariable = GUIOPropertyGVarTextBox.Text;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("올바른 이름을 입력하세요");
             }
         }
 
         /*
-        private void GUIOPropertyBackgroundColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyBackgroundColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Enter)
             {
@@ -204,10 +262,8 @@ namespace HMIProject
         }
         */
 
-        private void GUIOPropertyXTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyXTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int xPoint = Int32.Parse(GUIOPropertyXTextBox.Text);
@@ -219,13 +275,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("올바른 양의 정수 값을 입력해주세요.");
                 }
-            }
         }
 
-        private void GUIOPropertyYTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyYTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int yPoint = Int32.Parse(GUIOPropertyYTextBox.Text);
@@ -237,13 +290,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("올바른 양의 정수 값을 입력해주세요.");
                 }
-            }
         }
 
-        private void GUIOPropertyWidthTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyWidthTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int width = Int32.Parse(GUIOPropertyWidthTextBox.Text);
@@ -255,13 +305,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("올바른 양의 정수 값을 입력해주세요.");
                 }
-            }
         }
 
-        private void GUIOPropertyHeightTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyHeightTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int height = Int32.Parse(GUIOPropertyHeightTextBox.Text);
@@ -273,13 +320,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("올바른 양의 정수 값을 입력해주세요.");
                 }
-            }
         }
 
-        private void GUIOPropertyLayerTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyLayerTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int layer = Int32.Parse(GUIOPropertyLayerTextBox.Text);
@@ -292,7 +336,6 @@ namespace HMIProject
                 {
                     MessageBox.Show("\nLayer값은 정수 값만 가질 수 있습니다.");
                 }
-            }
         }
 
         private int CompareLayer(GUIO a, GUIO b)
@@ -314,20 +357,15 @@ namespace HMIProject
                 return -1;
         }
 
-        private void FigurePropertyNameTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FigurePropertyNameTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 selectedHMIForm.selectedGUIOName = selectedGUIO.name;
                 selectedHMIForm.EditGUIOPropertyName = GUIOPropertyNameTextBox.Text;
                 selectedGUIO.name = GUIOPropertyNameTextBox.Text;
-            }
         }
 
-        private void FigurePropertyFillColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FigurePropertyFillColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = System.Int32.Parse(FigurePropertyFillColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -340,13 +378,29 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 숫자값만 가능합니다.");
                 }
+        }
+
+        private void FigurePropertyFillColor_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.fillColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                FigurePropertyFillColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.fillColor = FigurePropertyFillColorTextBox.Text;
+                selectedHMIForm.EditCircleFillColor = rgb;
+                selectedHMIForm.EditRectangleFillColor = rgb;
             }
         }
 
-        private void FigurePropertyLineColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FigurePropertyLineColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = System.Int32.Parse(FigurePropertyLineColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -359,13 +413,30 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 숫자값만 가능합니다.");
                 }
+        }
+
+        private void FigurePropertyLineColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.lineColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                FigurePropertyLineColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.lineColor = FigurePropertyLineColorTextBox.Text;
+                selectedHMIForm.EditCircleLineColor = rgb;
+                selectedHMIForm.EditRectangleLineColor = rgb;
             }
         }
 
-        private void FigurePropertyLineThicknessTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FigurePropertyLineThicknessTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int thickness = System.Int32.Parse(FigurePropertyLineThicknessTextBox.Text);
@@ -378,13 +449,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 숫자값만 가능합니다.");
                 }
-            }
         }
 
-        private void FigurePropertyLayerTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FigurePropertyLayerTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int layer = System.Int32.Parse(FigurePropertyLayerTextBox.Text);
@@ -395,13 +463,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 숫자값만 가능합니다.");
                 }
-            }
         }
 
-        private void FigurePropertyXTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FigurePropertyXTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int xPoint = Int32.Parse(FigurePropertyXTextBox.Text);
@@ -413,13 +478,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("올바른 양의 정수 값을 입력해주세요.");
                 }
-            }
         }
 
-        private void FigurePropertyYTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FigurePropertyYTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int yPoint = Int32.Parse(FigurePropertyYTextBox.Text);
@@ -431,13 +493,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("올바른 양의 정수 값을 입력해주세요.");
                 }
-            }
         }
 
-        private void FigurePropertyWidthTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FigurePropertyWidthTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int width = Int32.Parse(FigurePropertyWidthTextBox.Text);
@@ -449,13 +508,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("올바른 양의 정수 값을 입력해주세요.");
                 }
-            }
         }
 
-        private void FigurePropertyHeightTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FigurePropertyHeightTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int height = Int32.Parse(FigurePropertyHeightTextBox.Text);
@@ -467,11 +523,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("올바른 양의 정수 값을 입력해주세요.");
                 }
-            }
         }
 
         /*
-        private void ClickEventTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void ClickEventTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Enter)
             {
@@ -702,7 +757,7 @@ namespace HMIProject
             bottomDockPanel.Children.Add(comboBox);
 
             TextBox textBox = new TextBox();
-            textBox.KeyUp += ClickEventTextBox_KeyUp;
+            textBox.LostFocus += ClickEventTextBox_LostFocus;
             textBox.Name = "ClickEventTextBox" + dockPanelNumber;
             textBox.Height = 22;
             textBox.Width = 120;
@@ -1208,10 +1263,8 @@ namespace HMIProject
         }
         */
 
-        private void GUIOPropertyTextTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyTextTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 selectedHMIForm.selectedGUIOName = selectedGUIO.name;
                 selectedGUIO.text = GUIOPropertyTextTextBox.Text;
                 if (selectedObjectType == ObjectType.GPushButton)
@@ -1228,14 +1281,16 @@ namespace HMIProject
                 {
                     selectedHMIForm.EditScrollLabelText = selectedGUIO.text;
                 }
-            }
+                else
+                if(selectedObjectType == ObjectType.GRadioBUtton)
+                {
+                    selectedHMIForm.EditRadioButtonText = selectedGUIO.text;
+                }
 
         }
 
-        private void GUIOPropertyButtonColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyButtonColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     if (selectedObjectType == ObjectType.GPushButton)
@@ -1245,19 +1300,60 @@ namespace HMIProject
                         selectedGUIO.buttonColor = GUIOPropertyButtonColorTextBox.Text;
                         selectedHMIForm.EditPushButtonColor = rgb;
                     }
+                    else
+                    if (selectedObjectType == ObjectType.GRadioBUtton)
+                    {
+                        int rgb = Int32.Parse(selectedGUIO.buttonColor, System.Globalization.NumberStyles.HexNumber);
+                        selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                        selectedGUIO.buttonColor = GUIOPropertyButtonColorTextBox.Text;
+                        selectedHMIForm.EditRadioButtonColor = rgb;
+                    }
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show("색상 값은 16진수 숫자 값만 가능합니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyThicknessTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyButtonColor_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.buttonColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyButtonColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                try
+                {
+                    if (selectedObjectType == ObjectType.GPushButton)
+                    {
+                        selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                        selectedGUIO.buttonColor = GUIOPropertyButtonColorTextBox.Text;
+                        selectedHMIForm.EditPushButtonColor = rgb;
+                    }
+                    else
+                    if (selectedObjectType == ObjectType.GRadioBUtton)
+                    {
+                        selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                        selectedGUIO.buttonColor = GUIOPropertyButtonColorTextBox.Text;
+                        selectedHMIForm.EditRadioButtonColor = rgb;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("색상 값은 16진수 숫자 값만 가능합니다.");
+                }
+            }
+        }
+
+        private void GUIOPropertyThicknessTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
                 try
                 {
                     int thickness = Int32.Parse(GUIOPropertyThicknessTextBox.Text);
@@ -1276,19 +1372,66 @@ namespace HMIProject
                     {
                         selectedHMIForm.EditScrollLabelThickness = thickness;
                     }
+                    if (selectedObjectType == ObjectType.GRadioBUtton)
+                    {
+                        selectedHMIForm.EditRadioButtonThickness = thickness;
+                    }
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show("테두리 두께 값은 양의 정수 값만 가질 수 있습니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyBorderColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyBorderColor_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.borderColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyBorderColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedGUIO.borderColor = GUIOPropertyBorderColorTextBox.Text;
+
+                if (selectedObjectType == ObjectType.GPushButton)
+                {
+                    selectedHMIForm.EditPushButtonBorderColor = rgb;
+                }
+                if (selectedObjectType == ObjectType.GLabel)
+                {
+                    selectedHMIForm.EditLabelBorderColor = rgb;
+                }
+                if (selectedObjectType == ObjectType.GScrollLabel)
+                {
+                    selectedHMIForm.EditScrollLabelBorderColor = rgb;
+                }
+                if (selectedObjectType == ObjectType.GDigitalClock)
+                {
+                    selectedHMIForm.EditDigitalClockBorderColor = rgb;
+                }
+                if (selectedObjectType == ObjectType.GLoginpad)
+                {
+                    selectedHMIForm.EditLoginPadBorderColor = rgb;
+                }
+                if (selectedObjectType == ObjectType.GNumpad)
+                {
+                    selectedHMIForm.EditNumPadBorderColor = rgb;
+                }
+                if (selectedObjectType == ObjectType.GRadioBUtton)
+                {
+                    selectedHMIForm.EditRadioButtonBorderColor = rgb;
+                }
+            }
+        }
+
+        private void GUIOPropertyBorderColorTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyBorderColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1318,19 +1461,20 @@ namespace HMIProject
                     {
                         selectedHMIForm.EditNumPadBorderColor = rgb;
                     }
+                    if (selectedObjectType == ObjectType.GRadioBUtton)
+                    {
+                        selectedHMIForm.EditRadioButtonBorderColor = rgb;
+                    }
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show("색상 값은 16진수 정수값만 가능합니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyMaxTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyMaxTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int max = Int32.Parse(GUIOPropertyMaxTextBox.Text);
@@ -1357,14 +1501,11 @@ namespace HMIProject
                 {
                     MessageBox.Show("Max 값은 정수 값만 가능합니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyMinTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyMinTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int min = Int32.Parse(GUIOPropertyMinTextBox.Text);
@@ -1391,14 +1532,11 @@ namespace HMIProject
                 {
                     MessageBox.Show("Min 값은 정수 값만 가능합니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyMajorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyMajorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int major = Int32.Parse(GUIOPropertyMajorTextBox.Text);
@@ -1425,14 +1563,11 @@ namespace HMIProject
                 {
                     MessageBox.Show("Major 값은 정수 값만 가능합니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyMinorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyMinorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int minor = Int32.Parse(GUIOPropertyMinorTextBox.Text);
@@ -1459,14 +1594,11 @@ namespace HMIProject
                 {
                     MessageBox.Show("Max 값은 정수 값만 가능합니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyNeedleColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyNeedleColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int needleColor = Int32.Parse(GUIOPropertyNeedleColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1485,13 +1617,37 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyNeedleColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.needleColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyNeedleColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+
+                selectedGUIO.needleColor = GUIOPropertyNeedleColorTextBox.Text;
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                if (selectedObjectType == ObjectType.GDial)
+                {
+                    selectedHMIForm.EditDialNeedleColor = rgb;
+                }
+                else if (selectedObjectType == ObjectType.GPanel)
+                {
+                    selectedHMIForm.EditPanelNeedleColor = rgb;
+                }
             }
         }
 
-        private void GUIOPropertyDialColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyDialColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int dailColor = Int32.Parse(GUIOPropertyDialColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1506,13 +1662,32 @@ namespace HMIProject
                 {
                     MessageBox.Show("생상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyDialColor_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.dialColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyDialColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+
+                selectedGUIO.dialColor = GUIOPropertyDialColorTextBox.Text;
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                if (selectedObjectType == ObjectType.GDial)
+                {
+                    selectedHMIForm.EditDialColor = rgb;
+                }
             }
         }
 
-        private void GUIOPropertyFontColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyFontColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int fontColor = Int32.Parse(GUIOPropertyFontColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1542,19 +1717,69 @@ namespace HMIProject
                     {
                         selectedHMIForm.EditDigitalClockFontColor = fontColor;
                     }
+                    else
+                    if (selectedObjectType == ObjectType.GRadioBUtton)
+                    {
+                        selectedHMIForm.EditRadioButtonFontColor = fontColor;
+                    }
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show("색상 값은 16진수 숫자값만 가능합니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyFontSizeTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyFontColor_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.fontColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                int fontColor = colorDialog.Color.ToArgb();
+                GUIOPropertyFontColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+
+                selectedGUIO.fontColor = GUIOPropertyFontColorTextBox.Text;
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                if (selectedObjectType == ObjectType.GPushButton)
+                {
+                    selectedHMIForm.EditPushButtonFontColor = fontColor;
+                }
+                else
+                if (selectedObjectType == ObjectType.GDial)
+                {
+                    selectedHMIForm.EditDialFontColor = fontColor;
+                }
+                else
+                if (selectedObjectType == ObjectType.GLabel)
+                {
+                    selectedHMIForm.EditLabelFontColor = fontColor;
+                }
+                else
+                if (selectedObjectType == ObjectType.GScrollLabel)
+                {
+                    selectedHMIForm.EditScrollLabelFontColor = fontColor;
+                }
+                else
+                if (selectedObjectType == ObjectType.GDigitalClock)
+                {
+                    selectedHMIForm.EditDigitalClockFontColor = fontColor;
+                }
+                else
+                if (selectedObjectType == ObjectType.GRadioBUtton)
+                {
+                    selectedHMIForm.EditRadioButtonFontColor = fontColor;
+                }
+            }
+        }
+
+        private void GUIOPropertyFontSizeTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
                 try
                 {
                     int fontSize = Int32.Parse(GUIOPropertyFontSizeTextBox.Text);
@@ -1576,12 +1801,15 @@ namespace HMIProject
                     {
                         selectedHMIForm.EditDigitalClockFontSize = fontSize;
                     }
+                    if (selectedObjectType == ObjectType.GRadioBUtton)
+                    {
+                        selectedHMIForm.EditRadioButtonFontSize = fontSize;
+                    }
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show("Font 크기는 정수값만 가능합니다.");
                 }
-            }
 
         }
 
@@ -1640,6 +1868,61 @@ namespace HMIProject
                     selectedHMIForm.EditDigitalClockFontBold = 1;
                 }
             }
+            if (selectedObjectType == ObjectType.GRadioBUtton)
+            {
+                if (((ComboBox)sender).SelectedIndex == 1)
+                {
+                    selectedGUIO.fontBold = "0";
+                    selectedHMIForm.EditRadioButtonFontBold = false;
+                }
+                else
+                {
+                    selectedGUIO.fontBold = "1";
+                    selectedHMIForm.EditRadioButtonFontBold = true;
+                }
+            }
+        }
+
+        private void GUIOPropertyAlignmentComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+                if (((ComboBox)sender).SelectedIndex == 0)
+                {
+                    selectedGUIO.alignment = "0";
+                    selectedHMIForm.EditLabelAlignment = 0;
+                }
+                else if (((ComboBox)sender).SelectedIndex == 1)
+                {
+                    selectedGUIO.alignment = "1";
+                    selectedHMIForm.EditLabelAlignment = 1;
+                }
+                else
+                {
+                    selectedGUIO.alignment = "2";
+                    selectedHMIForm.EditLabelAlignment = 2;
+                }
+        }
+
+
+        private void GUIOPropertyScrollFlagComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (selectedObjectType == ObjectType.GScrollLabel)
+            {
+                if (((ComboBox)sender).SelectedIndex == 0)
+                {
+                    selectedGUIO.scrollFlag = "0";
+                    selectedHMIForm.EditScrollLabelScrollFlag = 0;
+                }
+                else if (((ComboBox)sender).SelectedIndex == 1)
+                {
+                    selectedGUIO.scrollFlag = "1";
+                    selectedHMIForm.EditScrollLabelScrollFlag = 1;
+                }
+                else
+                {
+                    selectedGUIO.scrollFlag = "2";
+                    selectedHMIForm.EditScrollLabelScrollFlag = 2;
+                }
+            }
         }
 
         private void GUIOPropertyFontUnderlineComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1671,7 +1954,7 @@ namespace HMIProject
                     selectedHMIForm.EditLabelFontUnderline = true;
                 }
             }
-            else if(selectedObjectType == ObjectType.GScrollLabel)
+            else if (selectedObjectType == ObjectType.GScrollLabel)
             {
                 if (((ComboBox)sender).SelectedIndex == 1)
                 {
@@ -1684,12 +1967,23 @@ namespace HMIProject
                     selectedHMIForm.EditScrollLabelFontUnderline = true;
                 }
             }
+            else if (selectedObjectType == ObjectType.GRadioBUtton)
+            {
+                if (((ComboBox)sender).SelectedIndex == 1)
+                {
+                    selectedGUIO.fontUnderline = "1";
+                    selectedHMIForm.EditRadioButtonFontUnderline = true;
+                }
+                else
+                {
+                    selectedGUIO.fontBold = "0";
+                    selectedHMIForm.EditRadioButtonFontUnderline = false;
+                }
+            }
         }
 
-        private void GUIOPropertyProgressColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyProgressColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyProgressColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1701,6 +1995,23 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyProgressColor_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.progressColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyProgressColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.progressColor = GUIOPropertyProgressColorTextBox.Text;
+                selectedHMIForm.EditProgressBarColor = rgb;
             }
         }
 
@@ -1721,10 +2032,8 @@ namespace HMIProject
             }
         }
 
-        private void GUIOPropertySliderColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertySliderColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertySliderColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1736,13 +2045,30 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertySliderColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.sliderColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertySliderColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.sliderColor = GUIOPropertySliderColorTextBox.Text;
+                selectedHMIForm.EditSliderBarColor = rgb;
             }
         }
 
-        private void GUIOPropertyHandleColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyHandleColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyHandleColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1754,19 +2080,62 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyHandleColor_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.handleColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyHandleColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.handleColor = GUIOPropertyHandleColorTextBox.Text;
+                selectedHMIForm.EditSliderBarHandleColor = rgb;
             }
         }
 
-        private void GUIOPropertyLabelColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyLabelColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyLabelColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
                     selectedHMIForm.selectedGUIOName = selectedGUIO.name;
                     selectedGUIO.labelColor = GUIOPropertyLabelColorTextBox.Text;
                     selectedHMIForm.EditLabelColor = rgb;
+                    selectedHMIForm.EditScrollLabelColor = rgb;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
+                }
+        }
+
+        private void GUIOPropertyLabelColor_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.labelColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyLabelColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+
+                try
+                {
+                    selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                    selectedGUIO.labelColor = GUIOPropertyLabelColorTextBox.Text;
+                    selectedHMIForm.EditLabelColor = rgb;
+                    selectedHMIForm.EditScrollLabelColor = rgb;
                 }
                 catch (Exception ex)
                 {
@@ -1775,10 +2144,28 @@ namespace HMIProject
             }
         }
 
-        private void GUIOPropertyClockColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyClockColor_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.clockColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyClockColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.clockColor = GUIOPropertyClockColorTextBox.Text;
+                selectedHMIForm.EditDigitalClockColor = rgb;
+            }
+        }
+
+        private void GUIOPropertyClockColorTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyClockColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1790,35 +2177,34 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
-            }
         }
 
-        private void GUIOPropertyAddressTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyIPAddressTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 if (selectedObjectType == ObjectType.IpCamera)
                 {
-                    selectedGUIO.address = GUIOPropertyAddressTextBox.Text;
+                    selectedGUIO.ipAddress = GUIOPropertyIPAddressTextBox.Text;
                 }
-            }
         }
 
-        private void GUIOPropertyPasswordTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyPortTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
+                if (selectedObjectType == ObjectType.IpCamera)
+                {
+                    selectedGUIO.port = GUIOPropertyPortTextBox.Text;
+                }
+        }
+
+        private void GUIOPropertyPasswordTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
                 if (selectedObjectType == ObjectType.GLoginpad)
                 {
                     selectedGUIO.password = GUIOPropertyPasswordTextBox.Text;
                 }
-            }
         }
 
-        private void GUIOPropertyNumColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyNumColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyNumColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1831,13 +2217,31 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyNumColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.numColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyNumColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.numColor = GUIOPropertyNumColorTextBox.Text;
+                selectedHMIForm.EditLoginPadNumberFontColor = rgb;
+                selectedHMIForm.EditNumPadNumberFontColor = rgb;
             }
         }
 
-        private void GUIOPropertyNumButtonColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyNumButtonColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyNumButtonColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1850,13 +2254,30 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyNumButtonColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.numButtonColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyNumButtonColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.numButtonColor = GUIOPropertyNumButtonColorTextBox.Text;
+                selectedHMIForm.EditLoginPadNumberButtonColor = rgb;
+                selectedHMIForm.EditNumPadNumberButtonColor = rgb;
             }
         }
 
-        private void GUIOPropertyResetColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyResetColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyResetColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1869,13 +2290,30 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyResetColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.resetColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyResetColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.resetColor = GUIOPropertyResetColorTextBox.Text;
+                selectedHMIForm.EditLoginPadResetFontColor = rgb;
+                selectedHMIForm.EditNumPadResetFontColor = rgb;
             }
         }
 
-        private void GUIOPropertyResetButtonColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyResetButtonColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyResetButtonColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1888,14 +2326,31 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyLoginColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyResetButtonColor_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.resetButtonColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyResetButtonColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.resetButtonColor = GUIOPropertyResetButtonColorTextBox.Text;
+                selectedHMIForm.EditLoginPadResetButtonColor = rgb;
+                selectedHMIForm.EditNumPadResetButtonColor = rgb;
+            }
+        }
+
+        private void GUIOPropertyLoginColorTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyLoginColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1907,15 +2362,30 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyLoginButtonColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyLoginColor_Click(object sender, RoutedEventArgs e)
         {
 
-            if (e.Key == System.Windows.Input.Key.Enter)
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.loginColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyLoginColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.loginColor = GUIOPropertyLoginColorTextBox.Text;
+                selectedHMIForm.EditLoginPadLoginFontColor = rgb;
+            }
+        }
+
+        private void GUIOPropertyLoginButtonColorTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyLoginButtonColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1927,13 +2397,29 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyLoginButtonColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.loginButtonColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyLoginButtonColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.loginButtonColor = GUIOPropertyLoginButtonColorTextBox.Text;
+                selectedHMIForm.EditLoginPadLoginButtonColor = rgb;
             }
         }
 
-        private void GUIOPropertyFuncColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyFuncColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyFuncColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1945,15 +2431,31 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
-            }
 
         }
 
-        private void GUIOPropertyFuncButtonColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyFuncColor_Click(object sender, RoutedEventArgs e)
         {
 
-            if (e.Key == System.Windows.Input.Key.Enter)
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.funcColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyFuncColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.funcColor = GUIOPropertyFuncColorTextBox.Text;
+                selectedHMIForm.EditLoginPadFuncFontColor = rgb;
+            }
+        }
+
+        private void GUIOPropertyFuncButtonColorTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyFuncButtonColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -1965,13 +2467,28 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyFuncButtonColor_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.funcButtonColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyFuncButtonColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.funcButtonColor = GUIOPropertyFuncButtonColorTextBox.Text;
+                selectedHMIForm.EditLoginPadFuncButtonColor = rgb;
             }
         }
 
-        private void GUIOPropertyDigitNumberTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyDigitNumberTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int digitNumber = Int32.Parse(GUIOPropertyDigitNumberTextBox.Text);
@@ -1983,13 +2500,10 @@ namespace HMIProject
                 {
                     MessageBox.Show("양의 정수 값만 입력해주세요.");
                 }
-            }
         }
 
-        private void GUIOPropertyOkColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyOkColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyOkColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -2001,13 +2515,29 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyOkColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.okColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyOkColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.okColor = GUIOPropertyOkColorTextBox.Text;
+                selectedHMIForm.EditNumPadOkFontColor = rgb;
             }
         }
 
-        private void GUIOPropertyOkButtonColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyOkButtonColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int rgb = Int32.Parse(GUIOPropertyOkButtonColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -2019,30 +2549,40 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyOkButtonColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.okButtonColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyOkButtonColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.okButtonColor = GUIOPropertyOkButtonColorTextBox.Text;
+                selectedHMIForm.EditNumPadOkButtonColor = rgb;
             }
         }
 
-        private void GUIOPropertyTempGVarTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyTempGVarTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 selectedGUIO.tempGVariable = GUIOPropertyTempGVarTextBox.Text;
-            }
         }
 
-        private void GUIOPropertyPageNameTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyPageNameTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 selectedGUIO.pageName = GUIOPropertyPageNameTextBox.Text;
                 selectedHMIForm.EditPageName = selectedGUIO.pageName;
-            }
         }
 
-        private void PagePropertyBackgroundImage_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void PagePropertyBackgroundImage_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 selectedPage.backgroundImage = PagePropertyBackgroundImage.Text;
                 try
                 {
@@ -2061,21 +2601,25 @@ namespace HMIProject
                 {
                     MessageBox.Show("정확한 이미지 파일 이름을 입력해주세요.");
                 }
-            }
         }
 
-        private void GUIOPropertyCountTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyGroupIDTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
-                
-            }
+                try
+                {
+                    int groupID = Int32.Parse(GUIOPropertyGroupIDTextBox.Text);
+                    selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                    selectedGUIO.groupID = GUIOPropertyGroupIDTextBox.Text;
+                    selectedHMIForm.EditRadioButtonID = groupID;
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Group ID 값은 정수값만 가능합니다.");
+                }
         }
 
-        private void GUIOPropertyDigitColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyDigitColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int digitColor = Int32.Parse(GUIOPropertyDigitColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -2087,13 +2631,30 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수값만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyDigitColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.digitColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyDigitColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.digitColor = GUIOPropertyDigitColorTextBox.Text;
+                selectedHMIForm.EditPanelDigitColor = rgb;
             }
         }
 
-        private void GUIOPropertyBodyColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyBodyColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int bodyColor = Int32.Parse(GUIOPropertyBodyColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -2105,13 +2666,29 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수값만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyBodyColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.bodyColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyBodyColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.bodyColor = GUIOPropertyBodyColorTextBox.Text;
+                selectedHMIForm.EditPanelBodyColor = rgb;
             }
         }
 
-        private void GUIOPropertyLEDColorTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyLEDColorTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int ledColor = Int32.Parse(GUIOPropertyLEDColorTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -2123,13 +2700,30 @@ namespace HMIProject
                 {
                     MessageBox.Show("색상 값은 16진수 정수값만 가능합니다.");
                 }
+        }
+
+        private void GUIOPropertyLEDColor_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedGUIO.ledColor, System.Globalization.NumberStyles.HexNumber));
+
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                GUIOPropertyLEDColorTextBox.Text = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                selectedGUIO.ledColor = GUIOPropertyLEDColorTextBox.Text;
+                selectedHMIForm.EditLedColor = rgb;
             }
         }
 
-        private void GUIOPropertyImageNameTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyImageNameTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 selectedHMIForm.selectedGUIOName = selectedGUIO.name;
                 selectedGUIO.imageName = GUIOPropertyImageNameTextBox.Text;
                 try
@@ -2141,6 +2735,14 @@ namespace HMIProject
                     selectedHMIForm.EditImageName = path;
                     selectedHMIForm.EditRailImageName = path;
 
+                    selectedHMIForm.EditGUIOPropertyHeight = image.Height;
+                    selectedHMIForm.EditGUIOPropertyWidth = image.Width;
+
+                    selectedGUIO.size.height = image.Height.ToString();
+                    selectedGUIO.size.width = image.Width.ToString();
+
+                    GUIOPropertyHeightTextBox.Text = selectedGUIO.size.height;
+                    GUIOPropertyWidthTextBox.Text = selectedGUIO.size.width;
                     //selectedPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
                     //selectedPanel.BackgroundImage = bitmap;
                 }
@@ -2148,8 +2750,50 @@ namespace HMIProject
                 {
                     MessageBox.Show("정확한 이미지 파일 이름을 입력해주세요.");
                 }
-            }
         }
+
+        private void GUIOPropertyImageStartFrameTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+                try
+                {
+                    int startFrame = Int32.Parse(GUIOPropertyImageStartFrameTextBox.Text);
+                    selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                    selectedGUIO.startFrame = GUIOPropertyImageStartFrameTextBox.Text;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Start Frame 값은 정수 값만 가능합니다.");
+                }
+        }
+
+        private void GUIOPropertyImageEndFrameTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+                try
+                {
+                    int endFrame = Int32.Parse(GUIOPropertyImageEndFrameTextBox.Text);
+                    selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                    selectedGUIO.endFrame = GUIOPropertyImageEndFrameTextBox.Text;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("End Frame 값은 정수 값만 가능합니다.");
+                }
+        }
+
+        private void GUIOPropertyImageStateTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+                try
+                {
+                    int state = Int32.Parse(GUIOPropertyImageStateTextBox.Text);
+                    selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                    selectedGUIO.state = GUIOPropertyImageStateTextBox.Text;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("State 값은 정수 값만 가능합니다.");
+                }
+        }
+
         private void GUIOPropertyGrayScaleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (selectedObjectType == ObjectType.GImage || selectedObjectType == ObjectType.GRail)
@@ -2170,31 +2814,26 @@ namespace HMIProject
             }
         }
 
-        private void GUIOPropertyURLTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyURLTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 selectedGUIO.url = GUIOPropertyURLTextBox.Text;
-            }
         }
 
-        private void GUIOPropertyAngleTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyAngleTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
-                    int angle = Int32.Parse(GUIOPropertyAngleTextBox.Text, System.Globalization.NumberStyles.HexNumber);
+                    int angle = Int32.Parse(GUIOPropertyAngleTextBox.Text);
                     selectedHMIForm.selectedGUIOName = selectedGUIO.name;
                     selectedGUIO.angle = GUIOPropertyAngleTextBox.Text;
                     selectedHMIForm.EditLabelAngle = angle;
+                    selectedHMIForm.EditImageAngle = angle;
                     
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show("회전 각도 값은 정수 값만 가능합니다.");
                 }
-            }
         }
 
         private void GUIOPropertyClickEventButton_Click(object sender, RoutedEventArgs e)
@@ -2209,10 +2848,8 @@ namespace HMIProject
             editVertexesDialog.Show();
         }
 
-        private void GUIOPropertyTransparentTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertyTransparentTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 try
                 {
                     int transparent = Int32.Parse(GUIOPropertyTransparentTextBox.Text, System.Globalization.NumberStyles.HexNumber);
@@ -2223,24 +2860,23 @@ namespace HMIProject
                     {
                         selectedHMIForm.EditLabelTransparent = false;
                         selectedHMIForm.EditScrollLabelTransparent = false;
+                        selectedHMIForm.EditRadioButtonTransparent = false;
                     }
                     else
                     {
                         selectedHMIForm.EditLabelTransparent = true;
                         selectedHMIForm.EditScrollLabelTransparent = true;
+                        selectedHMIForm.EditRadioButtonTransparent = true;
                     }
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show("투명도 값은 0과 1만 가능합니다.");
                 }
-            }
         }
 
         private void GUIOPropertyDirectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (selectedObjectType == ObjectType.GScrollLabel)
-            {
                 selectedHMIForm.selectedGUIOName = selectedGUIO.name;
                 if (((ComboBox)sender).SelectedIndex == 0)
                 {
@@ -2252,17 +2888,159 @@ namespace HMIProject
                     selectedGUIO.direction = "1";
                     selectedHMIForm.EditScrollLabelDirection = 1;
                 }
-            }
         }
 
-        private void GUIOPropertySpeedTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void GUIOPropertySpeedTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
                 if (selectedObjectType == ObjectType.GScrollLabel)
                 {
                     selectedGUIO.speed = GUIOPropertySpeedTextBox.Text;
                 }
+        }
+
+        private void GUIOPropertyEndPointIDTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+                if (selectedObjectType == ObjectType.GRail)
+                {
+                    try
+                    {
+                        int id = Int32.Parse(GUIOPropertyEndPointIDTextBox.Text);
+                        if (id >= 0)
+                            selectedGUIO.endPointID = GUIOPropertyEndPointIDTextBox.Text;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("End Point ID 값은 0 이상의 정수 값만 가능합니다.");
+                    }
+                }
+        }
+
+        private void GUIOPropertyStartPointIDTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+                if (selectedObjectType == ObjectType.GRail)
+                {
+                    try
+                    {
+                        int id = Int32.Parse(GUIOPropertyStartPointIDTextBox.Text);
+                        if (id >= 0)
+                            selectedGUIO.startPointID = GUIOPropertyStartPointIDTextBox.Text;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Start Point ID 값은 0 이상의 정수 값만 가능합니다.");
+                    }
+                }
+        }
+
+        private void GUIOPropertyDurationTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+                if (selectedObjectType == ObjectType.GRail)
+                {
+                    try
+                    {
+                        int duration = Int32.Parse(GUIOPropertyDurationTextBox.Text);
+                        if (duration >= 0)
+                            selectedGUIO.duration = GUIOPropertyDurationTextBox.Text;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Duration 값(ms 단위)은 0이상의 정수 값만 가능합니다.");
+                    }
+                }
+        }
+
+        private void GUIOPropertyFlickeringImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            HMIEditFlickeringImagesDialog flickeringImageDialog = new HMIEditFlickeringImagesDialog();
+            flickeringImageDialog.Show();
+        }
+
+        private void GUIOPropertyFlickeringComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (selectedObjectType == ObjectType.GImage)
+            {
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                if (((ComboBox)sender).SelectedIndex == 0)
+                {
+                    selectedGUIO.flickering = "1";
+                }
+                else
+                {
+                    selectedGUIO.flickering = "0";
+                }
+            }
+        }
+
+        private void GUIOPropertyVisibleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (selectedObjectType == ObjectType.GImage || selectedObjectType == ObjectType.GLabel || selectedObjectType == ObjectType.GScrollLabel)
+            {
+                selectedHMIForm.selectedGUIOName = selectedGUIO.name;
+                if (((ComboBox)sender).SelectedIndex == 0)
+                {
+                    selectedGUIO.visible = "1";
+                    selectedHMIForm.EditImageVisible = 1;
+                    selectedHMIForm.EditLabelVisible = 1;
+                    selectedHMIForm.EditScrollLabelVisible = 1;
+                }
+                else
+                {
+                    selectedGUIO.visible = "0";
+                    selectedHMIForm.EditImageVisible = 0;
+                    selectedHMIForm.EditLabelVisible = 0;
+                    selectedHMIForm.EditScrollLabelVisible = 0;
+                }
+            }
+        }
+
+        private void GUIOPropertyVisibleDurationTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+                if (selectedObjectType == ObjectType.GImage)
+                {
+                    try
+                    {
+                        int duration = Int32.Parse(GUIOPropertyVisibleDurationTextBox.Text);
+                        if (duration >= 0)
+                            selectedGUIO.visibleDuration = GUIOPropertyVisibleDurationTextBox.Text;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Duration 값(ms 단위)은 0이상의 정수 값만 가능합니다.");
+                    }
+                }
+        }
+
+        private void GUIOPropertyInvisibleDurationTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+                if (selectedObjectType == ObjectType.GImage)
+                {
+                    try
+                    {
+                        int duration = Int32.Parse(GUIOPropertyInvisibleDurationTextBox.Text);
+                        if (duration >= 0)
+                            selectedGUIO.invisibleDuration = GUIOPropertyInvisibleDurationTextBox.Text;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Duration 값(ms 단위)은 0이상의 정수 값만 가능합니다.");
+                    }
+                }
+        }
+
+        private void PagePropertyBackgroundColor_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+
+            colorDialog.AllowFullOpen = true;
+            colorDialog.ShowHelp = true;
+            colorDialog.Color = System.Drawing.Color.FromArgb(Int32.Parse(selectedPage.backgroundColor, System.Globalization.NumberStyles.HexNumber));
+
+            if(colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                int rgb = colorDialog.Color.ToArgb();
+                PagePropertyBackgroundColor.Text  = String.Format("{0:X}", colorDialog.Color.ToArgb()).Substring(2);
+                selectedPage.backgroundColor = PagePropertyBackgroundColor.Text;
+                selectedHMIForm.EditPageBackgroundColor = rgb;
             }
         }
     }

@@ -3,12 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             Background="{DynamicResource VsBrush.Window}"
-             Foreground="{DynamicResource VsBrush.WindowText}"
-             mc:Ignorable="d" 
-             Name="MyToolWindow" Height="916.5">
-    <Grid Name="grid1" >
-        <StackPanel Name="hostPanel">
+             Name="MyToolWindow" Height="916.5" SizeChanged="MyToolWindow_SizeChanged">
+
+    
+        <StackPanel Name="hostPanel" Orientation="Vertical" ScrollViewer.CanContentScroll="True" >
         </StackPanel>
-    </Grid>
+    
 </UserControl>

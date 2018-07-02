@@ -75,9 +75,8 @@ namespace HMIProject
             PrivateInit();
         }
         
-        public Panel panel;                         ///< 현재 Panel 참조용 객체
         public TransparentPanel transparentPanel;   ///< Panel의 배경이 되는 투명 Panel. GUIO 선택시 테두리 선에 해당하는 overlayControl을 포함
-        public OverlayControl overlayControl;       ///< GUIO 선택시 표시되는 테두리 Control.
+        //public OverlayControl overlayControl;       ///< GUIO 선택시 표시되는 테두리 Control.
 
         public List<GUIO> GUIOList;                 ///< 현재 Panel의 GUIO들을 저장하는 List 객체
         public Page thisPage;                       ///< Panel에 대한 정보를 XML 형식으로 저장하기 위한 Page 객체
@@ -125,6 +124,16 @@ namespace HMIProject
          * @param   Nothing
          * @return  Nothing
          */
+
+
+        private void HMIEditorForm_SizeChanged(object sender, EventArgs e)
+        {
+            editorForm.HorizontalScroll.Visible = true;
+            editorForm.HorizontalScroll.Enabled = true;
+            if(hmiForm != null)
+                editorForm.HorizontalScroll.Maximum = hmiForm.Size.Width;
+        }
+
         private void PrivateInit()
         {
             //MessageBox.Show("PrivateInit()");
@@ -133,7 +142,14 @@ namespace HMIProject
             gettingCheckoutStatus = false;
 
             editorForm = new HMIEditorForm();       ///< Form을 상속받는 HMIEditorForm 객체 생성
-            editorForm.AutoScroll = true;
+            editorForm.AutoScroll = false;
+            editorForm.HorizontalScroll.Maximum = 1024;
+            editorForm.HorizontalScroll.Minimum = 0;
+            editorForm.VerticalScroll.Maximum = 764;
+            editorForm.VerticalScroll.Minimum = 0;
+            editorForm.HorizontalScroll.Value = 0;
+            editorForm.VerticalScroll.Value = 0;
+            editorForm.SizeChanged += HMIEditorForm_SizeChanged;
             editorForm.FormBorderStyle = FormBorderStyle.None;
             editorForm.ControlBox = false;
             editorForm.Text = String.Empty;
@@ -143,20 +159,14 @@ namespace HMIProject
 
             hmiForm = new AxhmiformLib.AxHMIForm();
             
-            panel = new Panel();                                                            ///< 현재 Editor Form에 GUIO control을 담는 Panel 객체 생성
-            panel.Location = new System.Drawing.Point(0, 0);                                ///< panel의 시작 위치(좌상) 지정
-            panel.Size = new System.Drawing.Size(1024, 768);                                ///< 초기 panel의 크기 설정 1024*768
-            editorForm.Size = new System.Drawing.Size(1024, 768);                           ///< 초기 editorForm의 크기 설정 1024*768
             editorForm.Location = new System.Drawing.Point(0, 0);                           ///< 초기 editorForm의 시작 위치(좌상) 지정
             editorForm.BackColor = System.Drawing.Color.FromArgb(0xff, 0xff, 0xff, 0xff);   ///< 초기 editorForm의 배경색상 지정 0xffffffff: white
-            panel.BackColor = System.Drawing.Color.FromArgb(0xffffff);                      ///< 초기 panel의 배경색상 지정 0xffffff: white
-            panel.TabIndex = 1;                                                             ///< panel 객체의 TabIndex를 1로 설정
-
             editorForm.AllowDrop = true;                ///< Drop event를 활성화하여 HMIToolWindowControl의 GUIO를 Drag&Drop으로 생성 가능하도록 설정
             editorForm.DragEnter += panel_DragEnter;    ///< DragEnter event - Drag event를 발생시킨 객체가 들어왔을 때의 handler 등록
             editorForm.DragDrop += panel_DragDrop;      ///< DragDrop event - Drag event를 발생시킨 객체가 들어온 후 놓아졌을 때의 handler 등록
 
-            editorForm.Controls.Add(panel);
+            editorForm.Controls.Add(hmiForm);
+            //editorForm.KeyPress += new KeyPressEventHandler(KeyPress);
 
             transparentPanel = new TransparentPanel();
             transparentPanel.MouseDown += new MouseEventHandler(transparentPanel_MouseDown);
@@ -165,22 +175,44 @@ namespace HMIProject
             transparentPanel.MouseLeave += new EventHandler(transparentPanel_MouseLeave);
             transparentPanel.Location = new System.Drawing.Point(0, 0);
             transparentPanel.Size = new System.Drawing.Size(1024, 768);
-            overlayControl = new OverlayControl();
+            //overlayControl = new OverlayControl();
             transparentPanel.Location = new System.Drawing.Point(0, 0);
             transparentPanel.Size = new System.Drawing.Size(1024, 768);
+            //transparentPanel.PreviewKeyDown += new PreviewKeyDownEventHandler(KeyPress);
 
             editorForm.Controls.Add(transparentPanel);
             hmiForm.Location = new System.Drawing.Point(0, 0);
             hmiForm.Size = new System.Drawing.Size(1024, 768);
-            panel.Controls.Add(hmiForm);
-            panel.SendToBack();
-            //editorForm.MouseDown += new MouseEventHandler(panel_MouseDown);
+            hmiForm.SendToBack();
+
+            hmiForm.PreviewKeyDown += new PreviewKeyDownEventHandler(KeyPress);
+            //hmiForm.KeyDownEvent += new AxhmiformLib.IHMIFormEvents_KeyDownEventHandler(KeyPress);
         }
+        
+
+        void KeyPress(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.C)
+                Copy();
+            if (e.Control && e.KeyCode == Keys.X)
+                Cut();
+            if (e.Control && e.KeyCode == Keys.V)
+                Paste();
+            if (e.KeyCode == Keys.Delete)
+                Remove();
+        }
+
+        int beforeX = -10000;
+        int beforeY = -10000;
 
         void transparentPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            Trace.WriteLine("Filename: " + this.fileName);
+            Trace.WriteLine("Filename: " + this.fileName + " CanEditFile()="+CanEditFile());
             HMIEditorPropertyToolWindowControl.selectedHMIForm = hmiForm;
+            HMIEditorPropertyToolWindowControl.selectedForm = editorForm;
+            HMIEditorPropertyToolWindowControl.selectedPane = this;
+            HMIEditorPropertyToolWindowControl.selectedPage = thisPage;
+            HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             try
             {
@@ -191,24 +223,54 @@ namespace HMIProject
             {
                 // If HMIMAkeVertexDialog is not maked
             }
+            List<GUIO> boundaryGUIOList = new List<GUIO>();
+            int count = 0;
+            int beforeSelectedCount = -1;
             foreach (GUIO c in GUIOList)
             {
                 if (Int32.Parse(c.location.x) <= e.X && Int32.Parse(c.location.x) + Int32.Parse(c.size.width) >= e.X 
                     && Int32.Parse(c.location.y) <= e.Y && Int32.Parse(c.location.y) + Int32.Parse(c.size.height) >= e.Y)
                 {
-                    HMIEditorPropertyToolWindowControl.selectedGUIO = c;
-                    break;
+                    if (HMIEditorPropertyToolWindowControl.selectedGUIO == c)
+                    {
+                        beforeSelectedCount = count;
+                    }
+                    boundaryGUIOList.Add(c);
+                    count++;
                 }
-                HMIEditorPropertyToolWindowControl.selectedGUIO = null;
             }
+            if (boundaryGUIOList.Count == 0)
+                HMIEditorPropertyToolWindowControl.selectedGUIO = null;
+            else
+            {
+                if (beforeSelectedCount == -1)
+                    HMIEditorPropertyToolWindowControl.selectedGUIO = boundaryGUIOList.ElementAt(0);
+                else if (
+                    ((beforeX - e.X) < 2 && (beforeX >= e.X)) || ((beforeX < e.X) && (e.X - beforeX) < 2)
+                    &&
+                    ((beforeY - e.Y) < 2 && (beforeY >= e.Y)) || ((beforeY < e.Y) && (e.Y - beforeY) < 2)
+                    )
+                {
+                    if (beforeSelectedCount + 1 == count)
+                    {
+                        HMIEditorPropertyToolWindowControl.selectedGUIO = boundaryGUIOList.ElementAt(0);
+                    }
+                    else
+                        HMIEditorPropertyToolWindowControl.selectedGUIO = boundaryGUIOList.ElementAt(beforeSelectedCount + 1);
+                }
+                else
+                    HMIEditorPropertyToolWindowControl.selectedGUIO = boundaryGUIOList.ElementAt(beforeSelectedCount);
+            }
+            beforeX = e.X;
+            beforeY = e.Y;
             if (HMIEditorPropertyToolWindowControl.selectedGUIO != null)
             {
                 GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
-                panel.Controls.Remove(overlayControl);
-                overlayControl.Location = new System.Drawing.Point(Int32.Parse(guio.location.x) - 5, Int32.Parse(guio.location.y) - 5);
-                overlayControl.Size = new System.Drawing.Size(Int32.Parse(guio.size.width) + 10, Int32.Parse(guio.size.height) + 10);
-                panel.Controls.Add(overlayControl);
-                hmiForm.SendToBack();
+                //panel.Controls.Remove(overlayControl);
+                //overlayControl.Location = new System.Drawing.Point(Int32.Parse(guio.location.x) - 5, Int32.Parse(guio.location.y) - 5);
+                //overlayControl.Size = new System.Drawing.Size(Int32.Parse(guio.size.width) + 10, Int32.Parse(guio.size.height) + 10);
+                //panel.Controls.Add(overlayControl);
+                //hmiForm.SendToBack();
                 
                 startMove = true;
                 movePoint = e.Location;
@@ -314,14 +376,15 @@ namespace HMIProject
             }
             else
             {
+                hmiForm.selectedGUIOName = "";
                 HMIEditorPropertyToolWindowControl.selectedObjectType = HMIEditorPropertyToolWindowControl.ObjectType.Page;
                 OLECMDF cmdf = OLECMDF.OLECMDF_SUPPORTED;
                 copyPrgCmd.cmdf = (uint)cmdf;
                 cutPrgCmd.cmdf = (uint)cmdf;
                 deletePrgCmd.cmdf = (uint)cmdf;
                 
-                panel_MouseDown(panel);
-                panel.Controls.Remove(overlayControl);
+                panel_MouseDown(this);
+                //panel.Controls.Remove(overlayControl);
             }
         }
 
@@ -335,8 +398,8 @@ namespace HMIProject
                 int controlY = Int32.Parse(HMIEditorPropertyToolWindowControl.selectedGUIO.location.y) + movePointY;
                 hmiForm.EditGUIOPropertyX = controlX;
                 hmiForm.EditGUIOPropertyY = controlY;
-                overlayControl.Location = new System.Drawing.Point(controlX - 5, controlY - 5);
-                overlayControl.Refresh();
+                //overlayControl.Location = new System.Drawing.Point(controlX - 5, controlY - 5);
+                //overlayControl.Refresh();
                 
                 HMIEditorPropertyToolWindowControl.selectedGUIO.location.x = ""+controlX;
                 HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl.GUIOPropertyXTextBox.Text = HMIEditorPropertyToolWindowControl.selectedGUIO.location.x;
@@ -363,10 +426,9 @@ namespace HMIProject
             try
             {
                 HMIEditorPropertyToolWindowControl.selectedObjectType = HMIEditorPropertyToolWindowControl.ObjectType.Page;
-                HMIEditorPane editor = StaticMethods.hmIEditorPaneList.Find(p => p.thisPage.name == ((Panel)sender).Name);
+                HMIEditorPane editor =(HMIEditorPane)sender;
                 Page page = editor.thisPage;
                 HMIEditorPropertyToolWindowControl.selectedPage = page;
-                HMIEditorPropertyToolWindowControl.selectedPanel = panel;
                 HMIEditorPropertyToolWindowControl.selectedForm = editorForm;
                 HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
                 HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
@@ -381,6 +443,7 @@ namespace HMIProject
                 control.PagePropertyHeight.Text = page.size.height;
                 control.PagePropertyEnable.Text = page.enable;
                 control.PagePropertyName.Text = thisPage.name;
+                control.PagePropertyNumber.Text = thisPage.number;
             }
             catch(Exception ex)
             {
@@ -467,6 +530,7 @@ namespace HMIProject
                     TNOControls--;
                     break;
             }
+            GUIOList.Sort(ReverseCompareLayer);
         }
 
         #region Make GUIO
@@ -669,6 +733,14 @@ namespace HMIProject
             hmiForm.EditGUIOPropertyX = Int32.Parse(guio.location.x);
             hmiForm.EditGUIOPropertyY = Int32.Parse(guio.location.y);
             hmiForm.EditGUIOPropertyLayer = Int32.Parse(guio.layer);
+            try
+            {
+                hmiForm.EditLabelAlignment = Int32.Parse(guio.alignment);
+            }
+            catch(Exception ex)
+            {
+
+            }
             hmiForm.EditLabelColor = Int32.Parse(guio.labelColor, NumberStyles.HexNumber);
             hmiForm.EditLabelBorderColor = Int32.Parse(guio.borderColor, NumberStyles.HexNumber);
             hmiForm.EditLabelFontColor = Int32.Parse(guio.fontColor, NumberStyles.HexNumber);
@@ -690,6 +762,34 @@ namespace HMIProject
                 hmiForm.EditLabelTransparent = false;
             else
                 hmiForm.EditLabelTransparent = true;
+
+            try
+            {
+                if (Int32.Parse(guio.alignment) == 0)
+                    hmiForm.EditLabelAlignment = 0;
+                else if (Int32.Parse(guio.alignment) == 1)
+                    hmiForm.EditLabelAlignment = 1;
+                else if (Int32.Parse(guio.alignment) == 2)
+                    hmiForm.EditLabelAlignment = 2;
+                else 
+                    hmiForm.EditLabelAlignment = 1;
+
+
+            }
+            catch(Exception ex)
+            {
+                guio.alignment = "1";
+                hmiForm.EditLabelAlignment = 1;
+            }
+            
+            try
+            {
+                hmiForm.EditLabelVisible = Int32.Parse(guio.visible);
+            }
+            catch (Exception ex)
+            {
+                hmiForm.EditLabelVisible = 1;
+            }
         }
 
         private void makeScrollLabel(GUIO guio)
@@ -724,7 +824,23 @@ namespace HMIProject
                 hmiForm.EditScrollLabelTransparent = false;
             else
                 hmiForm.EditScrollLabelTransparent = true;
+            try
+            {
+                hmiForm.EditScrollLabelVisible = Int32.Parse(guio.visible);
+            }
+            catch (Exception ex)
+            {
+                hmiForm.EditScrollLabelVisible = 1;
+            }
 
+            try
+            {
+                hmiForm.EditScrollLabelScrollFlag = Int32.Parse(guio.scrollFlag);
+            }
+            catch (Exception ex)
+            {
+                hmiForm.EditScrollLabelScrollFlag = 0;
+            }
         }
 
         private void makeDigitalClock(GUIO guio)
@@ -750,6 +866,34 @@ namespace HMIProject
         {
             TNORadioButton++;
             // TODO
+            hmiForm.GUIOName = guio.name;
+            hmiForm.GUIOType = "RadioButton";
+            hmiForm.MakeGUIOCommand = true;
+            hmiForm.EditGUIOPropertyHeight = Int32.Parse(guio.size.height);
+            hmiForm.EditGUIOPropertyWidth = Int32.Parse(guio.size.width);
+            hmiForm.EditGUIOPropertyX = Int32.Parse(guio.location.x);
+            hmiForm.EditGUIOPropertyY = Int32.Parse(guio.location.y);
+            hmiForm.EditGUIOPropertyLayer = Int32.Parse(guio.layer);
+
+            hmiForm.EditRadioButtonID = Int32.Parse(guio.groupID);
+            hmiForm.EditRadioButtonText = guio.text;
+            hmiForm.EditRadioButtonColor = Int32.Parse(guio.buttonColor, NumberStyles.HexNumber);
+            hmiForm.EditRadioButtonThickness = Int32.Parse(guio.thickness);
+            hmiForm.EditRadioButtonBorderColor = Int32.Parse(guio.borderColor, NumberStyles.HexNumber);
+            hmiForm.EditRadioButtonFontColor = Int32.Parse(guio.fontColor, NumberStyles.HexNumber);
+            hmiForm.EditRadioButtonFontSize = Int32.Parse(guio.fontSize);
+            if (Int32.Parse(guio.fontBold) == 0)
+                hmiForm.EditRadioButtonFontBold = false;
+            else
+                hmiForm.EditRadioButtonFontBold = true;
+            if (Int32.Parse(guio.fontUnderline) == 0)
+                hmiForm.EditRadioButtonFontUnderline = false;
+            else
+                hmiForm.EditRadioButtonFontUnderline = true;
+            if (Int32.Parse(guio.transparent) == 0)
+                hmiForm.EditRadioButtonTransparent = false;
+            else
+                hmiForm.EditRadioButtonTransparent = true;
         }
 
         private void makeLED(GUIO guio)
@@ -824,12 +968,26 @@ namespace HMIProject
             hmiForm.EditGUIOPropertyX = Int32.Parse(guio.location.x);
             hmiForm.EditGUIOPropertyY = Int32.Parse(guio.location.y);
             hmiForm.EditGUIOPropertyLayer = Int32.Parse(guio.layer);
+
             string path = HMIProjectNode.currentProjectDirectory + @"\" + guio.imageName;
-            hmiForm.EditImageName = path;
-            if (Int32.Parse(guio.grayScale) == 0)
-                hmiForm.EditImageGrayScale = false;
-            else
-                hmiForm.EditImageGrayScale = true;
+
+            if (guio.imageName.Length > 0)
+            {
+                hmiForm.EditImageName = path;
+                if (Int32.Parse(guio.grayScale) == 0)
+                    hmiForm.EditImageGrayScale = false;
+                else
+                    hmiForm.EditImageGrayScale = true;
+                hmiForm.EditImageAngle = Int32.Parse(guio.angle);
+            }
+            try
+            {
+                hmiForm.EditImageVisible = Int32.Parse(guio.visible);
+            }
+            catch(Exception ex)
+            {
+                hmiForm.EditImageVisible = 1;
+            }
         }
 
 
@@ -839,8 +997,6 @@ namespace HMIProject
             hmiForm.GUIOName = guio.name;
             hmiForm.GUIOType = "Rail";
             hmiForm.MakeGUIOCommand = true;
-            hmiForm.EditGUIOPropertyHeight = Int32.Parse(guio.size.height);
-            hmiForm.EditGUIOPropertyWidth = Int32.Parse(guio.size.width);
             hmiForm.EditGUIOPropertyX = Int32.Parse(guio.location.x);
             hmiForm.EditGUIOPropertyY = Int32.Parse(guio.location.y);
             hmiForm.EditGUIOPropertyLayer = Int32.Parse(guio.layer);
@@ -850,6 +1006,8 @@ namespace HMIProject
                 hmiForm.EditRailGrayScale = false;
             else
                 hmiForm.EditRailGrayScale = true;
+            hmiForm.EditGUIOPropertyWidth = Int32.Parse(guio.size.width);
+            hmiForm.EditGUIOPropertyHeight = Int32.Parse(guio.size.height);
         }
         /*
         private void makeRadioButton(GUIO guio)
@@ -877,7 +1035,7 @@ namespace HMIProject
         private void makeIPCamera(DragEventArgs e)
         {
             GUIO newGUIO = new GUIO();
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 150);
 
             newGUIO.type = "IpCamera";
@@ -897,7 +1055,7 @@ namespace HMIProject
         private void makeWebView(DragEventArgs e)
         {
             GUIO newGUIO = new GUIO();
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(250, 250);
 
             newGUIO.type = "WebView";
@@ -918,7 +1076,7 @@ namespace HMIProject
         private void makeCircle(DragEventArgs e)
         {
             GUIO newGUIO = new GUIO();
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 150);
             
             newGUIO.type = "Circle";
@@ -940,7 +1098,7 @@ namespace HMIProject
         private void makeRectangle(DragEventArgs e)
         {
             GUIO newGUIO = new GUIO();
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 150);
             newGUIO.name = "Rectangle" + TNORectangle;
             newGUIO.type = "Rectangle";
@@ -963,7 +1121,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
             //pushButton.MouseDownEvent += new AxcustomaxLib.IGPushButtonEvents_MouseDownEventHandler(GPushButtonMouseDownEvent);
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 150);
             
             newGUIO.type = "PushButton";
@@ -997,7 +1155,7 @@ namespace HMIProject
             GUIO newGUIO = new GUIO();
             //dial.MouseDownEvent += new AxcustomaxLib.IGDialEvents_MouseDownEventHandler(GDialMouseDownEvent);
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 150);
             newGUIO.type = "Dial";
             newGUIO.name = "Dial" + TNODial;
@@ -1024,7 +1182,7 @@ namespace HMIProject
         private void makeProgressBar(DragEventArgs e)
         {
             GUIO newGUIO = new GUIO();
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 150);
             newGUIO.type = "ProgressBar";
             newGUIO.name = "ProgressBar" + TNOProgressBar;
@@ -1049,7 +1207,7 @@ namespace HMIProject
         private void makeSliderBar(DragEventArgs e)
         {
             GUIO newGUIO = new GUIO();
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 150);
 
             newGUIO.type = "SliderBar";
@@ -1076,7 +1234,7 @@ namespace HMIProject
         private void makeNumPad(DragEventArgs e)
         {
             GUIO newGUIO = new GUIO();
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(262, 335);
 
             newGUIO.type = "NumPad";
@@ -1104,7 +1262,7 @@ namespace HMIProject
         private void makeLoginPad(DragEventArgs e)
         {
             GUIO newGUIO = new GUIO();
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(262, 335);
 
             //loginpad.MouseDownEvent += new AxcustomaxLib.IGLoginpadEvents_MouseDownEventHandler(GLoginpadMouseDownEvent);
@@ -1139,7 +1297,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 50);
             //label.MouseDownEvent += new AxcustomaxLib.IGLabelEvents_MouseDownEventHandler(GLabelMouseDownEvent);
 
@@ -1160,11 +1318,13 @@ namespace HMIProject
 
             newGUIO.text = "Label";
 
+            newGUIO.visible = "1";
             newGUIO.thickness = "1";
             newGUIO.fontSize = "11";
             newGUIO.fontBold = "0";
             newGUIO.fontUnderline = "0";
             newGUIO.angle = "0";
+            newGUIO.alignment = "1";
 
             GUIOList.Add(newGUIO);
             makeLabel(newGUIO);
@@ -1174,7 +1334,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 50);
             //label.MouseDownEvent += new AxcustomaxLib.IGLabelEvents_MouseDownEventHandler(GLabelMouseDownEvent);
 
@@ -1190,6 +1350,7 @@ namespace HMIProject
             newGUIO.transparent = "0";
             newGUIO.speed = "1";
             newGUIO.direction = "0";
+            newGUIO.scrollFlag = "0";
 
             newGUIO.labelColor = "E0E0E0";
             newGUIO.borderColor = "000000";
@@ -1211,7 +1372,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 50);
             //digitalClock.MouseDownEvent += new AxcustomaxLib.IGDigitalClockEvents_MouseDownEventHandler(GDigitalClockMouseDownEvent);
 
@@ -1239,7 +1400,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 50);
             //digitalClock.MouseDownEvent += new AxcustomaxLib.IGDigitalClockEvents_MouseDownEventHandler(GDigitalClockMouseDownEvent);
 
@@ -1251,7 +1412,16 @@ namespace HMIProject
             newGUIO.size.width = "" + size.Width;
             newGUIO.size.height = "" + size.Height;
             newGUIO.layer = "" + TNOControls;
-            newGUIO.count = "" + 1;
+            newGUIO.groupID = "" + 1;
+            newGUIO.text = "RadioButton";
+            newGUIO.buttonColor = "E0E0E0";
+            newGUIO.thickness = "1";
+            newGUIO.borderColor = "000000";
+            newGUIO.fontColor = "000000";
+            newGUIO.fontSize = "11";
+            newGUIO.fontBold = "0";
+            newGUIO.fontUnderline = "0";
+            newGUIO.transparent = "0";
 
             GUIOList.Add(newGUIO);
             makeRadioButton(newGUIO);
@@ -1261,7 +1431,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(50, 50);
             //digitalClock.MouseDownEvent += new AxcustomaxLib.IGDigitalClockEvents_MouseDownEventHandler(GDigitalClockMouseDownEvent);
 
@@ -1283,7 +1453,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 150);
             //digitalClock.MouseDownEvent += new AxcustomaxLib.IGDigitalClockEvents_MouseDownEventHandler(GDigitalClockMouseDownEvent);
 
@@ -1312,7 +1482,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 50);
             //digitalClock.MouseDownEvent += new AxcustomaxLib.IGDigitalClockEvents_MouseDownEventHandler(GDigitalClockMouseDownEvent);
 
@@ -1333,7 +1503,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(150, 50);
             //digitalClock.MouseDownEvent += new AxcustomaxLib.IGDigitalClockEvents_MouseDownEventHandler(GDigitalClockMouseDownEvent);
 
@@ -1355,7 +1525,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(100, 100);
 
             newGUIO.type = "Image";
@@ -1368,8 +1538,10 @@ namespace HMIProject
             newGUIO.size.height = "" + size.Height;
             newGUIO.grayScale = "0";
             newGUIO.scale = "1";
+            newGUIO.angle = "0";
+            newGUIO.visible = "1";
             newGUIO.layer = "" + TNOControls;
-
+            newGUIO.flickering = "0";
 
             GUIOList.Add(newGUIO);
             makeImage(newGUIO);
@@ -1380,7 +1552,7 @@ namespace HMIProject
         {
             GUIO newGUIO = new GUIO();
 
-            System.Drawing.Point location = panel.PointToClient(new System.Drawing.Point(e.X, e.Y));
+            System.Drawing.Point location = hmiForm.PointToClient(new System.Drawing.Point(e.X, e.Y));
             System.Drawing.Size size = new System.Drawing.Size(100, 100);
 
             newGUIO.type = "Rail";
@@ -1403,58 +1575,40 @@ namespace HMIProject
         #endregion
 
         #region Mouse Down Event
-        private void IpCameraMouseDownEvent()
+        private void InitializeGUIOPropertyTool(GUIO guio)
         {
-            HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
-            HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
-
-            GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
-            hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-
-
-            // private property
+            control.GUIOPropertyFlickeringImagesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyFlickeringDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyStartPointIDDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyEndPointIDDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyDurationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyIPAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyPortDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyDigitColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyBodyColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyLEDColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
+            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
@@ -1463,110 +1617,75 @@ namespace HMIProject
             control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
+            control.GUIOPropertyGroupIDDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyImageStartFrameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyImageEndFrameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyImageStateDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyAlignmentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyVisibleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyVisibleDurationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyInvisibleDurationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyScrollFlagDockPanel.Visibility = System.Windows.Visibility.Collapsed;
 
+            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
+            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
+
+            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyNameTextBox.Text = guio.name;
             control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
+            control.GUIOPropertyLayerTextBox.Text = guio.layer;
             control.GUIOPropertyXTextBox.Text = guio.location.x;
             control.GUIOPropertyYTextBox.Text = guio.location.y;
             control.GUIOPropertyWidthTextBox.Text = guio.size.width;
             control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            control.GUIOPropertyAddressTextBox.Text = guio.address;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
+        }
+
+        private void IpCameraMouseDownEvent()
+        {
+            HMIEditorPropertyToolWindowControl.selectedPane = this;
+            HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
+
+            GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
+            hmiForm.selectedGUIOName = guio.name;
+            HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
+
+            InitializeGUIOPropertyTool(guio);
+            control.GUIOPropertyIPAddressDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyPortDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyIPAddressTextBox.Text = guio.ipAddress;
+            control.GUIOPropertyPortTextBox.Text = guio.port;
         }
         
         private void GWebViewMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-
-
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            
+            InitializeGUIOPropertyTool(guio);
             control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
             control.GUIOPropertyURLTextBox.Text = guio.url;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
 
         private void CircleMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
@@ -1594,7 +1713,6 @@ namespace HMIProject
         private void RectangleMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
@@ -1919,69 +2037,25 @@ namespace HMIProject
         private void GPushButtonMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Visible;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
 
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
+
+            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Visible;
 
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
 
             control.GUIOPropertyTextTextBox.Text = guio.text;
             control.GUIOPropertyButtonColorTextBox.Text = guio.buttonColor;
@@ -1997,55 +2071,19 @@ namespace HMIProject
                 control.GUIOPropertyFontUnderlineComboBox.SelectedIndex = 1;
             else
                 control.GUIOPropertyFontUnderlineComboBox.SelectedIndex = 0;
-
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
 
         private void GDialMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
 
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
 
             control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Visible;
@@ -2053,32 +2091,7 @@ namespace HMIProject
             control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
 
             control.GUIOPropertyMaxTextBox.Text = guio.max;
             control.GUIOPropertyMinTextBox.Text = guio.min;
@@ -2087,87 +2100,26 @@ namespace HMIProject
             control.GUIOPropertyNeedleColorTextBox.Text = guio.needleColor;
             control.GUIOPropertyDialColorTextBox.Text = guio.dialColor;
             control.GUIOPropertyFontColorTextBox.Text = guio.fontColor;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
 
         private void GProgressBarMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
 
             control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
 
             control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
 
             control.GUIOPropertyMaxTextBox.Text = guio.max;
             control.GUIOPropertyMinTextBox.Text = guio.min;
@@ -2178,87 +2130,27 @@ namespace HMIProject
                 control.GUIOPropertyOrientationComboBox.SelectedIndex = 0;
             else
                 control.GUIOPropertyOrientationComboBox.SelectedIndex = 1;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
 
         private void GSliderBarMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
-
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            
+            InitializeGUIOPropertyTool(guio);
 
             control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
 
             control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
 
             control.GUIOPropertyMaxTextBox.Text = guio.max;
             control.GUIOPropertyMinTextBox.Text = guio.min;
@@ -2270,88 +2162,26 @@ namespace HMIProject
                 control.GUIOPropertyOrientationComboBox.SelectedIndex = 0;
             else
                 control.GUIOPropertyOrientationComboBox.SelectedIndex = 1;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
 
         private void GNumpadMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
+            
             control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Visible;
 
             control.GUIOPropertyNumColorTextBox.Text = guio.numColor;
             control.GUIOPropertyNumButtonColorTextBox.Text = guio.numButtonColor;
@@ -2360,71 +2190,18 @@ namespace HMIProject
             control.GUIOPropertyOkColorTextBox.Text = guio.okColor;
             control.GUIOPropertyOkButtonColorTextBox.Text = guio.okButtonColor;
             control.GUIOPropertyBorderColorTextBox.Text = guio.borderColor;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
 
         private void GLoginpadMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
 
             control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Visible;
@@ -2435,13 +2212,8 @@ namespace HMIProject
             control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Visible;
 
             control.GUIOPropertyPasswordTextBox.Text = guio.password;
             control.GUIOPropertyNumColorTextBox.Text = guio.numColor;
@@ -2454,88 +2226,31 @@ namespace HMIProject
             control.GUIOPropertyFuncButtonColorTextBox.Text = guio.funcButtonColor;
             control.GUIOPropertyBorderColorTextBox.Text = guio.borderColor;
             control.GUIOPropertyDigitNumberTextBox.Text = guio.digitNumber;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
 
         private void GLabelMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
 
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-
             control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
+            control.GUIOPropertyAlignmentDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyVisibleDockPanel.Visibility = System.Windows.Visibility.Visible;
 
             control.GUIOPropertyTextTextBox.Text = guio.text;
             control.GUIOPropertyLabelColorTextBox.Text = guio.labelColor;
@@ -2543,6 +2258,23 @@ namespace HMIProject
             control.GUIOPropertyBorderColorTextBox.Text = guio.borderColor;
             control.GUIOPropertyFontColorTextBox.Text = guio.fontColor;
             control.GUIOPropertyFontSizeTextBox.Text = guio.fontSize;
+            if (guio.visible == "0")
+            {
+                control.GUIOPropertyVisibleComboBox.SelectedIndex = 1;
+            }
+            else
+                control.GUIOPropertyVisibleComboBox.SelectedIndex = 0;
+
+
+            if (guio.alignment == "0")
+            {
+                control.GUIOPropertyAlignmentComboBox.SelectedIndex = 0;
+            }
+            else if (guio.alignment == "1")
+                control.GUIOPropertyAlignmentComboBox.SelectedIndex = 1;
+            else if (guio.alignment == "2")
+                control.GUIOPropertyAlignmentComboBox.SelectedIndex = 2;
+
             if (Int32.Parse(guio.fontBold) == 0)
                 control.GUIOPropertyFontBoldComboBox.SelectedIndex = 1;
             else
@@ -2551,46 +2283,23 @@ namespace HMIProject
                 control.GUIOPropertyFontUnderlineComboBox.SelectedIndex = 1;
             else
                 control.GUIOPropertyFontUnderlineComboBox.SelectedIndex = 0;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
             control.GUIOPropertyTransparentTextBox.Text = guio.transparent;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
             control.GUIOPropertyAngleTextBox.Text = guio.angle;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
 
 
         private void GScrollLabelMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
-
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
+            
+            InitializeGUIOPropertyTool(guio);
             // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Visible;
 
@@ -2599,43 +2308,12 @@ namespace HMIProject
             control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Visible;
 
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
+            control.GUIOPropertyVisibleDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyScrollFlagDockPanel.Visibility = System.Windows.Visibility.Visible;
 
             control.GUIOPropertyTextTextBox.Text = guio.text;
             control.GUIOPropertyLabelColorTextBox.Text = guio.labelColor;
@@ -2643,6 +2321,24 @@ namespace HMIProject
             control.GUIOPropertyBorderColorTextBox.Text = guio.borderColor;
             control.GUIOPropertyFontColorTextBox.Text = guio.fontColor;
             control.GUIOPropertyFontSizeTextBox.Text = guio.fontSize;
+            if (guio.visible == "0")
+            {
+                control.GUIOPropertyVisibleComboBox.SelectedIndex = 1;
+            }
+            else
+                control.GUIOPropertyVisibleComboBox.SelectedIndex = 0;
+            if (guio.scrollFlag == "0")
+            {
+                control.GUIOPropertyScrollFlagComboBox.SelectedIndex = 0;
+            }
+            else if (guio.scrollFlag == "1")
+            {
+                control.GUIOPropertyScrollFlagComboBox.SelectedIndex = 1;
+            }
+            else if (guio.scrollFlag == "2")
+            {
+                control.GUIOPropertyScrollFlagComboBox.SelectedIndex = 2;
+            }
             if (Int32.Parse(guio.fontBold) == 0)
                 control.GUIOPropertyFontBoldComboBox.SelectedIndex = 1;
             else
@@ -2655,94 +2351,29 @@ namespace HMIProject
                 control.GUIOPropertyDirectionComboBox.SelectedIndex = 0;
             else
                 control.GUIOPropertyDirectionComboBox.SelectedIndex = 1;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
+            
             control.GUIOPropertyTransparentTextBox.Text = guio.transparent;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            control.GUIOPropertyAngleTextBox.Text = guio.angle;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
             control.GUIOPropertySpeedTextBox.Text = guio.speed;
         }
 
         private void GDigitalClockMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
-
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
+            
+            InitializeGUIOPropertyTool(guio);
 
             // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
 
             control.GUIOPropertyClockColorTextBox.Text = guio.clockColor;
             control.GUIOPropertyBorderColorTextBox.Text = guio.borderColor;
@@ -2752,262 +2383,84 @@ namespace HMIProject
                 control.GUIOPropertyFontBoldComboBox.SelectedIndex = 1;
             else
                 control.GUIOPropertyFontBoldComboBox.SelectedIndex = 0;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
             control.GUIOPropertyTransparentTextBox.Text = guio.transparent;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
         private void GRadioButtonMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
 
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyGroupIDDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Visible;
 
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            control.GUIOPropertyGroupIDTextBox.Text = guio.groupID;
+            control.GUIOPropertyTextTextBox.Text = guio.text;
+            control.GUIOPropertyButtonColorTextBox.Text = guio.buttonColor;
+            control.GUIOPropertyThicknessTextBox.Text = guio.thickness;
+            control.GUIOPropertyBorderColorTextBox.Text = guio.borderColor;
+            control.GUIOPropertyFontColorTextBox.Text = guio.fontColor;
+            control.GUIOPropertyFontSizeTextBox.Text = guio.fontSize;
+            if (Int32.Parse(guio.fontBold) == 0)
+                control.GUIOPropertyFontBoldComboBox.SelectedIndex = 1;
+            else
+                control.GUIOPropertyFontBoldComboBox.SelectedIndex = 0;
 
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            if (Int32.Parse(guio.fontUnderline) == 0)
+                control.GUIOPropertyFontUnderlineComboBox.SelectedIndex = 1;
+            else
+                control.GUIOPropertyFontUnderlineComboBox.SelectedIndex = 0;
 
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyBodyColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLEDColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyCountDockPanel.Visibility = System.Windows.Visibility.Visible;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyCountTextBox.Text = guio.count;
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
+            control.GUIOPropertyTransparentTextBox.Text = guio.transparent;
         }
 
         private void GLedMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
+            
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
 
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyBodyColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
             control.GUIOPropertyLEDColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyCountDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyLEDColorTextBox.Text = guio.ledColor;
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
 
         private void GPanelMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
 
             control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
             control.GUIOPropertyBodyColorDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyDigitColorDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyLEDColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyCountDockPanel.Visibility = System.Windows.Visibility.Collapsed;
 
             control.GUIOPropertyMinTextBox.Text = guio.min;
             control.GUIOPropertyMaxTextBox.Text = guio.max;
@@ -3016,368 +2469,100 @@ namespace HMIProject
             control.GUIOPropertyNeedleColorTextBox.Text = guio.needleColor;
             control.GUIOPropertyBodyColorTextBox.Text = guio.bodyColor;
             control.GUIOPropertyDigitColorTextBox.Text = guio.digitColor;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
         private void GSetResetButtonMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
-
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyBodyColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLEDColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyCountDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
+            
+            InitializeGUIOPropertyTool(guio);
         }
         private void GIncDecButtonMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyBodyColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLEDColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyCountDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
+            InitializeGUIOPropertyTool(guio);
         }
 
         private void GImageMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl; ;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyBodyColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLEDColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyCountDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
 
             control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyImageStartFrameDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyImageEndFrameDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Visible;
-            control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
+            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyVisibleDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyVisibleDurationDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyInvisibleDurationDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyFlickeringImagesDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyFlickeringDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyImageStateDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyImageNameTextBox.Text = guio.imageName;
+
+            control.GUIOPropertyImageStartFrameTextBox.Text = guio.startFrame;
+            control.GUIOPropertyImageEndFrameTextBox.Text = guio.endFrame;
+            control.GUIOPropertyImageStateTextBox.Text = guio.state;
+            
+            if (guio.visible == "0")
+            {
+                control.GUIOPropertyVisibleComboBox.SelectedIndex = 1;
+            }
+            else
+                control.GUIOPropertyVisibleComboBox.SelectedIndex = 0;
             if (guio.grayScale == "0")
             {
                 control.GUIOPropertyGrayScaleComboBox.SelectedIndex = 1;
             }
             else
                 control.GUIOPropertyGrayScaleComboBox.SelectedIndex = 0;
-
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
+            if (guio.flickering == "0")
+            {
+                control.GUIOPropertyFlickeringComboBox.SelectedIndex = 1;
+            }
+            else
+                control.GUIOPropertyFlickeringComboBox.SelectedIndex = 0;
+            control.GUIOPropertyAngleTextBox.Text = guio.angle;
         }
 
         private void GRailMouseDownEvent()
         {
             HMIEditorPropertyToolWindowControl.selectedPane = this;
-            HMIEditorPropertyToolWindowControl.selectedPanel = panel;
             HMIEditorPropertyToolWindowControl.selectedTransparentPanel = transparentPanel;
 
             GUIO guio = HMIEditorPropertyToolWindowControl.selectedGUIO;
             hmiForm.selectedGUIOName = guio.name;
             HMIEditorPropertyToolWindowControl control = HMIEditorPropertyToolWindowCommand.hmiEditorPropertyToolWindowControl;
 
-            control.PageProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOProperty.Visibility = System.Windows.Visibility.Visible;
-            control.FigureProperty.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyClickEventDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            //control.ClickEventStackPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            // private property
-            control.GUIOPropertyAngleDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyURLDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyAddressDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTextDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyThicknessDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyBorderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyLabelColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyTransparentDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertySpeedDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDirectionDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyClockColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyMaxDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMajorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyMinorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNeedleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDialColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOrientationDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyProgressColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertySliderColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyHandleColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyFontColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontSizeDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontBoldDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFontUnderlineDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyPasswordDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyNumButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyResetButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLoginButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyFuncButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitNumberDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyOkColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyOkButtonColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyTempGVarDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyPageNameDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-
-            control.GUIOPropertyBodyColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyDigitColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyLEDColorDockPanel.Visibility = System.Windows.Visibility.Collapsed;
-            control.GUIOPropertyCountDockPanel.Visibility = System.Windows.Visibility.Collapsed;
+            InitializeGUIOPropertyTool(guio);
 
             control.GUIOPropertyImageNameDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyGrayScaleDockPanel.Visibility = System.Windows.Visibility.Visible;
             control.GUIOPropertyVertexesDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyStartPointIDDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyEndPointIDDockPanel.Visibility = System.Windows.Visibility.Visible;
+            control.GUIOPropertyDurationDockPanel.Visibility = System.Windows.Visibility.Visible;
 
-            control.GUIOPropertyNameTextBox.Text = guio.name;
-            control.GUIOPropertyGVarTextBox.Text = guio.gVariable;
-            control.GUIOPropertyXTextBox.Text = guio.location.x;
-            control.GUIOPropertyYTextBox.Text = guio.location.y;
-            control.GUIOPropertyWidthTextBox.Text = guio.size.width;
-            control.GUIOPropertyHeightTextBox.Text = guio.size.height;
-
+            control.GUIOPropertyStartPointIDTextBox.Text = guio.startPointID;
+            control.GUIOPropertyEndPointIDTextBox.Text = guio.endPointID;
+            control.GUIOPropertyDurationTextBox.Text = guio.duration;
             control.GUIOPropertyImageNameTextBox.Text = guio.imageName;
             if(guio.grayScale == "0")
             {
@@ -3385,10 +2570,6 @@ namespace HMIProject
             }
             else
                 control.GUIOPropertyGrayScaleComboBox.SelectedIndex = 0;
-
-
-            // Index Test 160718
-            control.GUIOPropertyLayerTextBox.Text = guio.layer;
         }
         #endregion
         /// <summary>
@@ -3472,18 +2653,8 @@ namespace HMIProject
             {
                 OLECMDF cmdf = OLECMDF.OLECMDF_SUPPORTED | OLECMDF.OLECMDF_ENABLED;
                 pastePrgCmd.cmdf = (uint)cmdf;
-
                 CopyGUIO = HMIEditorPropertyToolWindowControl.selectedGUIO;
-                Control CopyControl = null;
-                GUIOList.Remove(CopyGUIO);
-                foreach(Control control in panel.Controls)
-                {
-                    if (control.Name == CopyGUIO.name)
-                        CopyControl = control;
-                }
-                if (CopyControl != null)
-                    panel.Controls.Remove(CopyControl);
-
+                hmiForm.RemoveGUIOCommand = true;
                 return 0;
             }
             return 0;
@@ -3491,23 +2662,17 @@ namespace HMIProject
 
         private int Remove()
         {
-            Control removeControl = null;
+
             GUIO removeGUIO = HMIEditorPropertyToolWindowControl.selectedGUIO;
             GUIOList.Remove(removeGUIO);
-            foreach (Control control in panel.Controls)
-            {
-                if (control.Name == removeGUIO.name)
-                    removeControl = control;
-            }
-            if (removeControl != null)
-            {
-                panel.Controls.Remove(removeControl);
 
-                OLECMDF cmdf = OLECMDF.OLECMDF_SUPPORTED;
-                copyPrgCmd.cmdf = (uint)cmdf;
-                cutPrgCmd.cmdf = (uint)cmdf;
-                deletePrgCmd.cmdf = (uint)cmdf;
-            }
+            hmiForm.RemoveGUIOCommand = true;
+
+            OLECMDF cmdf = OLECMDF.OLECMDF_SUPPORTED;
+            copyPrgCmd.cmdf = (uint)cmdf;
+            cutPrgCmd.cmdf = (uint)cmdf;
+            deletePrgCmd.cmdf = (uint)cmdf;
+
             return 0;
         }
 
@@ -3573,6 +2738,33 @@ namespace HMIProject
                     break;
                 case "DigitalClock":
                     makeDigitalClock(pasteGUIO);
+                    break;
+                case "RadioButton":
+                    makeRadioButton(pasteGUIO);
+                    break;
+                case "LED":
+                    makeLED(pasteGUIO);
+                    break;
+                case "Panel":
+                    makePanel(pasteGUIO);
+                    break;
+                case "SetResetButton":
+                    makeSetResetButton(pasteGUIO);
+                    break;
+                case "IncDecButton":
+                    makeIncDecButton(pasteGUIO);
+                    break;
+                case "Image":
+                    makeImage(pasteGUIO);
+                    break;
+                case "Rail":
+                    makeRail(pasteGUIO);
+                    break;
+                case "WebView":
+                    makeWebView(pasteGUIO);
+                    break;
+                case "ScrollLabel":
+                    makeScrollLabel(pasteGUIO);
                     break;
 
                 default:
@@ -3804,7 +2996,7 @@ namespace HMIProject
         /// <returns>S_OK if the function succeeds.</returns>
         int IPersistFileFormat.GetCurFile(out string ppszFilename, out uint pnFormatIndex)
         {
-            MessageBox.Show("IPersistFileFormat.GetCurFile()");
+            //MessageBox.Show("IPersistFileFormat.GetCurFile()");
             // We only support 1 format so return its index
             pnFormatIndex = fileFormat;
             ppszFilename = fileName;
@@ -3827,7 +3019,7 @@ namespace HMIProject
         /// <returns>S_OK if the method succeeds.</returns>
         int IPersistFileFormat.GetFormatList(out string ppszFormatList)
         {
-            MessageBox.Show("IPersistFileFormat.GetFormatList()");
+            //MessageBox.Show("IPersistFileFormat.GetFormatList()");
             string formatList = string.Format(CultureInfo.CurrentCulture, "Test Editor (*{0}){1}*{0}{1}{1}", fileExtension, endLine);
             ppszFormatList = formatList;
             return VSConstants.S_OK;
@@ -3840,7 +3032,7 @@ namespace HMIProject
         /// <returns>S_OK if the function succeeds.</returns>
         int IPersistFileFormat.SaveCompleted(string pszFilename)
         {
-            MessageBox.Show("IPersistFileFormat.SaveCompleted()");
+            //MessageBox.Show("IPersistFileFormat.SaveCompleted()");
             if (noScribbleMode)
             {
                 return VSConstants.S_FALSE;
@@ -3860,7 +3052,7 @@ namespace HMIProject
         /// <returns>S_OK if the method succeeds.</returns>
         int IPersistFileFormat.InitNew(uint nFormatIndex)
         {
-            MessageBox.Show("IPersistFileFormat.InitNew()");
+            //MessageBox.Show("IPersistFileFormat.InitNew()");
             if (nFormatIndex != fileFormat)
             {
                 throw new ArgumentException(Resources.ExceptionMessageFormat);
@@ -3944,50 +3136,44 @@ namespace HMIProject
                     page.backgroundColor = Convert.ToString(0xFFFFFF, 16);
                     page.enable = "true";
                 }
-                panel.Name = page.name;
                 
                 this.thisPage = page;
-                editorForm = new HMIEditorForm();
-                editorForm.AutoScroll = true;
+
                 editorForm.FormBorderStyle = FormBorderStyle.None;
                 editorForm.ControlBox = false;
                 editorForm.Text = String.Empty;
                 GUIOList = new List<GUIO>();
                 
-                panel.Location = new System.Drawing.Point(0, 0);
-                panel.Size = new System.Drawing.Size(Int32.Parse(page.size.width), Int32.Parse(page.size.height));
                 hmiForm.Size = new System.Drawing.Size(Int32.Parse(page.size.width), Int32.Parse(page.size.height));
+                editorForm.HorizontalScroll.Maximum = Int32.Parse(page.size.width);
+                editorForm.VerticalScroll.Maximum = Int32.Parse(page.size.height);
                 transparentPanel.Size = new System.Drawing.Size(Int32.Parse(page.size.width), Int32.Parse(page.size.height));
-                editorForm.Size = new System.Drawing.Size(Int32.Parse(page.size.width), Int32.Parse(page.size.height));
                 editorForm.Location = new System.Drawing.Point(0, 0);
                 int bgColor = Int32.Parse(page.backgroundColor, System.Globalization.NumberStyles.HexNumber);
                 System.Drawing.Color rgbColor = System.Drawing.Color.FromArgb(bgColor);
                 int r = rgbColor.R;
                 int g = rgbColor.G;
                 int b = rgbColor.B;
-                panel.TabIndex = 1;
+
+                String path = HMIProjectNode.currentProjectDirectory + @"\" + page.backgroundImage;
                 try
                 {
-                    String path = HMIProjectNode.currentProjectDirectory + @"\" + page.backgroundImage;
+                    System.Drawing.Image image = System.Drawing.Image.FromFile(path);
+                    System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(image);
                     path = path.Replace(@"\", "/");
                     hmiForm.EditPageBackgroundImageName = path;
-                    System.Drawing.Image image = System.Drawing.Image.FromFile(HMIProjectNode.currentProjectDirectory + @"\" + page.backgroundImage);
-                    System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(image);
                     //editorForm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
                     //editorForm.BackgroundImage = bitmap;
 
                     //panel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
                     //panel.BackgroundImage = bitmap;
                 }
-                catch(FileNotFoundException fnfex)
+                catch (FileNotFoundException fnfex)
                 {
-
+                    if(page.backgroundImage.Length != 0)
+                        MessageBox.Show("Page 배경 화면 파일을 찾을 수 없습니다.\n경로: " + path);
                 }
-                editorForm.AllowDrop = true;
-                editorForm.DragEnter += panel_DragEnter;
-                editorForm.DragDrop += panel_DragDrop;
-                
-                                
+
                 foreach (GUIO guio in page.guioGroup)
                 {
                     GUIOList.Add(guio);
@@ -4074,14 +3260,8 @@ namespace HMIProject
                     }
                 }
 
-
-                GUIOList.Sort(ReverseCompareLayer);
-                foreach (GUIO guio in GUIOList)
-                {
-                    System.Windows.Forms.Control[] control = panel.Controls.Find(guio.name, true);
-                    control[0].SendToBack();
-                }
                 hmiForm.EditPageBackgroundColor = bgColor;
+                hmiForm.selectedGUIOName = "";
             }
             catch(Exception e)
             {
@@ -4165,7 +3345,7 @@ namespace HMIProject
         /// <returns>S_OK if the method succeeds.</returns>
         int IPersistFileFormat.Save(string pszFilename, int fRemember, uint nFormatIndex)
         {
-            MessageBox.Show("pszFilename: " + pszFilename + "\nfRemember: " + fRemember + "\nnFormatIndex: " + nFormatIndex);
+            //MessageBox.Show("pszFilename: " + pszFilename + "\nfRemember: " + fRemember + "\nnFormatIndex: " + nFormatIndex);
 
             XmlSerializer serializer = new XmlSerializer(typeof(Page));
             TextWriter writer = new StreamWriter(@pszFilename);
@@ -4229,7 +3409,7 @@ namespace HMIProject
         /// <returns>S_OK if the function succeeds.</returns>
         int IVsPersistDocData.Close()
         {
-            MessageBox.Show("IVsPersistDocData.Close()");
+            //MessageBox.Show("IVsPersistDocData.Close()");
             if (editorForm != null)
             {
                 editorForm.Dispose();
@@ -4244,7 +3424,7 @@ namespace HMIProject
         /// <returns>S_OK if the method succeeds.</returns>
         int IVsPersistDocData.GetGuidEditorType(out Guid pClassID)
         {
-            MessageBox.Show("IVsPersistDocData.GetGuidEditorType()");
+            //MessageBox.Show("IVsPersistDocData.GetGuidEditorType()");
             return ((IPersistFileFormat)this).GetClassID(out pClassID);
         }
 
@@ -4343,7 +3523,7 @@ namespace HMIProject
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")]
         int IVsPersistDocData.SaveDocData(VSSAVEFLAGS dwSave, out string pbstrMkDocumentNew, out int pfSaveCanceled)
         {
-            MessageBox.Show("IVsPersistDocData.SaveDocData()");
+            //MessageBox.Show("IVsPersistDocData.SaveDocData()");
             pbstrMkDocumentNew = null;
             pfSaveCanceled = 0;
             int hr = VSConstants.S_OK;

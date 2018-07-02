@@ -16,11 +16,13 @@ namespace HMIProject
 {
     public partial class HMIDownloadForm : Form
     {
-        public enum FileType { XML, PNG, JPG, SVG }
+        public enum FileType { XML, PNG, JPG, SVG, GIF }
         public static String OutputPath;
-        public static String ipAddress = "127.0.0.1";
+        public static String ipAddress = "10.128.1.4";
         public static int portNumber = 1235;
         Socket client;
+
+
 
         private int CompareLayer(GUIO a, GUIO b)
         {
@@ -30,6 +32,16 @@ namespace HMIProject
                 return 0;
             else
                 return 1;
+        }
+
+        private int ComparePage(HMIProject.Page a, HMIProject.Page b)
+        {
+            if (Int32.Parse(a.number) > Int32.Parse(b.number))
+                return 1;
+            else if (Int32.Parse(a.number) == Int32.Parse(b.number))
+                return 0;
+            else
+                return -1;
         }
 
         public HMIDownloadForm()
@@ -59,6 +71,7 @@ namespace HMIProject
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Project));
+
                 TextWriter writer = new StreamWriter(HMIProjectNode.currentProjectDirectory+@"\bin\output.xml");
 
                 Project project = new Project(HMIProjectNode.currentProjectName);
@@ -75,8 +88,10 @@ namespace HMIProject
                         pane.thisPage.guioGroup.Add(pageguio);
                     }
                 }
-
+                pageList.Sort(ComparePage);
                 project.gVariableGroup = new List<GVariable>();
+
+       
                 foreach (GVariable gvar in GViewDlg.SList)
                 {
                     project.gVariableGroup.Add(gvar);
@@ -89,7 +104,15 @@ namespace HMIProject
                 {
                     project.gVariableGroup.Add(gvar);
                 }
-
+                foreach (GVariable gvar in GViewDlg.gVariables.gVariableGroup)
+                {
+                    if (gvar.type == "Event Log Enable")
+                    {
+                        project.gVariableGroup.Add(gvar);
+                        break;
+                    }
+                }
+                
                 List<ConditionEvent> ceList = new List<ConditionEvent>();
                 foreach (ConditionEvent ce in StaticMethods.condtionEventList)
                 {
@@ -112,40 +135,45 @@ namespace HMIProject
                 FileInfo xmlFileInfo = new FileInfo(HMIProjectNode.currentProjectDirectory + @"\bin\output.xml");
 
                 DirectoryInfo directoryInfo = new DirectoryInfo(HMIProjectNode.currentProjectDirectory);
-                //FileInfo[] pngFileInfo = directoryInfo.GetFiles("*.png");
+                FileInfo[] pngFileInfo = directoryInfo.GetFiles("*.png");
                 FileInfo[] jpgFileInfo = directoryInfo.GetFiles("*.jpg");
                 FileInfo[] svgFileInfo = directoryInfo.GetFiles("*.svg");
+                FileInfo[] gifFileInfo = directoryInfo.GetFiles("*.gif");
 
-                int TNOFile = 1 + /*pngFileInfo.Length +*/ jpgFileInfo.Length + svgFileInfo.Length;
+                int TNOFile = 1 + pngFileInfo.Length + jpgFileInfo.Length + svgFileInfo.Length + gifFileInfo.Length;
                 
                 String xmlFileName = "output";
                 byte[] sendBytes;
-                //string[] pngFileName = new string[pngFileInfo.Length];
+                string[] pngFileName = new string[pngFileInfo.Length];
                 string[] jpgFileName = new string[jpgFileInfo.Length];
                 string[] svgFileName = new string[svgFileInfo.Length];
+                string[] gifFileName = new string[gifFileInfo.Length];
 
                 byte[] xmlFileNameSize = { (byte) xmlFileName.Length };
-                //byte[] pngFileNameSize = new byte[pngFileInfo.Length];
+                byte[] pngFileNameSize = new byte[pngFileInfo.Length];
                 byte[] jpgFileNameSize = new byte[jpgFileInfo.Length];
                 byte[] svgFileNameSize = new byte[svgFileInfo.Length];
+                byte[] gifFileNameSize = new byte[gifFileInfo.Length];
 
                 long xmlFileSize = xmlFileInfo.Length;
-                //long[] pngFileSize = new long[pngFileInfo.Length];
+                long[] pngFileSize = new long[pngFileInfo.Length];
                 long[] jpgFileSize = new long[jpgFileInfo.Length];
                 long[] svgFileSize = new long[svgFileInfo.Length];
+                long[] gifFileSize = new long[gifFileInfo.Length];
 
                 byte[] xmlFileType = { (byte)FileType.XML };
-                //byte[] pngFileType = new byte[pngFileInfo.Length];
+                byte[] pngFileType = new byte[pngFileInfo.Length];
                 byte[] jpgFileType = new byte[jpgFileInfo.Length];
                 byte[] svgFileType = new byte[svgFileInfo.Length];
-                /*
+                byte[] gifFileType = new byte[gifFileInfo.Length];
+
                 for (int i = 0; i < pngFileInfo.Length; i++)
                 {
                     pngFileName[i] = Path.GetFileNameWithoutExtension(pngFileInfo[i].FullName);
                     pngFileNameSize[i] = (byte)pngFileName[i].Length;
                     pngFileSize[i] = pngFileInfo[i].Length;
                     pngFileType[i] = (int)FileType.PNG;
-                }*/
+                }
                 for (int i = 0; i < jpgFileInfo.Length; i++)
                 {
                     jpgFileName[i] = Path.GetFileNameWithoutExtension(jpgFileInfo[i].FullName);
@@ -160,18 +188,25 @@ namespace HMIProject
                     svgFileSize[i] = svgFileInfo[i].Length;
                     svgFileType[i] = (int)FileType.SVG;
                 }
+                for (int i = 0; i < gifFileInfo.Length; i++)
+                {
+                    gifFileName[i] = Path.GetFileNameWithoutExtension(gifFileInfo[i].FullName);
+                    gifFileNameSize[i] = (byte)gifFileName[i].Length;
+                    gifFileSize[i] = gifFileInfo[i].Length;
+                    gifFileType[i] = (int)FileType.GIF;
+                }
 
 
 
                 sendBytes = BitConverter.GetBytes(TNOFile);
                 client.Send(sendBytes);
                 sendBytes = xmlFileNameSize;
-                client.Send(sendBytes);/*
+                client.Send(sendBytes);
                 if (pngFileInfo.Length > 0)
                 {
                     sendBytes = pngFileNameSize;
                     client.Send(sendBytes);
-                }*/
+                }
                 if (jpgFileInfo.Length > 0)
                 {
                     sendBytes = jpgFileNameSize;
@@ -182,14 +217,19 @@ namespace HMIProject
                     sendBytes = svgFileNameSize;
                     client.Send(sendBytes);
                 }
+                if (gifFileInfo.Length > 0)
+                {
+                    sendBytes = gifFileNameSize;
+                    client.Send(sendBytes);
+                }
 
                 sendBytes = BitConverter.GetBytes(xmlFileSize);
-                client.Send(sendBytes);/*
+                client.Send(sendBytes);
                 for (int i = 0; i < pngFileInfo.Length; i++)
                 {
                     sendBytes = BitConverter.GetBytes(pngFileSize[i]);
                     client.Send(sendBytes);
-                }*/
+                }
                 for (int i = 0; i < jpgFileInfo.Length; i++)
                 {
                     sendBytes = BitConverter.GetBytes(jpgFileSize[i]);
@@ -200,14 +240,19 @@ namespace HMIProject
                     sendBytes = BitConverter.GetBytes(svgFileSize[i]);
                     client.Send(sendBytes);
                 }
+                for (int i = 0; i < gifFileInfo.Length; i++)
+                {
+                    sendBytes = BitConverter.GetBytes(gifFileSize[i]);
+                    client.Send(sendBytes);
+                }
 
                 sendBytes = Encoding.Default.GetBytes(xmlFileName);
-                client.Send(sendBytes);/*
+                client.Send(sendBytes);
                 for (int i = 0; i < pngFileInfo.Length; i++)
                 {
                     sendBytes = Encoding.Default.GetBytes(pngFileName[i]);
                     client.Send(sendBytes);
-                }*/
+                }
                 for (int i = 0; i < jpgFileInfo.Length; i++)
                 {
                     sendBytes = Encoding.Default.GetBytes(jpgFileName[i]);
@@ -218,13 +263,18 @@ namespace HMIProject
                     sendBytes = Encoding.Default.GetBytes(svgFileName[i]);
                     client.Send(sendBytes);
                 }
+                for (int i = 0; i < gifFileInfo.Length; i++)
+                {
+                    sendBytes = Encoding.Default.GetBytes(gifFileName[i]);
+                    client.Send(sendBytes);
+                }
 
                 sendBytes = xmlFileType;
-                client.Send(sendBytes);/*
+                client.Send(sendBytes);
                 if (pngFileInfo.Length > 0)
                 {
                     client.Send(pngFileType);
-                }*/
+                }
                 if (jpgFileInfo.Length > 0)
                 {
                     client.Send(jpgFileType);
@@ -232,6 +282,10 @@ namespace HMIProject
                 if (svgFileInfo.Length > 0)
                 {
                     client.Send(svgFileType);
+                }
+                if (gifFileInfo.Length > 0)
+                {
+                    client.Send(gifFileType);
                 }
 
                 MemoryStream ms;
@@ -246,9 +300,9 @@ namespace HMIProject
                 b = ms.ToArray();
                 ms.Dispose();
                 
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(100);
                 client.BeginSend(b, 0, b.Length, SocketFlags.None, sendCallBack, null);
-                /*
+                
                 for (int i = 0; i < pngFileInfo.Length; i++)
                 {
                     ms = new MemoryStream();
@@ -259,9 +313,9 @@ namespace HMIProject
                     b = ms.ToArray();
                     ms.Dispose();
 
-                    System.Threading.Thread.Sleep(1000);
+                    System.Threading.Thread.Sleep(100);
                     client.BeginSend(b, 0, b.Length, SocketFlags.None, sendCallBack, null);
-                }*/
+                }
                 for (int i = 0; i < jpgFileInfo.Length; i++)
                 {
                     ms = new MemoryStream();
@@ -272,7 +326,7 @@ namespace HMIProject
                     b = ms.ToArray();
                     ms.Dispose();
 
-                    System.Threading.Thread.Sleep(1000);
+                    System.Threading.Thread.Sleep(100);
                     client.BeginSend(b, 0, b.Length, SocketFlags.None, sendCallBack, null);
                 }
                 for (int i = 0; i < svgFileInfo.Length; i++)
@@ -285,7 +339,20 @@ namespace HMIProject
                     b = ms.ToArray();
                     ms.Dispose();
 
-                    System.Threading.Thread.Sleep(1000);
+                    System.Threading.Thread.Sleep(100);
+                    client.BeginSend(b, 0, b.Length, SocketFlags.None, sendCallBack, null);
+                }
+                for (int i = 0; i < gifFileInfo.Length; i++)
+                {
+                    ms = new MemoryStream();
+                    bw = new BinaryWriter(ms);
+                    b = File.ReadAllBytes(gifFileInfo[i].FullName);
+                    bw.Write(b);
+                    bw.Close();
+                    b = ms.ToArray();
+                    ms.Dispose();
+
+                    System.Threading.Thread.Sleep(100);
                     client.BeginSend(b, 0, b.Length, SocketFlags.None, sendCallBack, null);
                 }
 

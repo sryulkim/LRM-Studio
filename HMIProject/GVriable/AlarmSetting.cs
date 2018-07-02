@@ -21,6 +21,7 @@ namespace HMIProject
 
         public Alarm()
         {
+            //git push test
             InitializeComponent();
             //Alarm 설정 Disable시키기.
             tbLowAlarm.Enabled = false;

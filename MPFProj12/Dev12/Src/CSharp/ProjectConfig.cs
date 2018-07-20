@@ -513,18 +513,10 @@ namespace Microsoft.VisualStudio.Project
             HMIProject.Project project = new HMIProject.Project("trainSpeed");
 
 
-            project.gVariableGroup = new List<HMIProject.GVariable>();
-            foreach (HMIProject.GVariable gvar in HMIProject.GViewDlg.SList)
-            {
-                project.gVariableGroup.Add(gvar);
-            }
+            project.GVariableGroup = new List<HMIProject.GVariable>();
             foreach (HMIProject.GVariable gvar in HMIProject.GViewDlg.MList)
             {
-                project.gVariableGroup.Add(gvar);
-            }
-            foreach (HMIProject.GVariable gvar in HMIProject.GViewDlg.NEList)
-            {
-                project.gVariableGroup.Add(gvar);
+                project.GVariableGroup.Add(gvar);
             }
 
 
@@ -540,9 +532,9 @@ namespace Microsoft.VisualStudio.Project
                 {
                     bool correctGVar = false;
                     if (pageguio.gVariable != null && pageguio.gVariable.Length != 0)
-                        foreach (HMIProject.GVariable gvar in project.gVariableGroup)
+                        foreach (HMIProject.GVariable gvar in project.GVariableGroup)
                         {
-                                if (gvar.dataType == "CMD82")
+                                if (gvar.type == "CMD82")
                                 {
                                     for (int n = 1; n <= 20; n++)
                                     {
@@ -557,7 +549,7 @@ namespace Microsoft.VisualStudio.Project
                                     if (correctGVar)
                                         break;
                                 }
-                                if (gvar.dataType == "CMD80")
+                                if (gvar.type == "CMD80")
                                 {
                                     foreach (String evar in CMD80Vars)
                                     {
@@ -570,7 +562,7 @@ namespace Microsoft.VisualStudio.Project
                                     if (correctGVar)
                                         break;
                                 }
-                                if (gvar.dataType == "CMD01")
+                                if (gvar.type == "CMD01")
                                 {
                                     foreach (String evar in CMD01Vars)
                                     {
@@ -583,7 +575,7 @@ namespace Microsoft.VisualStudio.Project
                                     if (correctGVar)
                                         break;
                                 }
-                                if (gvar.dataType == "CMD02CMD81")
+                                if (gvar.type == "CMD02CMD81")
                                 {
                                     foreach (String evar in CMD02CMD81Vars)
                                     {
@@ -667,7 +659,7 @@ namespace Microsoft.VisualStudio.Project
                 ceList.Add(tempCE);
             }*/
 
-            project.conditionEvents = ceList;
+            project.ConditionEventGroup = ceList;
 
 
             project.pageGroup = pageList;

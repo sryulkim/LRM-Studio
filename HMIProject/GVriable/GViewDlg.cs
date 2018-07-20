@@ -19,15 +19,15 @@ namespace HMIProject
         //G-Variable 저장해 두는 List들
         //static public List<GVariable> SVList { set; get; } = new List<GVariable>();//System version gVariable List
         //static public List<GVariable> SCList { set; get; } = new List<GVariable>();//System clock gVariable List
-        static public List<GVariable> SList { set; get; } = new List<GVariable>(); // System gVariable List
+        //static public List<GVariable> SList { set; get; } = new List<GVariable>(); // System gVariable List
         static public List<GVariable> MList { set; get; } = new List<GVariable>();//Memory gVariable List
-        static public List<GVariable> DIList { set; get; } = new List<GVariable>();//Digital Input gVariable List
-        static public List<GVariable> AIList { set; get; } = new List<GVariable>();//Analog Input gVariable List
-        static public List<GVariable> NRList { set; get; } = new List<GVariable>();//Network RS485 gVariable List
-        static public List<GVariable> NEList { set; get; } = new List<GVariable>();//Network Ethernet gVariable List
-        static public List<GVariable> NMList { set; get; } = new List<GVariable>();//Network MVB gVariable List
+        //static public List<GVariable> DIList { set; get; } = new List<GVariable>();//Digital Input gVariable List
+        //static public List<GVariable> AIList { set; get; } = new List<GVariable>();//Analog Input gVariable List
+        //static public List<GVariable> NRList { set; get; } = new List<GVariable>();//Network RS485 gVariable List
+        //static public List<GVariable> NEList { set; get; } = new List<GVariable>();//Network Ethernet gVariable List
+        //static public List<GVariable> NMList { set; get; } = new List<GVariable>();//Network MVB gVariable List
         static public GVariables gVariables = new GVariables();
-        static public List<Group> Groups = new List<Group>();
+        static public List<network> Configuration = new List<network>();
 
         public GViewDlg()
         {
@@ -45,13 +45,7 @@ namespace HMIProject
                 //TextReader reader = new StreamReader(HMIProject.HMIProjectNode.currentProjectDirectory + @"\GVariable.xml");
 
                 //gVariables = (HMIProject.GVariables)serializer.Deserialize(reader);
-                HMIProject.GViewDlg.SList.Clear();
                 HMIProject.GViewDlg.MList.Clear();
-                HMIProject.GViewDlg.DIList.Clear();
-                HMIProject.GViewDlg.AIList.Clear();
-                HMIProject.GViewDlg.NEList.Clear();
-                HMIProject.GViewDlg.NRList.Clear();
-                HMIProject.GViewDlg.NMList.Clear();
 
                 bool isLogEnableMade = false;
                 foreach (HMIProject.GVariable gVariable in gVariables.gVariableGroup)
@@ -67,26 +61,8 @@ namespace HMIProject
                                 logEnableCheckBox.Checked = false;
                             isLogEnableMade = true;
                             break;*/
-                        case "System":
-                            HMIProject.GViewDlg.SList.Add(gVariable);
-                            break;
                         case "Memory":
                             HMIProject.GViewDlg.MList.Add(gVariable);
-                            break;
-                        case "Digital Input":
-                            HMIProject.GViewDlg.DIList.Add(gVariable);
-                            break;
-                        case "Analog Input":
-                            HMIProject.GViewDlg.AIList.Add(gVariable);
-                            break;
-                        case "Network Ethernet":
-                            HMIProject.GViewDlg.NEList.Add(gVariable);
-                            break;
-                        case "Network RS485":
-                            HMIProject.GViewDlg.NRList.Add(gVariable);
-                            break;
-                        case "Network MVB":
-                            HMIProject.GViewDlg.NMList.Add(gVariable);
                             break;
                     }
                 }
@@ -100,13 +76,7 @@ namespace HMIProject
             }
             catch (Exception ex)
             {
-                HMIProject.GViewDlg.SList.Clear();
                 HMIProject.GViewDlg.MList.Clear();
-                HMIProject.GViewDlg.DIList.Clear();
-                HMIProject.GViewDlg.AIList.Clear();
-                HMIProject.GViewDlg.NEList.Clear();
-                HMIProject.GViewDlg.NRList.Clear();
-                HMIProject.GViewDlg.NMList.Clear();
                 HMIProject.StaticMethods.condtionEventList = new List<ConditionEvent>();
             }
             //Binding Source 선언
@@ -120,12 +90,6 @@ namespace HMIProject
             
 
             //DataSource에 List 할당
-            bsS.DataSource = SList;
-            bsDI.DataSource = DIList;
-            bsAI.DataSource = AIList;
-            bsNE.DataSource = NEList;
-            bsNR.DataSource = NRList;
-            bsNM.DataSource = NMList;
             bsM.DataSource = MList;
             
             //DataGridView에 List DataSource 할당
@@ -164,12 +128,6 @@ namespace HMIProject
                 var bsAI = new BindingSource();
                 
                 //DataSource에 List 할당
-                bsS.DataSource = SList;
-                bsDI.DataSource = DIList;
-                bsAI.DataSource = AIList;
-                bsNE.DataSource = NEList;
-                bsNR.DataSource = NRList;
-                bsNM.DataSource = NMList;
                 bsM.DataSource = MList;
                 
                 //DataGridView에 List DataSource 할당

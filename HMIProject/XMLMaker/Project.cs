@@ -13,8 +13,9 @@ namespace HMIProject
     {
         [XmlAttribute]
         public string name;
-        public List<GVariable> gVariableGroup;
-        public List<ConditionEvent> conditionEvents;
+        public List<network> Configuration;
+        public List<GVariable> GVariableGroup;
+        public List<ConditionEvent> ConditionEventGroup;
         public List<Page> pageGroup;
 
         public Project() { }

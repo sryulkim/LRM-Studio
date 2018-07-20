@@ -26,19 +26,7 @@ namespace HMIProject
         private void HMIMakeClickEventDialog_Load(object sender, EventArgs e)
         {
 
-            foreach (GVariable gvar in GViewDlg.SList)
-            {
-                comboBoxCVGVarName.Items.Add(gvar.name);
-                comboBoxIVGVarName.Items.Add(gvar.name);
-                comboBoxDVGVarName.Items.Add(gvar.name);
-            }
             foreach (GVariable gvar in GViewDlg.MList)
-            {
-                comboBoxCVGVarName.Items.Add(gvar.name);
-                comboBoxIVGVarName.Items.Add(gvar.name);
-                comboBoxDVGVarName.Items.Add(gvar.name);
-            }
-            foreach (GVariable gvar in GViewDlg.NEList)
             {
                 comboBoxCVGVarName.Items.Add(gvar.name);
                 comboBoxIVGVarName.Items.Add(gvar.name);

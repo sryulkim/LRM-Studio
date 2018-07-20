@@ -33,7 +33,7 @@ namespace HMIProject
 
         private void btn_Confirm_Click(object sender, EventArgs e)
         {
-            Group newGroup = new Group();
+            network newGroup = new network();
             if (tcNetwork.SelectedIndex == 0)
             {
                 newGroup.protocol = cbProtocol.SelectedText;
@@ -50,7 +50,7 @@ namespace HMIProject
             {
             
             }
-            GViewDlg.Groups.Add(newGroup);
+            GViewDlg.Configuration.Add(newGroup);
             this.Close();
         }
 

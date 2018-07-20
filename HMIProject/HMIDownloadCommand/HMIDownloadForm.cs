@@ -89,28 +89,12 @@ namespace HMIProject
                     }
                 }
                 pageList.Sort(ComparePage);
-                project.gVariableGroup = new List<GVariable>();
+                project.GVariableGroup = new List<GVariable>();
 
        
-                foreach (GVariable gvar in GViewDlg.SList)
-                {
-                    project.gVariableGroup.Add(gvar);
-                }
                 foreach (GVariable gvar in GViewDlg.MList)
                 {
-                    project.gVariableGroup.Add(gvar);
-                }
-                foreach (GVariable gvar in GViewDlg.NEList)
-                {
-                    project.gVariableGroup.Add(gvar);
-                }
-                foreach (GVariable gvar in GViewDlg.gVariables.gVariableGroup)
-                {
-                    if (gvar.type == "Event Log Enable")
-                    {
-                        project.gVariableGroup.Add(gvar);
-                        break;
-                    }
+                    project.GVariableGroup.Add(gvar);
                 }
                 
                 List<ConditionEvent> ceList = new List<ConditionEvent>();
@@ -120,7 +104,7 @@ namespace HMIProject
                     ceList.Add(ce.conditionEventTransmissionFormat());
                 }
 
-                project.conditionEvents = ceList;
+                project.ConditionEventGroup = ceList;
 
                 project.pageGroup = pageList;
 

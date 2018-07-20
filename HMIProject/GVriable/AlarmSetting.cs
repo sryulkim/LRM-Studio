@@ -50,22 +50,22 @@ namespace HMIProject
         {
             Confirmed = true;
             
-            gVariable.alarm = new Alarm();
-            gVariable.alarm.high = new High();
-            gVariable.alarm.low = new Low();
-            //Alarm기능 추가하였을때
-            if(AlarmHighChecked == true)
-            {
-                gVariable.alarm.high.value = tbHighAlarm.Text;
-                gVariable.alarm.high.priority = tbHighPriority.Text;
-                gVariable.alarm.high.page = tbHighPage.Text;
-            }
-            if (AlarmLowChecked == true)
-            {
-                gVariable.alarm.low.value = tbLowAlarm.Text;
-                gVariable.alarm.low.priority = tbLowPriority.Text;
-                gVariable.alarm.low.page = tbLowPage.Text;
-            }
+//            gVariable.alarm = new Alarm();
+//            gVariable.alarm.high = new High();
+//            gVariable.alarm.low = new Low();
+//            //Alarm기능 추가하였을때
+//            if(AlarmHighChecked == true)
+//            {
+//                gVariable.alarm.high.value = tbHighAlarm.Text;
+//                gVariable.alarm.high.priority = tbHighPriority.Text;
+//                gVariable.alarm.high.page = tbHighPage.Text;
+//            }
+//            if (AlarmLowChecked == true)
+//            {
+//                gVariable.alarm.low.value = tbLowAlarm.Text;
+//                gVariable.alarm.low.priority = tbLowPriority.Text;
+//                gVariable.alarm.low.page = tbLowPage.Text;
+//            }
 
             GViewDlg.gVariables.gVariableGroup.Add(gVariable);
             this.Close();

@@ -21,48 +21,33 @@ namespace HMIProject
             XmlSerializer serializer_gval = new XmlSerializer(typeof(GVariables));
             XmlSerializer serializer_condition = new XmlSerializer(typeof(List<ConditionEvent>));
 
-            TextReader reader_gval = new StreamReader(HMIProjectNode.currentProjectDirectory + @"\GVariable.xml");
-            TextReader reader_condition = new StreamReader(HMIProjectNode.currentProjectDirectory + @"\ConditionEvents.xml");
+            System.IO.FileInfo fi = new System.IO.FileInfo(HMIProjectNode.currentProjectDirectory + @"\GVaraible.xml");
+            if(fi.Exists)
+            { 
+                TextReader reader_gval = new StreamReader(HMIProjectNode.currentProjectDirectory + @"\GVariable.xml");
+                GViewDlg.gVariables = (GVariables)serializer_gval.Deserialize(reader_gval);
+                reader_gval.Close();
+            }
 
-            StaticMethods.condtionEventList = (List<ConditionEvent>)serializer_condition.Deserialize(reader_condition);
-            GViewDlg.gVariables = (GVariables)serializer_gval.Deserialize(reader_gval);
+            System.IO.FileInfo fi_ = new System.IO.FileInfo(HMIProjectNode.currentProjectDirectory + @"\ConditionEvents.xml");
+            if (fi_.Exists)
+            {
+                TextReader reader_condition = new StreamReader(HMIProjectNode.currentProjectDirectory + @"\ConditionEvents.xml");
+                StaticMethods.condtionEventList = (List<ConditionEvent>)serializer_condition.Deserialize(reader_condition);
+                reader_condition.Close();
+            }
 
-            bool isLogEnableMade = false;
+            //bool isLogEnableMade = false;
             foreach (GVariable gVariable in GViewDlg.gVariables.gVariableGroup)
             {
-                switch (gVariable.type)
+                switch (gVariable.category)
                 {
-                    case "Event Log Enable":
-                        isLogEnableMade = true;
-                        break;
-                    case "System":
-                        GViewDlg.SList.Add(gVariable);
-                        break;
                     case "Memory":
                         GViewDlg.MList.Add(gVariable);
                         break;
-                    case "Digital Input":
-                        GViewDlg.DIList.Add(gVariable);
-                        break;
-                    case "Analog Input":
-                        GViewDlg.AIList.Add(gVariable);
-                        break;
-                    case "Network Ethernet":
-                        GViewDlg.NEList.Add(gVariable);
-                        break;
-                    case "Network RS485":
-                        GViewDlg.NRList.Add(gVariable);
-                        break;
-                    case "Network MVB":
-                        GViewDlg.NMList.Add(gVariable);
-                        break;
                 }
             }
-            if (!isLogEnableMade)
-                GViewDlg.gVariables.gVariableGroup.Add(new GVariable("LogEnableFlag", "INT", "0", "Event Log Enable", "", ""));
 
-            reader_gval.Close();
-            reader_condition.Close();
         }
 
         private void HMIEditorForm_SizeChanged(object sender, EventArgs e)
